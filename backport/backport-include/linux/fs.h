@@ -8,6 +8,11 @@
  */
 #include <linux/uidgid.h>
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0))
+#define simple_open LINUX_BACKPORT(simple_open)
+extern int simple_open(struct inode *inode, struct file *file);
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
 /**
  * backport of:

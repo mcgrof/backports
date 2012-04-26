@@ -260,9 +260,6 @@ static inline void skb_queue_splice_tail(const struct sk_buff_head *list,
 #define round_jiffies_up LINUX_BACKPORT(round_jiffies_up)
 unsigned long round_jiffies_up(unsigned long j);
 
-extern void v2_6_28_skb_add_rx_frag(struct sk_buff *skb, int i, struct page *page,
-			    int off, int size);
-
 #define wake_up_interruptible_poll(x, m)			\
 	__wake_up(x, TASK_INTERRUPTIBLE, 1, (void *) (m))
 

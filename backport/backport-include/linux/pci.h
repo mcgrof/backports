@@ -12,6 +12,20 @@ int __must_check pci_enable_device_mem(struct pci_dev *dev);
 	const struct pci_device_id _table[] __devinitdata
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0)
+/**
+ * module_pci_driver() - Helper macro for registering a PCI driver
+ * @__pci_driver: pci_driver struct
+ *
+ * Helper macro for PCI drivers which do not do anything special in module
+ * init/exit. This eliminates a lot of boilerplate. Each module may only
+ * use this macro once, and calling it replaces module_init() and module_exit()
+ */
+#define module_pci_driver(__pci_driver) \
+	module_driver(__pci_driver, pci_register_driver, \
+		       pci_unregister_driver)
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0)
 #define pcie_capability_read_word LINUX_BACKPORT(pcie_capability_read_word)
 int pcie_capability_read_word(struct pci_dev *dev, int pos, u16 *val);

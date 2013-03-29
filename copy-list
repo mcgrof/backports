@@ -1,0 +1,10 @@
+# wireless stack
+net/wireless/
+net/mac80211/
+
+# always needed if any wireless drivers are needed
+drivers/net/wireless/Kconfig
+drivers/net/wireless/Makefile
+
+# wireless drivers
+drivers/net/wireless/iwlwifi/

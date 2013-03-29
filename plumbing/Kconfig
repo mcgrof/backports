@@ -1,0 +1,21 @@
+mainmenu "Linux Backports from $KERNEL_NAME $KERNEL_VERSION (with backports $BACKPORTS_VERSION)"
+
+config BACKPORTS_VERSION
+	string
+	option env="BACKPORTS_VERSION"
+config KERNEL_VERSION
+	string
+	option env="KERNEL_VERSION"
+config KERNEL_NAME
+	string
+	option env="KERNEL_NAME"
+
+source Kconfig.kernel
+source Kconfig.versions
+
+source compat/Kconfig
+
+source net/wireless/Kconfig
+source net/mac80211/Kconfig
+source drivers/net/wireless/Kconfig
+source drivers/net/ethernet/Kconfig

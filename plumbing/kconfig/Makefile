@@ -1,3 +1,6 @@
+include versions
+export BACKPORTS_VERSION KERNEL_VERSION KERNEL_NAME
+
 menuconfig:
 	gcc -Wp,-MD,kconfig/.conf.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -DCURSES_LOC="<ncurses.h>" -DLOCALE   -c -o kconfig/conf.o kconfig/conf.c
 	gcc -Wp,-MD,kconfig/lxdialog/.checklist.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -DCURSES_LOC="<ncurses.h>" -DLOCALE   -c -o kconfig/lxdialog/checklist.o kconfig/lxdialog/checklist.c

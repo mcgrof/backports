@@ -1,7 +1,6 @@
 drivers
 include
 net
-compat
 udev
 *~
 git-describe

@@ -1,9 +1,3 @@
-export COMPAT_BASE=$(shell cat $(PWD)/.compat_base)
-export COMPAT_BASE_TREE=$(shell cat $(PWD)/.compat_base_tree)
-export COMPAT_BASE_TREE_VERSION=$(shell cat $(PWD)/.compat_base_tree_version)
-export COMPAT_PROJECT=compat-drivers
-export COMPAT_VERSION=$(shell cat $(PWD)/.compat_version)
-
 menuconfig:
 	gcc -Wp,-MD,scripts/kconfig/.conf.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -DCURSES_LOC="<ncurses.h>" -DLOCALE   -c -o scripts/kconfig/conf.o scripts/kconfig/conf.c
 	gcc -Wp,-MD,scripts/kconfig/lxdialog/.checklist.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer   -DCURSES_LOC="<ncurses.h>" -DLOCALE   -c -o scripts/kconfig/lxdialog/checklist.o scripts/kconfig/lxdialog/checklist.c

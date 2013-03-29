@@ -1,0 +1,14 @@
+--- a/drivers/net/ethernet/atheros/atlx/atlx.c
++++ b/drivers/net/ethernet/atheros/atlx/atlx.c
+@@ -149,7 +149,11 @@
+ 
+ 	/* compute mc addresses' hash value ,and put it into hash table */
+ 	netdev_for_each_mc_addr(ha, netdev) {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 		hash_value = atlx_hash_mc_addr(hw, ha->addr);
++#else
++		hash_value = atlx_hash_mc_addr(hw, ha->dmi_addr);
++#endif
+ 		atlx_hash_set(hw, hash_value);
+ 	}
+ }

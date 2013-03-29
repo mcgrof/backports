@@ -1,0 +1,8 @@
+--- a/drivers/net/wireless/zd1211rw/Makefile
++++ b/drivers/net/wireless/zd1211rw/Makefile
+@@ -1,4 +1,4 @@
+-obj-$(CONFIG_ZD1211RW) += zd1211rw.o
++obj-$(CONFIG_COMPAT_ZD1211RW) += zd1211rw.o
+ 
+ zd1211rw-objs := zd_chip.o zd_mac.o \
+ 		zd_rf_al2230.o zd_rf_rf2959.o \

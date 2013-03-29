@@ -1,0 +1,14 @@
+--- a/drivers/net/wireless/libertas/main.c
++++ b/drivers/net/wireless/libertas/main.c
+@@ -592,7 +592,11 @@
+ 
+ 			/* Reset card, but only when it isn't in the process
+ 			 * of being shutdown anyway. */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0))
+ 			if (!dev->dismantle && priv->reset_card)
++#else
++			if (priv->reset_card)
++#endif
+ 				priv->reset_card(priv);
+ 		}
+ 		priv->cmd_timed_out = 0;

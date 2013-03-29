@@ -1,0 +1,13 @@
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1152,6 +1152,10 @@
+ 	rc80211_minstrel_ht_exit();
+ 	rc80211_minstrel_exit();
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37))
++	flush_scheduled_work();
++#endif
++
+ 	ieee80211s_stop();
+ 
+ 	ieee80211_iface_exit();

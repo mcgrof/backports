@@ -1,0 +1,8 @@
+These are things that removed in later kernels but no good explanatin
+was provided as to their removal. We should review if this is needed
+and if not remove these hunks.
+
+Pretty sure we can remove the netdev_tx_t hunk change on
+net/bluetooth/bnep/netdev.c, removing that hunk just needs to be
+compile tested against older kernels.
+

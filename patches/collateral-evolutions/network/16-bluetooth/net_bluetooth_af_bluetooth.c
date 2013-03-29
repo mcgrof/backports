@@ -1,0 +1,39 @@
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -103,8 +103,12 @@
+ }
+ EXPORT_SYMBOL(bt_sock_unregister);
+ 
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
+ static int bt_sock_create(struct net *net, struct socket *sock, int proto,
+ 			  int kern)
++#else
++static int bt_sock_create(struct net *net, struct socket *sock, int proto)
++#endif
+ {
+ 	int err;
+ 
+@@ -122,7 +126,11 @@
+ 	read_lock(&bt_proto_lock);
+ 
+ 	if (bt_proto[proto] && try_module_get(bt_proto[proto]->owner)) {
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
+ 		err = bt_proto[proto]->create(net, sock, proto, kern);
++#else
++		err = bt_proto[proto]->create(net, sock, proto);
++#endif
+ 		if (!err)
+ 			bt_sock_reclassify_lock(sock->sk, proto);
+ 		module_put(bt_proto[proto]->owner);
+@@ -455,7 +463,11 @@
+ 		if (sk->sk_state == BT_LISTEN)
+ 			return -EINVAL;
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,31))
+ 		amount = sk->sk_sndbuf - sk_wmem_alloc_get(sk);
++#else
++		amount = sk->sk_sndbuf - atomic_read(&sk->sk_wmem_alloc);
++#endif
+ 		if (amount < 0)
+ 			amount = 0;
+ 		err = put_user(amount, (int __user *) arg);

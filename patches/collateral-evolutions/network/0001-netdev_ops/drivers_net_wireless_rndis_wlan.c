@@ -1,0 +1,11 @@
+--- a/drivers/net/wireless/rndis_wlan.c
++++ b/drivers/net/wireless/rndis_wlan.c
+@@ -3438,7 +3438,7 @@
+ 	 * rndis_host wants to avoid all OID as much as possible
+ 	 * so do promisc/multicast handling in rndis_wlan.
+ 	 */
+-	usbdev->net->netdev_ops = &rndis_wlan_netdev_ops;
++	netdev_attach_ops(usbdev->net, &rndis_wlan_netdev_ops);
+ 
+ 	tmp = cpu_to_le32(RNDIS_PACKET_TYPE_DIRECTED | RNDIS_PACKET_TYPE_BROADCAST);
+ 	retval = rndis_set_oid(usbdev,

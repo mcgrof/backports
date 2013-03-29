@@ -1,0 +1,20 @@
+This reverts the commits that deal with hw_features and
+set_features, fix_features for kernels < 2.6.39.
+
+Below is one example commit being reverted, but we also do
+this for ath6kl and any driver that uses this in this file.
+
+commit 782d640afd15af7a1faf01cfe566ca4ac511319d
+Author: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Date:   Thu Apr 7 07:32:18 2011 +0000
+
+    net: atl*: convert to hw_features
+    
+    Things left as they were:
+     - atl1: is RX checksum really enabled?
+     - atl2: copy-paste from atl1, with-errors-on-modify I presume
+     - atl1c: there's a bug: MTU can't be changed if device is not up
+    
+    Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+

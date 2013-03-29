@@ -1,0 +1,8 @@
+--- a/drivers/net/wireless/rtl818x/rtl8187/Makefile
++++ b/drivers/net/wireless/rtl818x/rtl8187/Makefile
+@@ -2,4 +2,4 @@
+ 
+ obj-$(CONFIG_RTL8187)	+= rtl8187.o
+ 
+-ccflags-y += -Idrivers/net/wireless/rtl818x
++ccflags-y += -I$(obj)/..

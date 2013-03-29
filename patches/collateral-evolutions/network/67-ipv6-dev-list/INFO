@@ -1,0 +1,8 @@
+This backports:
+
+commit 502a2ffd7376ae27cfde6172257db0ff9d8cfec2
+Author: stephen hemminger <shemminger@vyatta.com>
+Date:   Wed Mar 17 20:31:13 2010 +0000
+
+    ipv6: convert idev_list to list macros
+

@@ -1,0 +1,12 @@
+--- a/drivers/net/wireless/ti/wl1251/spi.c
++++ b/drivers/net/wireless/ti/wl1251/spi.c
+@@ -24,6 +24,9 @@
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/crc7.h>
++#if (LINUX_VERSION_CODE == KERNEL_VERSION(2,6,28))
++#include <linux/device.h>
++#endif
+ #include <linux/spi/spi.h>
+ #include <linux/wl12xx.h>
+ 

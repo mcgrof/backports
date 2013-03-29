@@ -1,0 +1,27 @@
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2604,14 +2604,24 @@
+ 	void (*stop_ap)(struct ieee80211_hw *hw, struct ieee80211_vif *vif);
+ 
+ 	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 				 struct netdev_hw_addr_list *mc_list);
++#else
++				 int mc_count, struct dev_addr_list *mc_list);
++#endif
+ 	void (*configure_filter)(struct ieee80211_hw *hw,
+ 				 unsigned int changed_flags,
+ 				 unsigned int *total_flags,
+ 				 u64 multicast);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 	void (*set_multicast_list)(struct ieee80211_hw *hw,
+ 				   struct ieee80211_vif *vif, bool allmulti,
+ 				   struct netdev_hw_addr_list *mc_list);
++#else
++	void (*set_multicast_list)(struct ieee80211_hw *hw,
++				   struct ieee80211_vif *vif, bool allmulti,
++				   int mc_count, struct dev_addr_list *ha);
++#endif
+ 
+ 	int (*set_tim)(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
+ 		       bool set);

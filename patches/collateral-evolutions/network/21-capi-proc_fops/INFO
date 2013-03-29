@@ -1,0 +1,3 @@
+Backport kernel patch 9a58a80a701bdb2d220cdab4914218df5b48d781
+proc_fops: convert drivers/isdn/ to seq_file
+

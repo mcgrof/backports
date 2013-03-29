@@ -1,0 +1,8 @@
+--- a/drivers/gpu/drm/gma500/Makefile
++++ b/drivers/gpu/drm/gma500/Makefile
+@@ -49,4 +49,4 @@
+ 	  mdfld_tmd_vid.o \
+ 	  tc35876x-dsi-lvds.o
+ 
+-obj-$(CONFIG_DRM_GMA500) += gma500_gfx.o
++obj-$(CONFIG_COMPAT_DRM_GMA500) += gma500_gfx.o

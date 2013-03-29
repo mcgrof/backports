@@ -1,0 +1,15 @@
+--- a/drivers/net/wireless/brcm80211/brcmsmac/Makefile
++++ b/drivers/net/wireless/brcm80211/brcmsmac/Makefile
+@@ -17,9 +17,9 @@
+ 
+ ccflags-y := \
+ 	-D__CHECK_ENDIAN__ \
+-	-Idrivers/net/wireless/brcm80211/brcmsmac \
+-	-Idrivers/net/wireless/brcm80211/brcmsmac/phy \
+-	-Idrivers/net/wireless/brcm80211/include
++	-I$(obj)				\
++	-I$(obj)/phy				\
++	-I$(obj)/../include
+ 
+ BRCMSMAC_OFILES := \
+ 	mac80211_if.o \

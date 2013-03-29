@@ -1,0 +1,9 @@
+--- a/drivers/gpu/drm/ast/Makefile
++++ b/drivers/gpu/drm/ast/Makefile
+@@ -6,4 +6,4 @@
+ 
+ ast-y := ast_drv.o ast_main.o ast_mode.o ast_fb.o ast_ttm.o ast_post.o
+ 
+-obj-$(CONFIG_DRM_AST) := ast.o
+\ No newline at end of file
++obj-$(CONFIG_COMPAT_DRM_AST) := ast.o

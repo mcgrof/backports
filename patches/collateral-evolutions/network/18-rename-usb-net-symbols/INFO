@@ -1,0 +1,6 @@
+Rename config names for usbnet to deactivate them also if activated in
+the main kernel configuration. This is needed because
+usb_autopm_put_interface_async and usb_autopm_get_interface_async are
+not backported to kernel 2.6.28 and earlier.
+Remove this patch if these symbols are backported.
+

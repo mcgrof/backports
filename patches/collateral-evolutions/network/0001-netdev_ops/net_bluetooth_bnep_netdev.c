@@ -1,0 +1,11 @@
+--- a/net/bluetooth/bnep/netdev.c
++++ b/net/bluetooth/bnep/netdev.c
+@@ -223,7 +223,7 @@
+ 
+ 	ether_setup(dev);
+ 	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
+-	dev->netdev_ops = &bnep_netdev_ops;
++	netdev_attach_ops(dev, &bnep_netdev_ops);
+ 
+ 	dev->watchdog_timeo  = HZ * 2;
+ }

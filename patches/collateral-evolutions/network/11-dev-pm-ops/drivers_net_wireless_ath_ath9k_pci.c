@@ -1,0 +1,25 @@
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
+@@ -310,6 +310,9 @@
+ 	return 0;
+ }
+ 
++compat_pci_suspend(ath_pci_suspend);
++compat_pci_resume(ath_pci_resume);
++
+ static SIMPLE_DEV_PM_OPS(ath9k_pm_ops, ath_pci_suspend, ath_pci_resume);
+ 
+ #define ATH9K_PM_OPS	(&ath9k_pm_ops)
+@@ -328,7 +331,12 @@
+ 	.id_table   = ath_pci_id_table,
+ 	.probe      = ath_pci_probe,
+ 	.remove     = ath_pci_remove,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	.driver.pm  = ATH9K_PM_OPS,
++#elif defined(CONFIG_PM_SLEEP)
++	.suspend    = ath_pci_suspend_compat,
++	.resume     = ath_pci_resume_compat,
++#endif
+ };
+ 
+ int ath_pci_init(void)

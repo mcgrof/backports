@@ -1,0 +1,37 @@
+--- a/drivers/gpu/drm/i810/i810_dma.c
++++ b/drivers/gpu/drm/i810/i810_dma.c
+@@ -135,9 +135,17 @@
+ 	old_fops = file_priv->filp->f_op;
+ 	file_priv->filp->f_op = &i810_buffer_fops;
+ 	dev_priv->mmap_buffer = buf;
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0))
++	down_write(&current->mm->mmap_sem);
++	buf_priv->virtual = (void *)do_mmap(file_priv->filp, 0, buf->total,
++					    PROT_READ | PROT_WRITE,
++					    MAP_SHARED, buf->bus_address);
++	up_write(&current->mm->mmap_sem);
++#else
+ 	buf_priv->virtual = (void *)vm_mmap(file_priv->filp, 0, buf->total,
+ 					    PROT_READ | PROT_WRITE,
+ 					    MAP_SHARED, buf->bus_address);
++#endif
+ 	dev_priv->mmap_buffer = NULL;
+ 	file_priv->filp->f_op = old_fops;
+ 	if (IS_ERR(buf_priv->virtual)) {
+@@ -158,9 +166,15 @@
+ 	if (buf_priv->currently_mapped != I810_BUF_MAPPED)
+ 		return -EINVAL;
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0))
++	down_write(&current->mm->mmap_sem);
++	retcode = do_munmap(current->mm, (unsigned long)buf_priv->virtual,
++			    (size_t) buf->total);
++	up_write(&current->mm->mmap_sem);
++#else
+ 	retcode = vm_munmap((unsigned long)buf_priv->virtual,
+ 			    (size_t) buf->total);
+-
++#endif
+ 	buf_priv->currently_mapped = I810_BUF_UNMAPPED;
+ 	buf_priv->virtual = NULL;
+ 

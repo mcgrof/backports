@@ -1,0 +1,14 @@
+This patch requires a manual backport:
+
+commit eeda8585522bcc173f91d6254dfa63e871087c54
+Author: Kevin Groeneveld <kgroeneveld@gmail.com>
+Date:   Tue Jul 17 17:46:01 2012 +0000
+
+    b44: add 64 bit stats
+    
+    Add support for 64 bit stats to Broadcom b44 ethernet driver.
+    
+    Signed-off-by: Kevin Groeneveld <kgroeneveld@gmail.com>
+    Signed-off-by: Eric Dumazet <edumazet@google.com>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+

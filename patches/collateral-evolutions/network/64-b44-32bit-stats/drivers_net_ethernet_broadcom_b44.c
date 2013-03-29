@@ -1,0 +1,40 @@
+--- a/drivers/net/ethernet/broadcom/b44.c
++++ b/drivers/net/ethernet/broadcom/b44.c
+@@ -31,6 +31,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/ssb/ssb.h>
+ #include <linux/slab.h>
++#include <linux/u64_stats_sync.h>
+ 
+ #include <asm/uaccess.h>
+ #include <asm/io.h>
+@@ -1638,10 +1639,17 @@
+ 	return 0;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ static struct rtnl_link_stats64 *b44_get_stats64(struct net_device *dev,
+ 					struct rtnl_link_stats64 *nstat)
++#else
++static struct net_device_stats *b44_get_stats(struct net_device *dev)
++#endif
+ {
+ 	struct b44 *bp = netdev_priv(dev);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36))
++	struct net_device_stats *nstat = &dev->stats;
++#endif
+ 	struct b44_hw_stats *hwstat = &bp->hw_stats;
+ 	unsigned int start;
+ 
+@@ -2130,7 +2138,11 @@
+ 	.ndo_open		= b44_open,
+ 	.ndo_stop		= b44_close,
+ 	.ndo_start_xmit		= b44_start_xmit,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	.ndo_get_stats64	= b44_get_stats64,
++#else
++	.ndo_get_stats		= b44_get_stats,
++#endif
+ 	.ndo_set_rx_mode	= b44_set_rx_mode,
+ 	.ndo_set_mac_address	= b44_set_mac_addr,
+ 	.ndo_validate_addr	= eth_validate_addr,

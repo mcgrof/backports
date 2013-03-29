@@ -1,0 +1,18 @@
+--- a/drivers/gpu/drm/i915/i915_gem.c
++++ b/drivers/gpu/drm/i915/i915_gem.c
+@@ -3997,9 +3997,14 @@
+ 	drm_i915_private_t *dev_priv = dev->dev_private;
+ 	int ret;
+ 
+-	if (INTEL_INFO(dev)->gen < 6 && !intel_enable_gtt())
++	if (INTEL_INFO(dev)->gen < 6)
+ 		return -EIO;
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
++	if (!intel_enable_gtt())
++		return -EIO;
++#endif
++
+ 	if (IS_HASWELL(dev) && (I915_READ(0x120010) == 1))
+ 		I915_WRITE(0x9008, I915_READ(0x9008) | 0xf0000);
+ 

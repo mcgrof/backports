@@ -1,0 +1,4 @@
+This is an optimization introduced on newer kernels, just ignore for
+older kernels on mac80211. For others the netdev->hard_header_len
+could be used.
+

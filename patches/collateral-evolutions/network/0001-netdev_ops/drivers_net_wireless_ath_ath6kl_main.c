@@ -1,0 +1,11 @@
+--- a/drivers/net/wireless/ath/ath6kl/main.c
++++ b/drivers/net/wireless/ath/ath6kl/main.c
+@@ -1289,7 +1289,7 @@
+ 
+ void init_netdev(struct net_device *dev)
+ {
+-	dev->netdev_ops = &ath6kl_netdev_ops;
++	netdev_attach_ops(dev, &ath6kl_netdev_ops);
+ 	dev->destructor = free_netdev;
+ 	dev->watchdog_timeo = ATH6KL_TX_TIMEOUT;
+ 

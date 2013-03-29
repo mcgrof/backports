@@ -1,0 +1,14 @@
+--- a/drivers/bluetooth/hci_ath.c
++++ b/drivers/bluetooth/hci_ath.c
+@@ -58,7 +58,11 @@
+ 		return status;
+ 
+ 	/* Disable Automatic RTSCTS */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0))
+ 	ktermios = tty->termios;
++#else
++	memcpy(&ktermios, tty->termios, sizeof(ktermios));
++#endif
+ 	ktermios.c_cflag &= ~CRTSCTS;
+ 	tty_set_termios(tty, &ktermios);
+ 

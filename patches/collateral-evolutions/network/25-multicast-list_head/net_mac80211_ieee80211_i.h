@@ -1,0 +1,15 @@
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -907,7 +907,12 @@
+ 	struct work_struct reconfig_filter;
+ 
+ 	/* aggregated multicast list */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 	struct netdev_hw_addr_list mc_list;
++#else
++	struct dev_addr_list *mc_list;
++	int mc_count;
++#endif
+ 
+ 	bool tim_in_locked_section; /* see ieee80211_beacon_get() */
+ 

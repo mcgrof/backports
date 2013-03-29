@@ -1,0 +1,8 @@
+Disable PRIME support in core drm, radeon, nouveau and i915 for
+kernels < 3.4.0.
+
+PRIME depends on dma-buf which is added to the kernel with 3.3 but
+the one in 3.3 is mostly stub, e.g. it is a skeleton API which
+is highly modified in 3.4. So disable PRIME for kernels < 3.4.0,
+not < 3.3.0.
+

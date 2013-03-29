@@ -1,0 +1,13 @@
+Backport commit 22bedad3ce112d5ca1eaf043d4990fa2ed698c87:
+  net: convert multicast list to list_head
+
+  Converts the list and the core manipulating with it to be the same as uc_list.
+
+  +uses two functions for adding/removing mc address (normal and "global"
+   variant) instead of a function parameter.
+  +removes dev_mcast.c completely.
+  +exposes netdev_hw_addr_list_* macros along with __hw_addr_* functions for
+   manipulation with lists on a sandbox (used in bonding and 80211 drivers)
+
+This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
+

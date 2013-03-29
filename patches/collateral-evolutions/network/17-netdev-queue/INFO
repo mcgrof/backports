@@ -1,0 +1,14 @@
+This patch addresses changes made by usage of new symbols
+like unregister_netdevice_queue() which are not possible to backport
+due to their reliance on internal symbols on net/core/dev.c
+
+The patch that introduced this on mac80211 was:
+
+    mac80211: Speedup ieee80211_remove_interfaces()
+    
+    Speedup ieee80211_remove_interfaces() by factorizing synchronize_rcu() calls
+    
+    Signed-off-by: Eric Dumazet <eric.dumazet@gmail.com>
+    Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
+    Signed-off-by: John W. Linville <linville@tuxdriver.com>
+

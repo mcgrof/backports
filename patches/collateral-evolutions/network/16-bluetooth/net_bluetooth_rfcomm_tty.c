@@ -1,0 +1,63 @@
+--- a/net/bluetooth/rfcomm/tty.c
++++ b/net/bluetooth/rfcomm/tty.c
+@@ -708,8 +708,12 @@
+ 	remove_wait_queue(&dev->wait, &wait);
+ 
+ 	if (err == 0)
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,29))
+ 		device_move(dev->tty_dev, rfcomm_get_device(dev),
+ 			    DPM_ORDER_DEV_AFTER_PARENT);
++#else
++		device_move(dev->tty_dev, rfcomm_get_device(dev));
++#endif
+ 
+ 	rfcomm_tty_copy_pending(dev);
+ 
+@@ -733,7 +737,11 @@
+ 	if (!--dev->port.count) {
+ 		spin_unlock_irqrestore(&dev->port.lock, flags);
+ 		if (dev->tty_dev->parent)
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,29))
+ 			device_move(dev->tty_dev, NULL, DPM_ORDER_DEV_LAST);
++#else
++			device_move(dev->tty_dev, NULL);
++#endif
+ 
+ 		/* Close DLC and dettach TTY */
+ 		rfcomm_dlc_close(dev->dlc, 0);
+@@ -809,7 +817,11 @@
+ 	return room;
+ }
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,38))
+ static int rfcomm_tty_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
++#else
++static int rfcomm_tty_ioctl(struct tty_struct *tty, struct file *filp, unsigned int cmd, unsigned long arg)
++#endif
+ {
+ 	BT_DBG("tty %p cmd 0x%02x", tty, cmd);
+ 
+@@ -1068,7 +1080,11 @@
+ 	}
+ }
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,38))
+ static int rfcomm_tty_tiocmget(struct tty_struct *tty)
++#else
++static int rfcomm_tty_tiocmget(struct tty_struct *tty, struct file *filp)
++#endif
+ {
+ 	struct rfcomm_dev *dev = (struct rfcomm_dev *) tty->driver_data;
+ 
+@@ -1077,7 +1093,11 @@
+ 	return dev->modem_status;
+ }
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,38))
+ static int rfcomm_tty_tiocmset(struct tty_struct *tty, unsigned int set, unsigned int clear)
++#else
++static int rfcomm_tty_tiocmset(struct tty_struct *tty, struct file *filp, unsigned int set, unsigned int clear)
++#endif
+ {
+ 	struct rfcomm_dev *dev = (struct rfcomm_dev *) tty->driver_data;
+ 	struct rfcomm_dlc *dlc = dev->dlc;

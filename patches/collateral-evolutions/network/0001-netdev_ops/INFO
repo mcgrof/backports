@@ -1,0 +1,38 @@
+
+This patch backports the struct net_device_ops changes added on 2.6.29.
+
+If we add the compat.git netdev_attach_ops() implementation
+for newer kernels upstream it means we do not have to use this
+patch at all for older kernels.
+
+mcgrof@tux ~/linux-stable (git::master)$ git describe --contains d314774cf2cd5dfeb39a00d37deee65d4c627927
+v2.6.29-rc1~581^2~677
+
+commit d314774cf2cd5dfeb39a00d37deee65d4c627927
+Author: Stephen Hemminger <shemminger@vyatta.com>
+Date:   Wed Nov 19 21:32:24 2008 -0800
+
+    netdev: network device operations infrastructure
+    
+    This patch changes the network device internal API to move adminstrative
+    operations out of the network device structure and into a separate structure.
+    
+    This patch involves some hackery to maintain compatablity between the
+    new and old model, so all 300+ drivers don't have to be changed at once.
+    For drivers that aren't converted yet, the netdevice_ops virt function list
+    still resides in the net_device structure. For old protocols, the new
+    net_device_ops are copied out to the old net_device pointers.
+    
+    After the transistion is completed the nag message can be changed to
+    an WARN_ON, and the compatiablity code can be made configurable.
+    
+    Some function pointers aren't moved:
+    * destructor can't be in net_device_ops because
+      it may need to be referenced after the module is unloaded.
+    * neighbor setup is manipulated in a couple of places that need special
+      consideration
+    * hard_start_xmit is in the fast path for transmit.
+    
+    Signed-off-by: Stephen Hemminger <shemminger@vyatta.com>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+

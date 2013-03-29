@@ -1,0 +1,41 @@
+--- a/drivers/net/wireless/adm8211.c
++++ b/drivers/net/wireless/adm8211.c
+@@ -1320,19 +1320,37 @@
+ }
+ 
+ static u64 adm8211_prepare_multicast(struct ieee80211_hw *hw,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 				     struct netdev_hw_addr_list *mc_list)
++#else
++				     int mc_count, struct dev_addr_list *ha)
++#endif
+ {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 	unsigned int bit_nr;
+-	u32 mc_filter[2];
+ 	struct netdev_hw_addr *ha;
++#else
++	unsigned int bit_nr, i;
++#endif
++	u32 mc_filter[2];
+ 
+ 	mc_filter[1] = mc_filter[0] = 0;
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 	netdev_hw_addr_list_for_each(ha, mc_list) {
+ 		bit_nr = ether_crc(ETH_ALEN, ha->addr) >> 26;
++#else
++	for (i = 0; i < mc_count; i++) {
++		if (!ha)
++			break;
++		bit_nr = ether_crc(ETH_ALEN, ha->dmi_addr) >> 26;
++#endif
+ 
+ 		bit_nr &= 0x3F;
+ 		mc_filter[bit_nr >> 5] |= 1 << (bit_nr & 31);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35))
++		ha = ha->next;
++#endif
+ 	}
+ 
+ 	return mc_filter[0] | ((u64)(mc_filter[1]) << 32);

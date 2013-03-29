@@ -1,0 +1,28 @@
+--- a/drivers/net/ethernet/atheros/atl1c/atl1c_ethtool.c
++++ b/drivers/net/ethernet/atheros/atl1c/atl1c_ethtool.c
+@@ -114,6 +114,13 @@
+ 	return 0;
+ }
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39))
++static u32 atl1c_get_tx_csum(struct net_device *netdev)
++{
++	return (netdev->features & NETIF_F_HW_CSUM) != 0;
++}
++#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39)) */
++
+ static u32 atl1c_get_msglevel(struct net_device *netdev)
+ {
+ 	struct atl1c_adapter *adapter = netdev_priv(netdev);
+@@ -301,6 +308,11 @@
+ 	.get_link               = ethtool_op_get_link,
+ 	.get_eeprom_len         = atl1c_get_eeprom_len,
+ 	.get_eeprom             = atl1c_get_eeprom,
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39))
++	.get_tx_csum            = atl1c_get_tx_csum,
++	.get_sg                 = ethtool_op_get_sg,
++	.set_sg                 = ethtool_op_set_sg,
++#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39)) */
+ };
+ 
+ void atl1c_set_ethtool_ops(struct net_device *netdev)

@@ -1,0 +1,14 @@
+--- a/drivers/net/wireless/orinoco/main.c
++++ b/drivers/net/wireless/orinoco/main.c
+@@ -2279,7 +2279,11 @@
+ 	/* we use the default eth_mac_addr for setting the MAC addr */
+ 
+ 	/* Reserve space in skb for the SNAP header */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
+ 	dev->needed_headroom = ENCAPS_OVERHEAD;
++#else
++	dev->hard_header_len += ENCAPS_OVERHEAD;
++#endif
+ 
+ 	netif_carrier_off(dev);
+ 

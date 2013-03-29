@@ -1,0 +1,6 @@
+We can't possibly backport the wifi TX status since
+skb_shinfo()->tx_flags used to be a union and there
+is no way to make the & work properly in that case.
+So we need to just ifdef this part out.
+
+

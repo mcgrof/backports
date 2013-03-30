@@ -244,15 +244,18 @@ def main():
                 os.unlink(os.path.join(root, f))
 
     # rewrite Makefile and source symbols
-    r = 'CONFIG_((' + '|'.join([s + '(_MODULE)?' for s in symbols]) + ')([^A-Za-z0-9_]|$))'
-    r = re.compile(r, re.MULTILINE)
+    regexes = []
+    for some_symbols in [symbols[i:i + 50] for i in range(0, len(symbols), 50)]:
+        r = 'CONFIG_((' + '|'.join([s + '(_MODULE)?' for s in some_symbols]) + ')([^A-Za-z0-9_]|$))'
+        regexes.append(re.compile(r, re.MULTILINE))
     for root, dirs, files in os.walk(args.outdir):
         # don't go into .git dir (possible debug thing)
         if '.git' in dirs:
             dirs.remove('.git')
         for f in files:
             data = open(os.path.join(root, f), 'r').read()
-            data = r.sub(r'CPTCFG_\1', data)
+            for r in regexes:
+                data = r.sub(r'CPTCFG_\1', data)
             fo = open(os.path.join(root, f), 'w')
             fo.write(data)
             fo.close()

@@ -1,8 +1,0 @@
---- a/drivers/gpu/drm/via/Makefile
-+++ b/drivers/gpu/drm/via/Makefile
-@@ -5,4 +5,4 @@
- ccflags-y := -Iinclude/drm
- via-y    := via_irq.o via_drv.o via_map.o via_mm.o via_dma.o via_verifier.o via_video.o via_dmablit.o
- 
--obj-$(CONFIG_DRM_VIA)	+=via.o
-+obj-$(CONFIG_COMPAT_DRM_VIA)	+=via.o

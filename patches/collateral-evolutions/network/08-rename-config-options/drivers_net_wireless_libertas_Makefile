@@ -1,9 +1,0 @@
---- a/drivers/net/wireless/libertas/Makefile
-+++ b/drivers/net/wireless/libertas/Makefile
-@@ -17,5 +17,5 @@
- obj-$(CONFIG_LIBERTAS)     += libertas.o
- obj-$(CONFIG_LIBERTAS_USB) += usb8xxx.o
- obj-$(CONFIG_LIBERTAS_CS)  += libertas_cs.o
--obj-$(CONFIG_LIBERTAS_SDIO) += libertas_sdio.o
-+obj-$(CONFIG_COMPAT_LIBERTAS_SDIO) += libertas_sdio.o
- obj-$(CONFIG_LIBERTAS_SPI) += libertas_spi.o

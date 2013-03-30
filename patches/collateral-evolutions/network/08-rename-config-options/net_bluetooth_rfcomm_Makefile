@@ -1,8 +1,0 @@
---- a/net/bluetooth/rfcomm/Makefile
-+++ b/net/bluetooth/rfcomm/Makefile
-@@ -5,4 +5,4 @@
- obj-$(CONFIG_BT_RFCOMM) += rfcomm.o
- 
- rfcomm-y			:= core.o sock.o
--rfcomm-$(CONFIG_BT_RFCOMM_TTY)	+= tty.o
-+rfcomm-$(CONFIG_COMPAT_BT_RFCOMM_TTY)	+= tty.o

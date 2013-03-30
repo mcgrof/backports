@@ -1,8 +1,0 @@
---- a/drivers/gpu/drm/ttm/Makefile
-+++ b/drivers/gpu/drm/ttm/Makefile
-@@ -11,4 +11,4 @@
- ttm-y += ttm_page_alloc_dma.o
- endif
- 
--obj-$(CONFIG_DRM_TTM) += ttm.o
-+obj-$(CONFIG_COMPAT_DRM_TTM) += ttm.o

@@ -1,8 +1,0 @@
---- a/drivers/gpu/drm/i810/Makefile
-+++ b/drivers/gpu/drm/i810/Makefile
-@@ -5,4 +5,4 @@
- ccflags-y := -Iinclude/drm
- i810-y := i810_drv.o i810_dma.o
- 
--obj-$(CONFIG_DRM_I810)	+= i810.o
-+obj-$(CONFIG_COMPAT_DRM_I810)	+= i810.o

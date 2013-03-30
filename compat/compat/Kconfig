@@ -3,11 +3,13 @@ config COMPAT_FIRMWARE_CLASS
 	default m if FIRMWARE_CLASS=m
 
 config COMPAT_NET_SCH_CODEL
-	tristate
+	tristate "codel"
+	depends on m
 	default m if NET_SCH_CODEL=n
 
 config COMPAT_NET_SCH_FQ_CODEL
-	tristate
+	tristate "FQ codel"
+	depends on m
 	default m if NET_SCH_FQ_CODEL=n
 
 config COMPAT_KFIFO

@@ -131,6 +131,8 @@ def main():
                         help='File containing list of files/directories to copy, default "copy-list"')
     parser.add_argument('--clean', const=True, default=False, action="store_const",
                         help='Clean output directory instead of erroring if it isn\'t empty')
+    parser.add_argument('--refresh', const=True, default=False, action="store_const",
+                        help='Refresh patches as they are applied, the source dir will be modified!')
     parser.add_argument('--base-name', metavar='<name>', type=str, default='Linux',
                         help='name of base tree, default just "Linux"')
     parser.add_argument('--gitdebug', const=True, default=False, action="store_const",
@@ -192,18 +194,22 @@ def main():
         l.remove('INFO')
         printed = False
         for pfile in l:
-            p = patch.fromfile(os.path.join(pdir, pfile))
+            pfile = os.path.join(pdir, pfile)
+            p = patch.fromfile(pfile)
             patched_file = '/'.join(p.items[0].source.split('/')[1:])
-            if not os.path.exists(os.path.join(args.outdir, patched_file)):
+            fullfn = os.path.join(args.outdir, patched_file)
+            if not os.path.exists(fullfn):
                 continue
             if not printed:
                 print "Applying changes from", os.path.basename(pdir)
                 printed = True
+            if args.refresh:
+                shutil.copyfile(fullfn, fullfn + '.orig_file')
             process = subprocess.Popen(['patch', '-p1'], stdout=subprocess.PIPE,
                                        stderr=subprocess.STDOUT, stdin=subprocess.PIPE,
                                        close_fds=True, universal_newlines=True,
                                        cwd=args.outdir)
-            output = process.communicate(input=open(os.path.join(pdir, pfile), 'r').read())[0]
+            output = process.communicate(input=open(pfile, 'r').read())[0]
             output = output.split('\n')
             if output[-1] == '':
                 output = output[:-1]
@@ -212,6 +218,20 @@ def main():
             if process.returncode != 0:
                 print "Patch failed!"
                 sys.exit(2)
+            if args.refresh:
+                process = subprocess.Popen(['diff', '-u', patched_file + '.orig_file', patched_file,
+                                            '--label', 'a/' + patched_file,
+                                            '--label', 'b/' + patched_file],
+                                           stdout=subprocess.PIPE, close_fds=True,
+                                           universal_newlines=True, cwd=args.outdir)
+                diff = process.communicate()[0]
+                if not process.returncode in (0, 1):
+                    print "Diffing for refresh failed!"
+                    sys.exit(3)
+                pfilef = open(pfile, 'w')
+                pfilef.write(diff)
+                pfilef.close()
+                os.unlink(fullfn + '.orig_file')
         if not printed:
             print "Not applying changes from %s, not needed" % (os.path.basename(pdir),)
         else:

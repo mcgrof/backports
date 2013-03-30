@@ -7,6 +7,11 @@
 
 import argparse, sys, os, errno, shutil, re
 
+# find self
+source_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+sys.path.append(os.path.join(source_dir, 'lib'))
+import kconfig, git
+
 def read_copy_list(kerneldir, copyfile):
     ret = []
     for item in copyfile:
@@ -64,6 +69,17 @@ def copy_files(copy_list, outdir):
             shutil.copy(os.path.join(src, tgt),
                         os.path.join(outdir, tgt))
 
+def git_debug_init(args):
+    if not args.gitdebug:
+        return
+    git.init(tree=args.outdir)
+    git.commit_all("Copied code", tree=args.outdir)
+
+def git_debug_snapshot(args, name):
+    if not args.gitdebug:
+        return
+    git.commit_all(name, tree=args.outdir)
+
 def main():
     # set up and parse arguments
     parser = argparse.ArgumentParser(description='generate backport tree')
@@ -78,10 +94,10 @@ def main():
                         help='Clean output directory instead of erroring if it isn\'t empty')
     parser.add_argument('--base-name', metavar='<name>', type=str, default='Linux',
                         help='name of base tree, default just "Linux"')
+    parser.add_argument('--gitdebug', const=True, default=False, action="store_const",
+                        help='Use git, in the output tree, to debug the various transformation steps ' +
+                             'that the tree generation makes (apply patches, ...)')
     args = parser.parse_args()
-
-    # find self
-    source_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
 
     # first thing to copy is our own plumbing -- we start from that
     copy_list = [(os.path.join(source_dir, 'plumbing'), '')]
@@ -97,17 +113,18 @@ def main():
     # do the copy
     copy_files(copy_list, args.outdir)
 
-    # some post-processing is required
-    sys.path.append(os.path.join(source_dir, 'lib'))
-    import kconfig
+    git_debug_init(args)
 
+    # some post-processing is required
     configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))
     configtree.prune_sources(ignore=['Kconfig.kernel', 'Kconfig.versions'])
+    git_debug_snapshot(args, "prune Kconfig tree")
     configtree.force_tristate_modular()
+    git_debug_snapshot(args, "force tristate options modular")
     configtree.modify_selects()
+    git_debug_snapshot(args, "convert select to depends on")
 
     # write the versioning file
-    import git
     backports_version = git.describe(tree=source_dir)
     kernel_version = git.describe(tree=args.kerneldir)
     f = open(os.path.join(args.outdir, 'versions'), 'w')
@@ -124,17 +141,26 @@ def main():
         f.write('%s=\n' % sym)
     f.close()
 
+    git_debug_snapshot(args, "add versions/symbols files")
+
     # XXX Apply patches here!!
+
+    git_debug_snapshot(args, "apply backport patches")
 
     # rewrite Makefile and source symbols
     r = 'CONFIG_((' + '|'.join([s + '(_MODULE)?' for s in symbols]) + ')([^A-Za-z0-9_]|$))'
     r = re.compile(r, re.MULTILINE)
     for root, dirs, files in os.walk(args.outdir):
+        # don't go into .git dir (possible debug thing)
+        if '.git' in dirs:
+            dirs.remove('.git')
         for f in files:
             data = open(os.path.join(root, f), 'r').read()
             data = r.sub(r'CPTCFG_\1', data)
             fo = open(os.path.join(root, f), 'w')
             fo.write(data)
             fo.close()
+
+    git_debug_snapshot(args, "rename config symbol usage")
 
 main()

@@ -29,7 +29,6 @@ def rev_parse(rev='HEAD', tree=None):
     return sha
 
 def describe(rev='HEAD', tree=None):
-    olddir = os.getcwd()
     process = subprocess.Popen(['git', 'describe', '--always', '--long', rev],
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                close_fds=True, universal_newlines=True, cwd=tree)
@@ -38,3 +37,28 @@ def describe(rev='HEAD', tree=None):
     _check(process)
 
     return stdout.strip()
+
+def init(tree=None):
+    process = subprocess.Popen(['git', 'init'],
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               close_fds=True, universal_newlines=True, cwd=tree)
+    stdout = process.communicate()[0]
+    process.wait()
+    _check(process)
+
+def add(path, tree=None):
+    process = subprocess.Popen(['git', 'add', path],
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               close_fds=True, universal_newlines=True, cwd=tree)
+    stdout = process.communicate()[0]
+    process.wait()
+    _check(process)
+
+def commit_all(message, tree=None):
+    add('.', tree=tree)
+    process = subprocess.Popen(['git', 'commit', '--allow-empty', '-m', message],
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               close_fds=True, universal_newlines=True, cwd=tree)
+    stdout = process.communicate()[0]
+    process.wait()
+    _check(process)

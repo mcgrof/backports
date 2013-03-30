@@ -15,7 +15,6 @@ def _check(process):
 _sha_re = re.compile('^[0-9a-fA-F]*$')
 
 def rev_parse(rev='HEAD', tree=None):
-    olddir = os.getcwd()
     process = subprocess.Popen(['git', 'rev-parse', rev],
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                close_fds=True, universal_newlines=True, cwd=tree)

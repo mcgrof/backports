@@ -1,30 +1,30 @@
-config COMPAT_FIRMWARE_CLASS
+config BACKPORT_FIRMWARE_CLASS
 	tristate
 	default m if FIRMWARE_CLASS=m
 
-config COMPAT_NET_SCH_CODEL
+config BACKPORT_NET_SCH_CODEL
 	tristate "codel"
 	depends on m
 	default m if NET_SCH_CODEL=n
 
-config COMPAT_NET_SCH_FQ_CODEL
+config BACKPORT_NET_SCH_FQ_CODEL
 	tristate "FQ codel"
 	depends on m
 	default m if NET_SCH_FQ_CODEL=n
 
-config COMPAT_KFIFO
+config BACKPORT_KFIFO
 	def_bool y
 	# FIXME: REDHAT_6_1 also includes this
-	depends on COMPAT_KERNEL_2_6_36
+	depends on BACKPORT_KERNEL_2_6_36
 
-config COMPAT_CORDIC
+config BACKPORT_CORDIC
 	bool
 	default y if CORDIC=n
 
-config COMPAT_CRC8
+config BACKPORT_CRC8
 	bool
 	default y if !CRC8
 
-config COMPAT_ATOMIC64
+config BACKPORT_ATOMIC64
 	bool
 	default y if !64BIT && !GENERIC_ATOMIC64

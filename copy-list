@@ -1,3 +1,11 @@
+#
+# This file specifies which sources are copied from the kernel
+# into the backports package.
+#
+# Directories must end with a slash (e.g. "net/wireless/") and
+# are then copied with all their contents.
+#
+
 # wireless stack
 net/wireless/
 net/mac80211/

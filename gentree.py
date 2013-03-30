@@ -127,7 +127,7 @@ def main():
     # XXX Apply patches here!!
 
     # rewrite Makefile and source symbols
-    r = 'CONFIG_((' + '|'.join(symbols) + ')([^A-Za-z0-9_]|$))'
+    r = 'CONFIG_((' + '|'.join([s + '(_MODULE)?' for s in symbols]) + ')([^A-Za-z0-9_]|$))'
     r = re.compile(r, re.MULTILINE)
     for root, dirs, files in os.walk(args.outdir):
         for f in files:

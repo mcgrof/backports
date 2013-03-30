@@ -6,7 +6,7 @@ import os, re
 
 src_line = re.compile(r'^source\s+"?(?P<src>[^\s"]*)"?\s*$')
 tri_line = re.compile(r'^(?P<spc>\s+)tristate')
-cfg_line = re.compile(r'^config\s+(?P<sym>[^\s]*)')
+cfg_line = re.compile(r'^(config|menuconfig)\s+(?P<sym>[^\s]*)')
 sel_line = re.compile(r'^(?P<spc>\s+)select\s+(?P<sym>[^\s]*)\s*$')
 
 class ConfigTree(object):

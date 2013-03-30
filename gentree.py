@@ -5,12 +5,12 @@
 # empty already. It's also allowed to not exist.
 #
 
-import argparse, sys, os, errno, shutil, re
+import argparse, sys, os, errno, shutil, re, subprocess
 
 # find self
 source_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
 sys.path.append(os.path.join(source_dir, 'lib'))
-import kconfig, git
+import kconfig, git, patch
 
 def read_copy_list(kerneldir, copyfile):
     ret = []
@@ -182,7 +182,38 @@ def main():
 
     git_debug_snapshot(args, "add versions/symbols files")
 
-    # XXX Apply patches here!!
+    patchdirs = []
+    for root, dirs, files in os.walk(os.path.join(source_dir, 'patches')):
+        if 'INFO' in files:
+            patchdirs.append(root)
+    patchdirs.sort()
+    for pdir in patchdirs:
+        l = os.listdir(pdir)
+        l.remove('INFO')
+        printed = False
+        for pfile in l:
+            p = patch.fromfile(os.path.join(pdir, pfile))
+            patched_file = '/'.join(p.items[0].source.split('/')[1:])
+            if not os.path.exists(os.path.join(args.outdir, patched_file)):
+                continue
+            if not printed:
+                print "Applying changes from", os.path.basename(pdir)
+                printed = True
+            process = subprocess.Popen(['patch', '-p1'], stdout=subprocess.PIPE,
+                                       stderr=subprocess.STDOUT, stdin=subprocess.PIPE,
+                                       close_fds=True, universal_newlines=True,
+                                       cwd=args.outdir)
+            output = process.communicate(input=open(os.path.join(pdir, pfile), 'r').read())[0]
+            output = output.split('\n')
+            if output[-1] == '':
+                output = output[:-1]
+            for line in output:
+                print '>', line
+            if process.returncode != 0:
+                print "Patch failed!"
+                sys.exit(2)
+        if not printed:
+            print "Not applying changes from %s, not needed" % (os.path.basename(pdir),)
 
     git_debug_snapshot(args, "apply backport patches")
 

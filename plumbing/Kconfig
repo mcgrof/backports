@@ -10,11 +10,18 @@ config BACKPORTED_KERNEL_NAME
 	string
 	option env="BACKPORTED_KERNEL_NAME"
 
+# these will be generated
 source Kconfig.kernel
 source Kconfig.versions
 
+# some hacks ...
+config WIRELESS
+	def_bool y
+
+# this has the configuration for the backport code
 source compat/Kconfig
 
+# these are copied from the kernel
 source net/wireless/Kconfig
 source net/mac80211/Kconfig
 source drivers/net/wireless/Kconfig

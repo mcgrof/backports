@@ -1,14 +1,14 @@
-mainmenu "Linux Backports from $KERNEL_NAME $KERNEL_VERSION (with backports $BACKPORTS_VERSION)"
+mainmenu "Linux Backports from $BACKPORTED_KERNEL_NAME $BACKPORTED_KERNEL_VERSION (with backports $BACKPORTS_VERSION)"
 
 config BACKPORTS_VERSION
 	string
 	option env="BACKPORTS_VERSION"
-config KERNEL_VERSION
+config BACKPORTED_KERNEL_VERSION
 	string
-	option env="KERNEL_VERSION"
-config KERNEL_NAME
+	option env="BACKPORTED_KERNEL_VERSION"
+config BACKPORTED_KERNEL_NAME
 	string
-	option env="KERNEL_NAME"
+	option env="BACKPORTED_KERNEL_NAME"
 
 source Kconfig.kernel
 source Kconfig.versions

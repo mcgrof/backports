@@ -1,21 +1,30 @@
 #
 # Makefile for the output source package
 #
+
+ifeq ($(KERNELRELEASE),)
+
 MAKEFLAGS += --no-print-directory
 SHELL = /bin/bash
+PWD := $(shell pwd)
 
 KLIB_BUILD ?= /lib/modules/$(shell uname -r)/build/
 KERNEL_CONFIG := $(KLIB_BUILD)/.config
 CONFIG_MD5 := $(shell md5sum $(KERNEL_CONFIG) | sed 's/\s.*//')
 
-export KLIB_BUILD
+export KLIB_BUILD PWD
 
-help:
-	@echo HELP ME
+# disable built-in rules for this file
+.SUFFIXES:
+
+.PHONY: default
+default:
+	@$(MAKE) modules
 
 .DEFAULT:
 	@set -e ; if [ "$$(cat .kernel_config_md5 2>/dev/null)" != "$(CONFIG_MD5)" ]	;\
 	then 										\
+		echo -n "Generating local configuration database from kernel ..."	;\
 		grep -v -f .local-symbols $(KERNEL_CONFIG) | grep = | (			\
 			while read l ; do						\
 				if [ "$${l:0:7}" != "CONFIG_" ] ; then			\
@@ -51,6 +60,12 @@ help:
 			fi								;\
 			if [ "$$v" = "$$kver" ] ; then print=1 ; fi			;\
 		done > Kconfig.versions							;\
+		echo " done."								;\
 	fi										;\
-	echo "$(CONFIG_MD5)" > .kernel_config_md5 ;
-	@make -f Makefile.real "$@"
+	echo "$(CONFIG_MD5)" > .kernel_config_md5
+	@#test -f .config && $(MAKE) -f Makefile.real oldconfig || true
+	@$(MAKE) -f Makefile.real "$@"
+
+else
+include $(PWD)/Makefile.kernel
+endif

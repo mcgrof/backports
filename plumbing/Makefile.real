@@ -1,2 +1,62 @@
-test:
+include versions
+export BACKPORTS_VERSION BACKPORTED_KERNEL_VERSION BACKPORTED_KERNEL_NAME
+
+# disable built-in rules for this file
+.SUFFIXES:
+
+default:
 	@echo asdf
+
+# config section
+
+export CONFIG_=CPTCFG_
+menuconfig:
+	@$(MAKE) -C kconfig mconf
+	@./kconfig/mconf Kconfig
+
+listnewconfig oldaskconfig oldconfig \
+silentoldconfig olddefconfig oldnoconfig \
+allnoconfig allyesconfig allmodconfig \
+alldefconfig randconfig:
+	@$(MAKE) -C kconfig conf
+	@./kconfig/conf --$@ Kconfig
+
+defconfig:
+	@$(MAKE) -C kconfig conf
+	@./kconfig conf --defconfig defconfig
+
+.config:
+	@echo "/--------------"
+	@echo "| Your backport package isn't configured, please configure it"
+	@echo "| using one of the following options:"
+	@echo "|     make menuconfig"
+	@echo "|     make allyesconfig"
+	@echo "\--"
+	@false
+
+include/linux/compat_autoconf.h: .config
+	@echo -n "Building include/linux/compat_autoconf.h ..."
+	@grep -f .local-symbols .config | (				\
+		echo "#ifndef COMPAT_AUTOCONF_INCLUDED"			;\
+		echo "#define COMPAT_AUTOCONF_INCLUDED"			;\
+		echo "/*"						;\
+		echo " * Automatically generated file, don't edit!"	;\
+		echo " * Changes will be overwritten"			;\
+		echo " */"						;\
+		echo ""							;\
+		while read l ; do					\
+			n=$${l%%=*}					;\
+			v=$${l#*=}					;\
+			case $$v in					\
+				y) echo "#define $$n 1" ;;		\
+				m) echo "#define $${n}_MODULE 1" ;;	\
+				\"*) echo "#define $$n $$v" ;;		\
+				*) echo "#warning unknown value for $$n";;\
+			esac						;\
+		done							;\
+		echo "#endif /* COMPAT_AUTOCONF_INCLUDED */"		;\
+	) > include/linux/compat_autoconf.h
+	@echo " done."
+
+modules: include/linux/compat_autoconf.h
+	@$(MAKE) -f Makefile.build modules

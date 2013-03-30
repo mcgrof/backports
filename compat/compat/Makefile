@@ -1,4 +1,7 @@
 ccflags-y += -I$(src)
+ccflags-y += -DBACKPORTS_VERSION=\"$(BACKPORTS_VERSION)\"
+ccflags-y += -DBACKPORTED_KERNEL_VERSION=\"$(BACKPORTED_KERNEL_VERSION)\"
+ccflags-y += -DBACKPORTED_KERNEL_NAME=\"$(BACKPORTED_KERNEL_NAME)\"
 obj-m += compat.o
 compat-y += main.o
 

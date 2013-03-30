@@ -214,14 +214,14 @@ def main():
                 sys.exit(2)
         if not printed:
             print "Not applying changes from %s, not needed" % (os.path.basename(pdir),)
+        else:
+            git_debug_snapshot(args, "apply backport patches from %s" % (os.path.basename(pdir),))
 
     # remove orig/rej files that patch sometimes creates
     for root, dirs, files in os.walk(args.outdir):
         for f in files:
             if f[-5:] == '.orig' or f[-4:] == '.rej':
                 os.unlink(os.path.join(root, f))
-
-    git_debug_snapshot(args, "apply backport patches")
 
     # rewrite Makefile and source symbols
     r = 'CONFIG_((' + '|'.join([s + '(_MODULE)?' for s in symbols]) + ')([^A-Za-z0-9_]|$))'

@@ -7,8 +7,17 @@
 #
 
 # wireless stack
+include/linux/ieee80211.h
+
 net/wireless/
+include/net/cfg80211.h
+include/net/cfg80211-wext.h
+include/net/ieee80211_radiotap.h
+include/net/regulatory.h
+include/uapi/linux/nl80211.h
+
 net/mac80211/
+include/net/mac80211.h
 
 # always needed if any wireless drivers are needed
 drivers/net/wireless/Kconfig

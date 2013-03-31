@@ -199,6 +199,8 @@ def main():
         l = os.listdir(pdir)
         printed = False
         for pfile in l:
+            if pfile[-1] == '~':
+                continue
             pfile = os.path.join(pdir, pfile)
             p = patch.fromfile(pfile)
             if not p:

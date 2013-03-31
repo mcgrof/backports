@@ -28,3 +28,8 @@ config BACKPORT_CRC8
 config BACKPORT_ATOMIC64
 	bool
 	default y if !64BIT && !GENERIC_ATOMIC64
+
+config BACKPORT_BT_SOCK_CREATE_NEEDS_KERN
+	bool
+	# FIXME: REDHAT_6_0 also requires this
+	default y if !BACKPORT_KERNEL_2_6_33

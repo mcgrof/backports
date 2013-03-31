@@ -4,7 +4,7 @@
  }
  EXPORT_SYMBOL(bt_sock_unregister);
  
-+#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
++#if defined(CPTCFG_BACKPORT_BT_SOCK_CREATE_NEEDS_KERN)
  static int bt_sock_create(struct net *net, struct socket *sock, int proto,
  			  int kern)
 +#else
@@ -17,7 +17,7 @@
  	read_lock(&bt_proto_lock);
  
  	if (bt_proto[proto] && try_module_get(bt_proto[proto]->owner)) {
-+#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
++#if defined(CPTCFG_BACKPORT_BT_SOCK_CREATE_NEEDS_KERN)
  		err = bt_proto[proto]->create(net, sock, proto, kern);
 +#else
 +		err = bt_proto[proto]->create(net, sock, proto);

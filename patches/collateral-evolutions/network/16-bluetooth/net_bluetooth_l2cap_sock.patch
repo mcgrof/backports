@@ -18,7 +18,7 @@
  	return sk;
  }
  
-+#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
++#if defined(CPTCFG_BACKPORT_BT_SOCK_CREATE_NEEDS_KERN)
  static int l2cap_sock_create(struct net *net, struct socket *sock, int protocol,
  			     int kern)
 +#else

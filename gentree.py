@@ -232,16 +232,16 @@ def main():
                 pfilef.write(diff)
                 pfilef.close()
                 os.unlink(fullfn + '.orig_file')
+        # remove orig/rej files that patch sometimes creates
+        for root, dirs, files in os.walk(args.outdir):
+            for f in files:
+                if f[-5:] == '.orig' or f[-4:] == '.rej':
+                    os.unlink(os.path.join(root, f))
         if not printed:
             print "Not applying changes from %s, not needed" % (os.path.basename(pdir),)
         else:
             git_debug_snapshot(args, "apply backport patches from %s" % (os.path.basename(pdir),))
 
-    # remove orig/rej files that patch sometimes creates
-    for root, dirs, files in os.walk(args.outdir):
-        for f in files:
-            if f[-5:] == '.orig' or f[-4:] == '.rej':
-                os.unlink(os.path.join(root, f))
 
     # rewrite Makefile and source symbols
     regexes = []

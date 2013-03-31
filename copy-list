@@ -5,6 +5,10 @@
 # Directories must end with a slash (e.g. "net/wireless/") and
 # are then copied with all their contents.
 #
+# It is also possible to rename while copying, to do so list
+# old name -> new name
+# Note that in this case the spaces are needed: " -> "
+#
 
 # wireless stack
 include/linux/ieee80211.h

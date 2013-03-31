@@ -22,15 +22,21 @@ def read_copy_list(kerneldir, copyfile):
             continue
         if item[0] == '/':
             raise Exception("Input path '%s' is absolute path, this isn't allowed" % (item, ))
+        if ' -> ' in item:
+            srcitem, dstitem = item.split(' -> ')
+            if (srcitem[-1] == '/') != (dstitem[-1] == '/'):
+                raise Exception("Cannot copy file/dir to dir/file")
+        else:
+            srcitem = dstitem = item
         # check for expected input
-        src = os.path.join(kerneldir, item)
+        src = os.path.join(kerneldir, srcitem)
         if item[-1] == '/':
             if not os.path.isdir(src):
-                raise Exception("Input path '%s' isn't a directory in '%s'" % (item, kerneldir))
+                raise Exception("Input path '%s' isn't a directory in '%s'" % (srcitem, kerneldir))
         else:
             if not os.path.isfile(src):
-                raise Exception("Input path '%s' isn't a file in '%s'" % (item, kerneldir))
-        ret.append((kerneldir, item))
+                raise Exception("Input path '%s' isn't a file in '%s'" % (srcitem, kerneldir))
+        ret.append((kerneldir, srcitem, dstitem))
     return ret
 
 def check_output_dir(d, clean):
@@ -82,10 +88,10 @@ def copytree(src, dst, symlinks=False, ignore=None):
         raise shutil.Error(errors)
 
 def copy_files(copy_list, outdir):
-    for src, tgt in copy_list:
-        if tgt == '':
-            copytree(src, outdir, ignore=shutil.ignore_patterns('*~'))
-        elif tgt[-1] == '/':
+    for srcpath, srcitem, tgtitem in copy_list:
+        if tgtitem == '':
+            copytree(srcpath, outdir, ignore=shutil.ignore_patterns('*~'))
+        elif tgtitem[-1] == '/':
             def copy_ignore(dir, entries):
                 r = []
                 for i in entries:
@@ -95,18 +101,18 @@ def copy_files(copy_list, outdir):
                         not os.path.isdir(os.path.join(dir, i))):
                         r.append(i)
                 return r
-            copytree(os.path.join(src, tgt),
-                     os.path.join(outdir, tgt),
+            copytree(os.path.join(srcpath, srcitem),
+                     os.path.join(outdir, tgtitem),
                      ignore=copy_ignore)
         else:
             try:
-                os.makedirs(os.path.join(outdir, os.path.dirname(tgt)))
+                os.makedirs(os.path.join(outdir, os.path.dirname(tgtitem)))
             except OSError, e:
                 # ignore dirs we might have created just now
                 if e.errno != errno.EEXIST:
                     raise
-            shutil.copy(os.path.join(src, tgt),
-                        os.path.join(outdir, tgt))
+            shutil.copy(os.path.join(srcpath, srcitem),
+                        os.path.join(outdir, tgtitem))
 
 def git_debug_init(args):
     if not args.gitdebug:
@@ -141,12 +147,12 @@ def main():
     args = parser.parse_args()
 
     # first thing to copy is our own plumbing -- we start from that
-    copy_list = [(os.path.join(source_dir, 'plumbing'), '')]
+    copy_list = [(os.path.join(source_dir, 'plumbing'), '', '')]
     # then add stuff from the copy list file
     copy_list.extend(read_copy_list(args.kerneldir, args.copy_list))
     # add compat to the list
-    copy_list.append((os.path.join(source_dir, 'compat'), 'compat/'))
-    copy_list.append((os.path.join(source_dir, 'compat'), 'include/'))
+    copy_list.append((os.path.join(source_dir, 'compat'), 'compat/', 'compat/'))
+    copy_list.append((os.path.join(source_dir, 'compat'), 'include/', 'include/'))
 
     # validate output directory
     check_output_dir(args.outdir, args.clean)

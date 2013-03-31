@@ -10,7 +10,7 @@ import argparse, sys, os, errno, shutil, re, subprocess
 # find self
 source_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
 sys.path.append(os.path.join(source_dir, 'lib'))
-import kconfig, git, patch
+import kconfig, git, patch, make
 
 def read_copy_list(kerneldir, copyfile):
     ret = []
@@ -261,5 +261,31 @@ def main():
             fo.close()
 
     git_debug_snapshot(args, "rename config symbol usage")
+
+    # disable unbuildable Kconfig symbols and stuff Makefiles that doesn't exist
+    maketree = make.MakeTree(os.path.join(args.outdir, 'Makefile.kernel'))
+    disable_kconfig = []
+    disable_makefile = []
+    for sym in maketree.get_impossible_symbols():
+        if sym[:7] == 'CPTCFG_':
+            disable_kconfig.append(sym[7:])
+        else:
+            disable_makefile.append(sym[7:])
+
+    configtree.disable_symbols(disable_kconfig)
+    git_debug_snapshot(args, "disable impossible kconfig symbols")
+
+    regexes = []
+    for some_symbols in [disable_makefile[i:i + 50] for i in range(0, len(disable_makefile), 50)]:
+        r = '(CONFIG_(' + '|'.join([s for s in some_symbols]) + '))'
+        regexes.append(re.compile(r, re.MULTILINE))
+    for f in maketree.get_makefiles():
+        data = open(f, 'r').read()
+        for r in regexes:
+            data = r.sub(r'IMPOSSIBLE_\2', data)
+        fo = open(f, 'w')
+        fo.write(data)
+        fo.close()
+    git_debug_snapshot(args, "disable unsatisfied Makefile parts")
 
 main()

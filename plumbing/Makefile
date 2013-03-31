@@ -6,13 +6,13 @@ ifeq ($(KERNELRELEASE),)
 
 MAKEFLAGS += --no-print-directory
 SHELL = /bin/bash
-PWD := $(shell pwd)
+BACKPORT_PWD := $(shell pwd)
 
 KLIB_BUILD ?= /lib/modules/$(shell uname -r)/build/
 KERNEL_CONFIG := $(KLIB_BUILD)/.config
 CONFIG_MD5 := $(shell md5sum $(KERNEL_CONFIG) | sed 's/\s.*//')
 
-export KLIB_BUILD PWD
+export KLIB_BUILD BACKPORT_PWD
 
 # disable built-in rules for this file
 .SUFFIXES:
@@ -67,5 +67,5 @@ default:
 	@$(MAKE) -f Makefile.real "$@"
 
 else
-include $(PWD)/Makefile.kernel
+include $(BACKPORT_PWD)/Makefile.kernel
 endif

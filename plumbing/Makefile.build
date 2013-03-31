@@ -2,4 +2,4 @@ include .config
 export
 
 modules:
-	@$(MAKE) -C $(KLIB_BUILD) M=$(PWD) modules
+	@$(MAKE) -C $(KLIB_BUILD) M=$(BACKPORT_PWD) modules

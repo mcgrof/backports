@@ -10,22 +10,82 @@
 # Note that in this case the spaces are needed: " -> "
 #
 
-# wireless stack
-include/linux/ieee80211.h
-
-net/wireless/
-include/net/cfg80211.h
-include/net/cfg80211-wext.h
-include/net/ieee80211_radiotap.h
-include/net/regulatory.h
-include/uapi/linux/nl80211.h
-
-net/mac80211/
-include/net/mac80211.h
-
-# always needed if any wireless drivers are needed
+# 802.11
 drivers/net/wireless/Kconfig
 drivers/net/wireless/Makefile
 
-# wireless drivers
+include/linux/ieee80211.h
+include/linux/pci_ids.h
+include/linux/eeprom_93cx6.h
+include/linux/ath9k_platform.h
+include/linux/wl12xx.h
+include/linux/rndis.h
+include/linux/bcm47xx_wdt.h
+include/linux/usb/usbnet.h
+include/linux/usb/rndis_host.h
+include/linux/spi/libertas_spi.h
+
+include/uapi/linux/nl80211.h
+include/uapi/linux/rfkill.h -> include/uapi/linux/rfkill_backport.h
+
+include/net/cfg80211.h
+include/net/cfg80211-wext.h
+include/net/ieee80211_radiotap.h
+include/net/lib80211.h
+include/net/mac80211.h
+include/net/regulatory.h
+
+net/Makefile
+net/Kconfig
+net/wireless/
+net/mac80211/
+net/rfkill/
+
+drivers/net/wireless/ath/
+drivers/ssb/
+drivers/bcma/
+drivers/net/wireless/b43/
+drivers/net/wireless/b43legacy/
+drivers/net/wireless/brcm80211/
+drivers/net/wireless/iwlegacy/
 drivers/net/wireless/iwlwifi/
+drivers/net/wireless/rt2x00/
+drivers/net/wireless/zd1211rw/
+drivers/net/wireless/libertas/
+drivers/net/wireless/p54/
+drivers/net/wireless/rtl818x/
+drivers/net/wireless/rtlwifi/
+drivers/net/wireless/libertas_tf/
+drivers/net/wireless/ipw2x00/
+drivers/net/wireless/ti/
+drivers/net/wireless/orinoco/
+drivers/net/wireless/mwifiex/
+drivers/net/wireless/adm8211.c
+drivers/net/wireless/adm8211.h
+drivers/net/wireless/at76c50x-usb.c
+drivers/net/wireless/at76c50x-usb.h
+drivers/net/wireless/mac80211_hwsim.c
+drivers/net/wireless/mac80211_hwsim.h
+drivers/net/wireless/mwl8k.c
+drivers/net/wireless/rndis_wlan.c
+
+
+# Bluetooth
+include/net/bluetooth/hci_core.h
+include/net/bluetooth/l2cap.h
+include/net/bluetooth/bluetooth.h
+include/net/bluetooth/rfcomm.h
+include/net/bluetooth/hci.h
+include/net/bluetooth/hci_mon.h
+include/net/bluetooth/mgmt.h
+include/net/bluetooth/sco.h
+include/net/bluetooth/smp.h
+include/net/bluetooth/a2mp.h
+include/net/bluetooth/amp.h
+
+net/bluetooth/
+net/bluetooth/bnep/
+net/bluetooth/cmtp/
+net/bluetooth/rfcomm/
+net/bluetooth/hidp/
+drivers/bluetooth/

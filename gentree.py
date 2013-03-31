@@ -186,19 +186,17 @@ def main():
 
     patchdirs = []
     for root, dirs, files in os.walk(os.path.join(source_dir, 'patches')):
-        for f in files:
-            if f.endswith('.patch'):
-                patchdirs.append(root)
-                break
+        if not dirs:
+            patchdirs.append(root)
     patchdirs.sort()
     for pdir in patchdirs:
         l = os.listdir(pdir)
-        if 'INFO' in l:
-            l.remove('INFO')
         printed = False
         for pfile in l:
             pfile = os.path.join(pdir, pfile)
             p = patch.fromfile(pfile)
+            if not p:
+                continue
             patched_file = '/'.join(p.items[0].source.split('/')[1:])
             fullfn = os.path.join(args.outdir, patched_file)
             if not os.path.exists(fullfn):

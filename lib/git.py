@@ -55,7 +55,7 @@ def add(path, tree=None):
 
 def commit_all(message, tree=None):
     add('.', tree=tree)
-    process = subprocess.Popen(['git', 'commit', '--allow-empty', '-m', message],
+    process = subprocess.Popen(['git', 'commit', '--allow-empty', '-a', '-m', message],
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                close_fds=True, universal_newlines=True, cwd=tree)
     stdout = process.communicate()[0]

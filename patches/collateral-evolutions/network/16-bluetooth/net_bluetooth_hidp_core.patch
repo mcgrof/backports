@@ -4,7 +4,7 @@
  	return ret;
  }
  
-+#if defined(CPTCFG_BACKPORT_BT_SOCK_CREATE_NEEDS_KERN)
++#if defined(CPTCFG_BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN)
  static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count,
  		unsigned char report_type)
  {

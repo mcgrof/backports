@@ -18,7 +18,7 @@
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
-+#if defined(CPTCFG_BACKPORT_BT_SOCK_CREATE_NEEDS_KERN)
++#if defined(CPTCFG_BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN)
  static int hci_sock_create(struct net *net, struct socket *sock, int protocol,
  			   int kern)
 +#else

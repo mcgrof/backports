@@ -4,7 +4,7 @@
  	return sk;
  }
  
-+#if defined(CPTCFG_BACKPORT_BT_SOCK_CREATE_NEEDS_KERN)
++#if defined(CPTCFG_BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN)
  static int rfcomm_sock_create(struct net *net, struct socket *sock,
  			      int protocol, int kern)
 +#else

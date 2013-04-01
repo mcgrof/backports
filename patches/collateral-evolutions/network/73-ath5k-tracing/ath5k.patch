@@ -1,0 +1,21 @@
+--- a/drivers/net/wireless/ath/ath5k/trace.h
++++ b/drivers/net/wireless/ath/ath5k/trace.h
+@@ -97,7 +97,7 @@ TRACE_EVENT(ath5k_tx_complete,
+ #if defined(CONFIG_ATH5K_TRACER) && !defined(__CHECKER__)
+ 
+ #undef TRACE_INCLUDE_PATH
+-#define TRACE_INCLUDE_PATH ../../drivers/net/wireless/ath/ath5k
++#define TRACE_INCLUDE_PATH .
+ #undef TRACE_INCLUDE_FILE
+ #define TRACE_INCLUDE_FILE trace
+ 
+--- a/drivers/net/wireless/ath/ath5k/Makefile
++++ b/drivers/net/wireless/ath/ath5k/Makefile
+@@ -10,6 +10,7 @@ ath5k-y				+= phy.o
+ ath5k-y				+= reset.o
+ ath5k-y				+= attach.o
+ ath5k-y				+= base.o
++CFLAGS_base.o			+= -I$(src)
+ ath5k-y				+= led.o
+ ath5k-y				+= rfkill.o
+ ath5k-y				+= ani.o

@@ -35,6 +35,7 @@ defconfig:
 	@false
 
 include/linux/compat_autoconf.h: .config
+	@$(MAKE) oldconfig
 	@echo -n "Building include/linux/compat_autoconf.h ..."
 	@grep -f .local-symbols .config | (				\
 		echo "#ifndef COMPAT_AUTOCONF_INCLUDED"			;\

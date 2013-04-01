@@ -1,0 +1,3 @@
+Modify the brcm80211 Makefiles to allow our simple
+Makefile parser to understand them and not disable
+brcm80211 due to the weird variable indirection.

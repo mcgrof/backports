@@ -213,7 +213,10 @@ def main():
                 print "Applying changes from", os.path.basename(pdir)
                 printed = True
             if args.refresh:
-                shutil.copyfile(fullfn, fullfn + '.orig_file')
+                for patchitem in p.items:
+                    patched_file = '/'.join(patchitem.source.split('/')[1:])
+                    fullfn = os.path.join(args.outdir, patched_file)
+                    shutil.copyfile(fullfn, fullfn + '.orig_file')
             process = subprocess.Popen(['patch', '-p1'], stdout=subprocess.PIPE,
                                        stderr=subprocess.STDOUT, stdin=subprocess.PIPE,
                                        close_fds=True, universal_newlines=True,
@@ -228,19 +231,24 @@ def main():
                 print "Patch failed!"
                 sys.exit(2)
             if args.refresh:
-                process = subprocess.Popen(['diff', '-u', patched_file + '.orig_file', patched_file,
-                                            '--label', 'a/' + patched_file,
-                                            '--label', 'b/' + patched_file],
-                                           stdout=subprocess.PIPE, close_fds=True,
-                                           universal_newlines=True, cwd=args.outdir)
-                diff = process.communicate()[0]
-                if not process.returncode in (0, 1):
-                    print "Diffing for refresh failed!"
-                    sys.exit(3)
-                pfilef = open(pfile, 'w')
-                pfilef.write(diff)
+                pfilef = open(pfile + '.tmp', 'w')
+                for patchitem in p.items:
+                    patched_file = '/'.join(patchitem.source.split('/')[1:])
+                    fullfn = os.path.join(args.outdir, patched_file)
+                    process = subprocess.Popen(['diff', '-u', patched_file + '.orig_file', patched_file,
+                                                '--label', 'a/' + patched_file,
+                                                '--label', 'b/' + patched_file],
+                                               stdout=pfilef, close_fds=True,
+                                               universal_newlines=True, cwd=args.outdir)
+                    process.wait()
+                    os.unlink(fullfn + '.orig_file')
+                    if not process.returncode in (0, 1):
+                        print "Diffing for refresh failed!"
+                        pfilef.close()
+                        os.unlink(pfile + '.tmp')
+                        sys.exit(3)
                 pfilef.close()
-                os.unlink(fullfn + '.orig_file')
+                os.rename(pfile + '.tmp', pfile)
         # remove orig/rej files that patch sometimes creates
         for root, dirs, files in os.walk(args.outdir):
             for f in files:

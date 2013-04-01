@@ -10,6 +10,9 @@
 # Note that in this case the spaces are needed: " -> "
 #
 
+COPYING
+MAINTAINERS
+
 # 802.11
 drivers/net/wireless/Kconfig
 drivers/net/wireless/Makefile

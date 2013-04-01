@@ -43,7 +43,9 @@ net/rfkill/
 
 drivers/net/wireless/ath/
 drivers/ssb/
+include/linux/ssb/
 drivers/bcma/
+include/linux/bcma/
 drivers/net/wireless/b43/
 drivers/net/wireless/b43legacy/
 drivers/net/wireless/brcm80211/

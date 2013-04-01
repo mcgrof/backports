@@ -1,35 +1,82 @@
-config BACKPORT_FIRMWARE_CLASS
-	tristate
-	default m if FIRMWARE_CLASS=m
+#
+# backport Kconfig
+#
+# Some options are user-selectable ("BACKPORT_USERSEL_*")
+#
+# Most options, however, follow a few different schemes:
+#
+# A) An option that is selected by drivers ("select FOO") will be
+#    changed to "select BACKPORT_FOO" (if the option BACKPORT_FOO
+#    exists). The option BACKPORT_FOO then controls setting of the
+#    BACKPORT_BUILD_FOO option, which is a module, like this:
+#
+# config BACKPORT_BUILD_FOO
+#	tristate
+#	default m if BACKPORT_FOO && !FOO
+#
+# config BACKPORT_FOO
+#	bool
+#
+# This only works as-is if the kernel code is usable on any version,
+# otherwise the "&& !FOO" part needs to be different.
+#
+#
+# B) An option for code always present on some kernels (e.g. KFIFO).
+#    This simply depends on/sets the default based on the version:
+#
+# config BACKPORT_BUILD_KFIFO
+#	def_bool y
+#	depends on BACKPORT_KERNEL_2_6_36
+#
+#
+# C) similarly, a kconfig symbol for an option, e.g.
+#    BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN (see below)
+#
+#
+# Variations are obviously possible.
+#
 
-config BACKPORT_NET_SCH_CODEL
+config BACKPORT_BUILD_FW_LOADER
+	tristate
+	default m if BACKPORT_FW_LOADER && !FW_LOADER
+
+config BACKPORT_FW_LOADER
+	bool
+
+config BACKPORT_USERSEL_NET_SCH_CODEL
 	tristate "codel"
 	depends on m
 	default m if NET_SCH_CODEL=n
 
-config BACKPORT_NET_SCH_FQ_CODEL
+config BACKPORT_USERSEL_NET_SCH_FQ_CODEL
 	tristate "FQ codel"
 	depends on m
 	default m if NET_SCH_FQ_CODEL=n
 
-config BACKPORT_KFIFO
+config BACKPORT_BUILD_KFIFO
 	def_bool y
 	# FIXME: REDHAT_6_1 also includes this
 	depends on BACKPORT_KERNEL_2_6_36
 
+config BACKPORT_BUILD_CORDIC
+	tristate
+	default m if BACKPORT_CORDIC && !CORDIC
+
 config BACKPORT_CORDIC
 	bool
-	default y if CORDIC=n
+
+config BACKPORT_BUILD_CRC8
+	tristate
+	default m if BACKPORT_CRC8 && !CRC8
 
 config BACKPORT_CRC8
 	bool
-	default y if !CRC8
 
-config BACKPORT_ATOMIC64
+config BACKPORT_BUILD_GENERIC_ATOMIC64
 	bool
 	default y if !64BIT && !GENERIC_ATOMIC64
 
-config BACKPORT_BT_SOCK_CREATE_NEEDS_KERN
+config BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN
 	bool
 	# FIXME: REDHAT_6_0 also requires this
 	default y if !BACKPORT_KERNEL_2_6_33

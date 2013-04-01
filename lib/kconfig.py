@@ -70,7 +70,10 @@ class ConfigTree(object):
             for l in open(os.path.join(self.basedir, nf), 'r'):
                 m = sel_line.match(l)
                 if m and not m.group('sym') in syms:
-                    out += m.group('spc') + "depends on " + m.group('sym') + '\n'
+                    if 'BACKPORT_' + m.group('sym') in syms:
+                        out += m.group('spc') + "select BACKPORT_" + m.group('sym') + '\n'
+                    else:
+                        out += m.group('spc') + "depends on " + m.group('sym') + '\n'
                 else:
                     out += l
             outf = open(os.path.join(self.basedir, nf), 'w')

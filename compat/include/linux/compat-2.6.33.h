@@ -32,12 +32,12 @@ static inline void usb_autopm_put_interface_no_suspend(struct usb_interface *int
 }
 #endif /* CONFIG_USB_SUSPEND */
 
-#if defined(CONFIG_COMPAT_FIRMWARE_CLASS)
+#if defined(CPTCFG_BACKPORT_BUILD_FW_LOADER_MODULE)
 #define request_firmware_nowait LINUX_BACKPORT(request_firmware_nowait)
 #define request_firmware LINUX_BACKPORT(request_firmware)
 #define release_firmware LINUX_BACKPORT(release_firmware)
 
-#if defined(CONFIG_FW_LOADER) || defined(CONFIG_FW_LOADER_MODULE)
+#if defined(CPTCFG_COMPAT_FW_LOADER)
 int request_firmware(const struct firmware **fw, const char *name,
 		     struct device *device);
 int request_firmware_nowait(

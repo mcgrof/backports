@@ -38,7 +38,7 @@
 
 config BACKPORT_BUILD_FW_LOADER
 	tristate
-	default m if BACKPORT_FW_LOADER && !FW_LOADER
+	default m if BACKPORT_FW_LOADER && (!FW_LOADER || BACKPORT_KERNEL_2_6_33)
 
 config BACKPORT_FW_LOADER
 	bool

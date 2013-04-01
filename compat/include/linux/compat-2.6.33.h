@@ -37,7 +37,6 @@ static inline void usb_autopm_put_interface_no_suspend(struct usb_interface *int
 #define request_firmware LINUX_BACKPORT(request_firmware)
 #define release_firmware LINUX_BACKPORT(release_firmware)
 
-#if defined(CPTCFG_COMPAT_FW_LOADER)
 int request_firmware(const struct firmware **fw, const char *name,
 		     struct device *device);
 int request_firmware_nowait(
@@ -46,25 +45,6 @@ int request_firmware_nowait(
 	void (*cont)(const struct firmware *fw, void *context));
 
 void release_firmware(const struct firmware *fw);
-#else
-static inline int request_firmware(const struct firmware **fw,
-				   const char *name,
-				   struct device *device)
-{
-	return -EINVAL;
-}
-static inline int request_firmware_nowait(
-	struct module *module, int uevent,
-	const char *name, struct device *device, gfp_t gfp, void *context,
-	void (*cont)(const struct firmware *fw, void *context))
-{
-	return -EINVAL;
-}
-
-static inline void release_firmware(const struct firmware *fw)
-{
-}
-#endif
 #endif
 
 /* mask KEY_RFKILL as RHEL6 backports this */

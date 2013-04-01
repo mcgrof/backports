@@ -8,7 +8,7 @@
  * Compatibility file for Linux wireless for kernels 2.6.38.
  */
 
-#include <linux/compat.h>
+#include <linux/average.h>
 #include <linux/module.h>
 #include <linux/bug.h>
 

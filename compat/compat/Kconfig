@@ -80,3 +80,10 @@ config BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN
 	bool
 	# FIXME: REDHAT_6_0 also requires this
 	default y if !BACKPORT_KERNEL_2_6_33
+
+config BACKPORT_BUILD_AVERAGE
+	bool
+	default y if !AVERAGE && BACKPORT_AVERAGE
+
+config BACKPORT_AVERAGE
+	bool

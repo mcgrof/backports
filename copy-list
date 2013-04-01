@@ -29,6 +29,7 @@ include/linux/usb/rndis_host.h
 include/linux/spi/libertas_spi.h
 
 include/uapi/linux/nl80211.h
+include/linux/rfkill.h -> include/linux/rfkill_backport.h
 include/uapi/linux/rfkill.h -> include/uapi/linux/rfkill_backport.h
 
 include/net/cfg80211.h

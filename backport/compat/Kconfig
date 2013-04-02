@@ -99,3 +99,21 @@ config BACKPORT_OPTION_USB_URB_THREAD_FIX
 
 config BACKPORT_MII
 	bool
+
+
+
+config BACKPORT_USERSEL_BUILD_ALL
+	tristate "Build all compat code"
+	depends on m
+	select BACKPORT_USERSEL_NET_SCH_CODEL
+	select BACKPORT_USERSEL_NET_SCH_FQ_CODEL
+	select BACKPORT_CRC8
+	select BACKPORT_CORDIC
+	select BACKPORT_AVERAGE
+	select BACKPORT_FW_LOADER
+	help
+	  This option selects all the compat code options
+	  that would otherwise only be selected by drivers.
+
+	  It's only really useful for compat testing, so
+	  you probably shouldn't enable it.

@@ -144,6 +144,8 @@ def main():
     parser.add_argument('--gitdebug', const=True, default=False, action="store_const",
                         help='Use git, in the output tree, to debug the various transformation steps ' +
                              'that the tree generation makes (apply patches, ...)')
+    parser.add_argument('--verbose', const=True, default=False, action="store_const",
+                        help='Print more verbose information')
     args = parser.parse_args()
 
     # first thing to copy is our own plumbing -- we start from that
@@ -210,7 +212,8 @@ def main():
             if not os.path.exists(fullfn):
                 continue
             if not printed:
-                print "Applying changes from", os.path.basename(pdir)
+                if args.verbose:
+                    print "Applying changes from", os.path.basename(pdir)
                 printed = True
             if args.refresh:
                 for patchitem in p.items:
@@ -225,10 +228,14 @@ def main():
             output = output.split('\n')
             if output[-1] == '':
                 output = output[:-1]
-            for line in output:
-                print '>', line
+            if args.verbose:
+                for line in output:
+                    print '>', line
             if process.returncode != 0:
-                print "Patch failed!"
+                if not args.verbose:
+                    print "Failed to apply changes from", os.path.basename(pdir)
+                    for line in output:
+                        print '>', line
                 sys.exit(2)
             if args.refresh:
                 pfilef = open(pfile + '.tmp', 'w')
@@ -255,7 +262,8 @@ def main():
                 if f[-5:] == '.orig' or f[-4:] == '.rej':
                     os.unlink(os.path.join(root, f))
         if not printed:
-            print "Not applying changes from %s, not needed" % (os.path.basename(pdir),)
+            if args.verbose:
+                print "Not applying changes from %s, not needed" % (os.path.basename(pdir),)
         else:
             git_debug_snapshot(args, "apply backport patches from %s" % (os.path.basename(pdir),))
 

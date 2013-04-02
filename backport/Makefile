@@ -5,7 +5,7 @@
 ifeq ($(KERNELRELEASE),)
 
 MAKEFLAGS += --no-print-directory
-SHELL = /bin/bash
+SHELL := /bin/bash
 BACKPORT_PWD := $(shell pwd)
 
 KLIB_BUILD ?= /lib/modules/$(shell uname -r)/build/

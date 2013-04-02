@@ -4,16 +4,17 @@ export BACKPORTS_VERSION BACKPORTED_KERNEL_VERSION BACKPORTED_KERNEL_NAME
 # disable built-in rules for this file
 .SUFFIXES:
 
-default:
-	@echo asdf
-
-# config section
-
 export CONFIG_=CPTCFG_
+
+.PHONY: menuconfig
 menuconfig:
 	@$(MAKE) -C kconfig mconf
 	@./kconfig/mconf Kconfig
 
+.PHONY: listnewconfig oldaskconfig oldconfig \
+	silentoldconfig olddefconfig oldnoconfig \
+	allnoconfig allyesconfig allmodconfig \
+	alldefconfig randconfig
 listnewconfig oldaskconfig oldconfig \
 silentoldconfig olddefconfig oldnoconfig \
 allnoconfig allyesconfig allmodconfig \
@@ -61,5 +62,6 @@ include/linux/compat_autoconf.h: .config
 	) > include/linux/compat_autoconf.h
 	@echo " done."
 
+.PHONY: modules
 modules: include/linux/compat_autoconf.h
 	@$(MAKE) -f Makefile.build modules

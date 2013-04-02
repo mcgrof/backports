@@ -39,6 +39,20 @@ def read_copy_list(kerneldir, copyfile):
         ret.append((kerneldir, srcitem, dstitem))
     return ret
 
+def read_dependencies(depfilename):
+    ret = {}
+    depfile = open(depfilename)
+    for item in depfile:
+        item = item.strip()
+        if not item or item[0] == '#':
+            continue
+        sym, dep = item.split()
+        if not sym in ret:
+            ret[sym] = [dep, ]
+        else:
+            raise Exception("Listing the same symbol (%s) multiple times is pointless" % sym)
+    return ret
+
 def check_output_dir(d, clean):
     if clean:
         shutil.rmtree(d, ignore_errors=True)
@@ -155,6 +169,8 @@ def main():
     # add compat to the list
     copy_list.append((os.path.join(source_dir, 'compat'), 'compat/', 'compat/'))
     copy_list.append((os.path.join(source_dir, 'compat'), 'include/', 'include/'))
+
+    deplist = read_dependencies(os.path.join(source_dir, 'dependencies'))
 
     # validate output directory
     check_output_dir(args.outdir, args.clean)
@@ -299,6 +315,14 @@ def main():
 
     configtree.disable_symbols(disable_kconfig)
     git_debug_snapshot(args, "disable impossible kconfig symbols")
+
+    for sym in tuple(deplist.keys()):
+        new = []
+        for dep in deplist[sym]:
+            new.append('!BACKPORT_KERNEL_%s' % dep.replace('.', '_'))
+        deplist[sym] = new
+    configtree.add_dependencies(deplist)
+    git_debug_snapshot(args, "add kernel version dependencies")
 
     regexes = []
     for some_symbols in [disable_makefile[i:i + 50] for i in range(0, len(disable_makefile), 50)]:

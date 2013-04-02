@@ -91,3 +91,16 @@ class ConfigTree(object):
             outf = open(os.path.join(self.basedir, nf), 'w')
             outf.write(out)
             outf.close()
+
+    def add_dependencies(self, deps):
+        for nf in self._walk(self.rootfile):
+            out = ''
+            for l in open(os.path.join(self.basedir, nf), 'r'):
+                m = cfg_line.match(l)
+                out += l
+                if m:
+                    for dep in deps.get(m.group('sym'), []):
+                        out += "\tdepends on %s\n" % dep
+            outf = open(os.path.join(self.basedir, nf), 'w')
+            outf.write(out)
+            outf.close()

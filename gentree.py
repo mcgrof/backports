@@ -28,14 +28,6 @@ def read_copy_list(kerneldir, copyfile):
                 raise Exception("Cannot copy file/dir to dir/file")
         else:
             srcitem = dstitem = item
-        # check for expected input
-        src = os.path.join(kerneldir, srcitem)
-        if item[-1] == '/':
-            if not os.path.isdir(src):
-                raise Exception("Input path '%s' isn't a directory in '%s'" % (srcitem, kerneldir))
-        else:
-            if not os.path.isfile(src):
-                raise Exception("Input path '%s' isn't a file in '%s'" % (srcitem, kerneldir))
         ret.append((kerneldir, srcitem, dstitem))
     return ret
 

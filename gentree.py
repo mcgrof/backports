@@ -163,12 +163,9 @@ def main():
     args = parser.parse_args()
 
     # first thing to copy is our own plumbing -- we start from that
-    copy_list = [(os.path.join(source_dir, 'plumbing'), '', '')]
+    copy_list = [(os.path.join(source_dir, 'backport'), '', '')]
     # then add stuff from the copy list file
     copy_list.extend(read_copy_list(args.kerneldir, args.copy_list))
-    # add compat to the list
-    copy_list.append((os.path.join(source_dir, 'compat'), 'compat/', 'compat/'))
-    copy_list.append((os.path.join(source_dir, 'compat'), 'include/', 'include/'))
 
     deplist = read_dependencies(os.path.join(source_dir, 'dependencies'))
 

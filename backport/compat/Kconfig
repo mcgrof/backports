@@ -96,3 +96,6 @@ config BACKPORT_AVERAGE
 config BACKPORT_OPTION_USB_URB_THREAD_FIX
 	bool
 	default y if BACKPORT_KERNEL_2_6_36
+
+config BACKPORT_MII
+	bool

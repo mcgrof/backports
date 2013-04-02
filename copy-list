@@ -95,3 +95,22 @@ net/bluetooth/cmtp/
 net/bluetooth/rfcomm/
 net/bluetooth/hidp/
 drivers/bluetooth/
+
+
+# Ethernet drivers
+drivers/net/ethernet/Kconfig
+drivers/net/ethernet/Makefile
+drivers/net/mdio.c
+include/linux/mdio.h
+include/uapi/linux/mdio.h
+
+drivers/net/ethernet/atheros/Kconfig
+drivers/net/ethernet/atheros/Makefile
+drivers/net/ethernet/atheros/atl1c/
+drivers/net/ethernet/atheros/atl1e/
+drivers/net/ethernet/atheros/atlx/
+
+drivers/net/ethernet/broadcom/Kconfig
+drivers/net/ethernet/broadcom/Makefile
+drivers/net/ethernet/broadcom/b44.c
+drivers/net/ethernet/broadcom/b44.h

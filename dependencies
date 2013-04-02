@@ -5,7 +5,8 @@
 ATH9K_AHB 2.6.30
 # BT 2.6.27 - also needs shash, see below
 BT_RFCOMM_TTY 2.6.33
-BT_HIDP 2.6.28
+# also requires a later kernel for HID_QUIRK_NO_INIT_REPORTS, see below
+#BT_HIDP 2.6.28
 BT_WILINK 2.6.39
 
 MAC80211_HWSIM 2.6.31
@@ -73,3 +74,15 @@ BCMA_DRIVER_GPIO 3.0
 # (rfkill-regulator.h) that we don't backport
 # right now, so make it depend on 3.0
 RFKILL_REGULATOR 3.0
+
+# This is a fun one ... the implementation of this
+# uses subdir-ccflags-$(CONFIG_BRCMDBG) which was
+# only introduced in kernel 2.6.30.
+BRCMDBG 2.6.30
+
+# HID_QUIRK_NO_INIT_REPORTS was only introduced in
+# kernel 2.6.33, so depend on that. We could instead
+# backport it, but I can't test that and this is a
+# lot easier right now. If you change this, put back
+# the old one above.
+BT_HIDP 2.6.33

@@ -13,11 +13,14 @@
  */
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
 /*
- * For 2.6.28+ include the original tracepoint.h but override
- * the defines new code uses to disable tracing completely.
+ * For 2.6.28+ include the original tracepoint.h (for kernel header
+ * files that require it to work) but override the defines the code
+ * uses to disable tracing completely.
  */
 #include_next <linux/tracepoint.h>
 #endif
+
+#undef CREATE_TRACE_POINTS
 
 #undef TRACE_EVENT
 #define TRACE_EVENT(name, proto, ...) \
@@ -27,6 +30,8 @@ static inline void trace_ ## name(proto) {}
 #undef DEFINE_EVENT
 #define DEFINE_EVENT(evt_class, name, proto, ...) \
 static inline void trace_ ## name(proto) {}
+#undef EXPORT_TRACEPOINT_SYMBOL
+#define EXPORT_TRACEPOINT_SYMBOL(...)
 
 #define TP_PROTO(args...)	args
 #define TP_ARGS(args...)	args

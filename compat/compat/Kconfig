@@ -46,11 +46,13 @@ config BACKPORT_FW_LOADER
 config BACKPORT_USERSEL_NET_SCH_CODEL
 	tristate "codel"
 	depends on m
+	depends on !BACKPORT_KERNEL_2_6_25
 	default m if NET_SCH_CODEL=n
 
 config BACKPORT_USERSEL_NET_SCH_FQ_CODEL
 	tristate "FQ codel"
 	depends on m
+	depends on !BACKPORT_KERNEL_2_6_25
 	default m if NET_SCH_FQ_CODEL=n
 
 config BACKPORT_BUILD_KFIFO

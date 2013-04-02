@@ -21,18 +21,20 @@ alldefconfig randconfig:
 	@$(MAKE) -C kconfig conf
 	@./kconfig/conf --$@ Kconfig
 
+.PHONY: defconfig
 defconfig:
 	@$(MAKE) -C kconfig conf
-	@./kconfig conf --defconfig defconfig
+	@./kconfig/conf --defconfig defconfig
 
 .config:
-	@echo "/--------------"
-	@echo "| Your backport package isn't configured, please configure it"
-	@echo "| using one of the following options:"
-	@echo "|     make menuconfig"
-	@echo "|     make allyesconfig"
-	@echo "\--"
-	@false
+	@test -f defconfig && (yes '' | $(MAKE) alldefconfig) || (	\
+	echo "/--------------"						;\
+	echo "| Your backport package isn't configured, please configure it" ;\
+	echo "| using one of the following options:"			;\
+	echo "|     make menuconfig"					;\
+	echo "|     make allyesconfig"					;\
+	echo "\--"							;\
+	false )
 
 include/linux/compat_autoconf.h: .config
 	@$(MAKE) oldconfig

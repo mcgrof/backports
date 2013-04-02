@@ -75,6 +75,18 @@ static inline void fb_enable_skip_vt_switch(struct fb_info *info)
 	module_driver(__pcmcia_driver, pcmcia_register_driver, \
 			pcmcia_unregister_driver)
 
+/*
+ * backport of:
+ * commit e5c5d22e8dcf7c2d430336cbf8e180bd38e8daf1
+ * Author: Simon Horman <horms@verge.net.au>
+ * Date:   Thu Mar 28 13:38:25 2013 +0900
+ * 
+ *     net: add ETH_P_802_3_MIN
+ */
+#ifndef ETH_P_802_3_MIN
+#define ETH_P_802_3_MIN 0x0600
+#endif
+
 #else /* kernel is >= 3.10 */
 /*
  * We'd delete this upstream ever got this, we use our

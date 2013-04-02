@@ -191,33 +191,6 @@ def main():
 
     git_debug_init(args)
 
-    # some post-processing is required
-    configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))
-    print 'Modify Kconfig tree ...'
-    configtree.prune_sources(ignore=['Kconfig.kernel', 'Kconfig.versions'])
-    git_debug_snapshot(args, "prune Kconfig tree")
-    configtree.force_tristate_modular()
-    git_debug_snapshot(args, "force tristate options modular")
-    configtree.modify_selects()
-    git_debug_snapshot(args, "convert select to depends on")
-
-    # write the versioning file
-    backports_version = git.describe(tree=source_dir)
-    kernel_version = git.describe(tree=args.kerneldir)
-    f = open(os.path.join(args.outdir, 'versions'), 'w')
-    f.write('BACKPORTS_VERSION="%s"\n' % backports_version)
-    f.write('KERNEL_VERSION="%s"\n' % kernel_version)
-    f.write('KERNEL_NAME="%s"\n' % args.base_name)
-    f.close()
-
-    symbols = configtree.symbols()
-
-    # write local symbol list
-    f = open(os.path.join(args.outdir, '.local-symbols'), 'w')
-    for sym in symbols:
-        f.write('%s=\n' % sym)
-    f.close()
-
     git_debug_snapshot(args, "add versions/symbols files")
 
     print 'Apply patches ...'
@@ -296,6 +269,32 @@ def main():
         else:
             git_debug_snapshot(args, "apply backport patches from %s" % (os.path.basename(pdir),))
 
+    # some post-processing is required
+    configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))
+    print 'Modify Kconfig tree ...'
+    configtree.prune_sources(ignore=['Kconfig.kernel', 'Kconfig.versions'])
+    git_debug_snapshot(args, "prune Kconfig tree")
+    configtree.force_tristate_modular()
+    git_debug_snapshot(args, "force tristate options modular")
+    configtree.modify_selects()
+    git_debug_snapshot(args, "convert select to depends on")
+
+    # write the versioning file
+    backports_version = git.describe(tree=source_dir)
+    kernel_version = git.describe(tree=args.kerneldir)
+    f = open(os.path.join(args.outdir, 'versions'), 'w')
+    f.write('BACKPORTS_VERSION="%s"\n' % backports_version)
+    f.write('KERNEL_VERSION="%s"\n' % kernel_version)
+    f.write('KERNEL_NAME="%s"\n' % args.base_name)
+    f.close()
+
+    symbols = configtree.symbols()
+
+    # write local symbol list
+    f = open(os.path.join(args.outdir, '.local-symbols'), 'w')
+    for sym in symbols:
+        f.write('%s=\n' % sym)
+    f.close()
 
     print 'Rewrite Makefiles and Kconfig files ...'
 

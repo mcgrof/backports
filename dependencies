@@ -3,10 +3,9 @@
 
 # platform_get_device_id()
 ATH9K_AHB 2.6.30
-# BT 2.6.27 - also needs shash, see below
+BT 2.6.27
 BT_RFCOMM_TTY 2.6.33
-# also requires a later kernel for HID_QUIRK_NO_INIT_REPORTS, see below
-#BT_HIDP 2.6.28
+BT_HIDP 2.6.28
 BT_WILINK 2.6.39
 
 MAC80211_HWSIM 2.6.31
@@ -56,7 +55,7 @@ LIBIPW_DEBUG 2.6.25
 RT2X00_LIB_LEDS 2.6.25
 
 # struct gpio_chip only got the required members in 2.6.28
-#BCMA_DRIVER_GPIO 2.6.28
+BCMA_DRIVER_GPIO 2.6.28
 SSB_DRIVER_GPIO 2.6.28
 
 # shash was only added in 2.6.29
@@ -66,8 +65,7 @@ BT 2.6.29
 # out of #ifdef in kernel 3.0. These are required
 # by some users of BCMA_DRIVER_GPIO. We'd better
 # just backport the definitions, but right now
-# this is easier. If you remove this, put the one
-# above (2.6.28) back though!
+# this is easier.
 BCMA_DRIVER_GPIO 3.0
 
 # rfkill-regulator uses a kernel header file
@@ -83,6 +81,5 @@ BRCMDBG 2.6.30
 # HID_QUIRK_NO_INIT_REPORTS was only introduced in
 # kernel 2.6.33, so depend on that. We could instead
 # backport it, but I can't test that and this is a
-# lot easier right now. If you change this, put back
-# the old one above.
+# lot easier right now.
 BT_HIDP 2.6.33

@@ -50,7 +50,7 @@ def read_dependencies(depfilename):
         if not sym in ret:
             ret[sym] = [dep, ]
         else:
-            raise Exception("Listing the same symbol (%s) multiple times is pointless" % sym)
+            ret[sym].append(dep)
     return ret
 
 def check_output_dir(d, clean):

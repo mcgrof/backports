@@ -63,7 +63,6 @@ default:
 		echo " done."								;\
 	fi										;\
 	echo "$(CONFIG_MD5)" > .kernel_config_md5
-	@#test -f .config && $(MAKE) -f Makefile.real oldconfig || true
 	@$(MAKE) -f Makefile.real "$@"
 
 else

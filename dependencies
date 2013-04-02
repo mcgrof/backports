@@ -46,3 +46,6 @@ HDMI 3.2
 DRM 3.2
 DRM_TTM 3.2
 DRM_NOUVEAU 3.3
+
+# This requires proc_create(), and that doesn't exist before 2.6.24
+LIBIPW_DEBUG 2.6.25

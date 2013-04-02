@@ -1,0 +1,10 @@
+#
+# To use this, use the --extra-driver argument to gentree.py,
+# like this:
+#	--extra-driver /path/to/alx/ copy-list.alx
+#
+# This probably needs to be changed to target/linux/src/
+# to support "make linux-src" in alx, but then the Makefile
+# is not good ...
+#
+src/ -> drivers/net/ethernet/atheros/alx/

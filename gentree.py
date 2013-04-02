@@ -169,6 +169,8 @@ def main():
                              'that the tree generation makes (apply patches, ...)')
     parser.add_argument('--verbose', const=True, default=False, action="store_const",
                         help='Print more verbose information')
+    parser.add_argument('--extra-driver', nargs=2, metavar=('<source dir>', '<copy-list>'), type=str,
+                        action='append', default=[], help='Extra driver directory/copy-list.')
     args = parser.parse_args()
 
     # then add stuff from the copy list file
@@ -188,6 +190,9 @@ def main():
         print 'Get original source files from git ...'
         copy_files(os.path.join(source_dir, 'backport'), [('', '')], args.outdir)
         copy_git_files(args.kerneldir, copy_list, args.git_revision, args.outdir)
+
+    for src, copy_list in args.extra_driver:
+        copy_files(src, read_copy_list(open(copy_list, 'r')), args.outdir)
 
     git_debug_init(args)
 

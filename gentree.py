@@ -12,7 +12,7 @@ source_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
 sys.path.append(os.path.join(source_dir, 'lib'))
 import kconfig, git, patch, make
 
-def read_copy_list(kerneldir, copyfile):
+def read_copy_list(copyfile):
     ret = []
     for item in copyfile:
         # remove leading/trailing whitespace
@@ -28,7 +28,7 @@ def read_copy_list(kerneldir, copyfile):
                 raise Exception("Cannot copy file/dir to dir/file")
         else:
             srcitem = dstitem = item
-        ret.append((kerneldir, srcitem, dstitem))
+        ret.append((srcitem, dstitem))
     return ret
 
 def read_dependencies(depfilename):
@@ -93,8 +93,8 @@ def copytree(src, dst, symlinks=False, ignore=None):
     if errors:
         raise shutil.Error(errors)
 
-def copy_files(copy_list, outdir):
-    for srcpath, srcitem, tgtitem in copy_list:
+def copy_files(srcpath, copy_list, outdir):
+    for srcitem, tgtitem in copy_list:
         if tgtitem == '':
             copytree(srcpath, outdir, ignore=shutil.ignore_patterns('*~'))
         elif tgtitem[-1] == '/':
@@ -120,6 +120,19 @@ def copy_files(copy_list, outdir):
             shutil.copy(os.path.join(srcpath, srcitem),
                         os.path.join(outdir, tgtitem))
 
+def copy_git_files(srcpath, copy_list, rev, outdir):
+    for srcitem, tgtitem in copy_list:
+        for m, t, h, f in git.ls_tree(rev=rev, files=(srcitem,), tree=srcpath):
+            assert t == 'blob'
+            f = os.path.join(outdir, f)
+            d = os.path.dirname(f)
+            if not os.path.exists(d):
+                os.makedirs(d)
+            outf = open(f, 'w')
+            git.get_blob(h, outf, tree=srcpath)
+            outf.close()
+            os.chmod(f, int(m, 8))
+
 def git_debug_init(args):
     if not args.gitdebug:
         return
@@ -141,6 +154,10 @@ def main():
     parser.add_argument('--copy-list', metavar='<listfile>', type=argparse.FileType('r'),
                         default='copy-list',
                         help='File containing list of files/directories to copy, default "copy-list"')
+    parser.add_argument('--git-revision', metavar='<revision>', type=str,
+                        help='git commit revision (see gitrevisions(7)) to take objects from.' +
+                             'If this is specified, the kernel tree is used as git object storage ' +
+                             'and we use git ls-tree to get the files.')
     parser.add_argument('--clean', const=True, default=False, action="store_const",
                         help='Clean output directory instead of erroring if it isn\'t empty')
     parser.add_argument('--refresh', const=True, default=False, action="store_const",
@@ -154,10 +171,8 @@ def main():
                         help='Print more verbose information')
     args = parser.parse_args()
 
-    # first thing to copy is our own plumbing -- we start from that
-    copy_list = [(os.path.join(source_dir, 'backport'), '', '')]
     # then add stuff from the copy list file
-    copy_list.extend(read_copy_list(args.kerneldir, args.copy_list))
+    copy_list = read_copy_list(args.copy_list)
 
     deplist = read_dependencies(os.path.join(source_dir, 'dependencies'))
 
@@ -165,8 +180,14 @@ def main():
     check_output_dir(args.outdir, args.clean)
 
     # do the copy
-    print 'Copy original source files ...'
-    copy_files(copy_list, args.outdir)
+    if not args.git_revision:
+        print 'Copy original source files ...'
+        copy_files(os.path.join(source_dir, 'backport'), [('', '')], args.outdir)
+        copy_files(args.kerneldir, copy_list, args.outdir)
+    else:
+        print 'Get original source files from git ...'
+        copy_files(os.path.join(source_dir, 'backport'), [('', '')], args.outdir)
+        copy_git_files(args.kerneldir, copy_list, args.git_revision, args.outdir)
 
     git_debug_init(args)
 

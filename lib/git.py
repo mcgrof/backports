@@ -61,3 +61,27 @@ def commit_all(message, tree=None):
     stdout = process.communicate()[0]
     process.wait()
     _check(process)
+
+def ls_tree(rev, files, tree=None):
+    process = subprocess.Popen(['git', 'ls-tree', '-z', '-r', rev, '--', ] + list(files),
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               close_fds=True, universal_newlines=True, cwd=tree)
+    stdout = process.communicate()[0]
+    files = stdout.split('\0')
+    ret = []
+    for f in files:
+        if not f:
+            continue
+        meta, f = f.split('\t', 1)
+        meta = meta.split()
+        meta.append(f)
+        ret.append(meta)
+    process.wait()
+    _check(process)
+    return ret
+
+def get_blob(blob, outf, tree=None):
+    process = subprocess.Popen(['git', 'show', blob],
+                               stdout=outf, close_fds=True, cwd=tree)
+    process.wait()
+    _check(process)

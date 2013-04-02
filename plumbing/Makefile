@@ -10,6 +10,7 @@ BACKPORT_PWD := $(shell pwd)
 
 KLIB_BUILD ?= /lib/modules/$(shell uname -r)/build/
 KERNEL_CONFIG := $(KLIB_BUILD)/.config
+KERNEL_MAKEFILE := $(KLIB_BUILD)/Makefile
 CONFIG_MD5 := $(shell md5sum $(KERNEL_CONFIG) | sed 's/\s.*//')
 
 export KLIB_BUILD BACKPORT_PWD
@@ -60,6 +61,15 @@ default:
 			fi								;\
 			if [ "$$v" = "$$kver" ] ; then print=1 ; fi			;\
 		done > Kconfig.versions							;\
+		# RHEL as well, sadly we need to grep for it				;\
+		RHEL_MAJOR=$$(grep '^RHEL_MAJOR' $(KERNEL_MAKEFILE) | 			\
+					sed 's/.*=\s*\([0-9]*\)/\1/;t;d')		;\
+		RHEL_MINOR=$$(grep '^RHEL_MINOR' $(KERNEL_MAKEFILE) | 			\
+					sed 's/.*=\s*\([0-9]*\)/\1/;t;d')		;\
+		for v in $$(seq 0 $$RHEL_MINOR) ; do 					\
+			echo config BACKPORT_RHEL_KERNEL_$${RHEL_MAJOR}_$$v		;\
+			echo "    def_bool y"						;\
+		done >> Kconfig.versions						;\
 		echo " done."								;\
 	fi										;\
 	echo "$(CONFIG_MD5)" > .kernel_config_md5

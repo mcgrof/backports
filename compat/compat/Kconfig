@@ -38,6 +38,8 @@
 
 config BACKPORT_BUILD_FW_LOADER
 	tristate
+	# RHEL6, starting from 6.0, backports the FW loader already
+	depends on !BACKPORT_RHEL_KERNEL_6_0
 	default m if BACKPORT_FW_LOADER && (!FW_LOADER || BACKPORT_KERNEL_2_6_33)
 
 config BACKPORT_FW_LOADER
@@ -57,7 +59,8 @@ config BACKPORT_USERSEL_NET_SCH_FQ_CODEL
 
 config BACKPORT_BUILD_KFIFO
 	def_bool y
-	# FIXME: REDHAT_6_1 also includes this
+	# RHEL6, starting from 6.1, backports kfifo already
+	depends on !BACKPORT_RHEL_KERNEL_6_1
 	depends on BACKPORT_KERNEL_2_6_36
 
 config BACKPORT_BUILD_CORDIC
@@ -80,8 +83,8 @@ config BACKPORT_BUILD_GENERIC_ATOMIC64
 
 config BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN
 	bool
-	# FIXME: REDHAT_6_0 also requires this
-	default y if !BACKPORT_KERNEL_2_6_33
+	# in RHEL6 (starting from 6.0), the function needs the argument
+	default y if !BACKPORT_KERNEL_2_6_33 || BACKPORT_RHEL_KERNEL_6_0
 
 config BACKPORT_BUILD_AVERAGE
 	bool

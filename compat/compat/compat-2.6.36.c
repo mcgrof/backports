@@ -11,7 +11,7 @@
 #include <linux/compat.h>
 #include <linux/usb.h>
 
-#ifdef CONFIG_COMPAT_USB_URB_THREAD_FIX
+#ifdef CPTCFG_BACKPORT_OPTION_USB_URB_THREAD_FIX
 /* Callers must hold anchor->lock */
 static void __usb_unanchor_urb(struct urb *urb, struct usb_anchor *anchor)
 {
@@ -93,7 +93,7 @@ void usb_scuttle_anchored_urbs(struct usb_anchor *anchor)
 }
 EXPORT_SYMBOL_GPL(usb_scuttle_anchored_urbs);
 
-#endif /* CONFIG_COMPAT_USB_URB_THREAD_FIX */
+#endif /* CPTCFG_BACKPORT_OPTION_USB_URB_THREAD_FIX */
 
 struct workqueue_struct *system_wq __read_mostly;
 struct workqueue_struct *system_long_wq __read_mostly;

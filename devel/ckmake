@@ -157,7 +157,7 @@ def process_kernel(num, kset, cmdline_args):
 
 		kset.baking(rel)
 
-		p = subprocess.Popen(nice + ['make'] + make_args + [config_name],
+		p = subprocess.Popen(nice + ['make', jobs] + make_args + [config_name],
 				     cwd = work_dir, env=all_config_env,
 				     stdin=null_file,
 				     stdout=log_file,

@@ -1,8 +1,14 @@
+# Since 2.6.21, try-run is available, but cc-disable-warning
+# was only added later, so we add it here ourselves:
+backport-cc-disable-warning = $(call try-run,\
+	$(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+
 NOSTDINC_FLAGS := \
 	-I$(M)/include/ \
 	-I$(M)/include/uapi \
 	-I$(M)/include/drm \
 	-include $(M)/include/linux/compat-2.6.h \
+	$(call backport-cc-disable-warning, unused-but-set-variable) \
 	$(CFLAGS)
 
 obj-y += compat/

@@ -8,6 +8,7 @@
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
 
+import argparse
 import locale
 import curses
 import time
@@ -123,7 +124,7 @@ def process_logs():
 	log.close()
 	print_report()
 
-def process_kernel(num, kset):
+def process_kernel(num, kset, cmdline_args):
 	while True:
 		rel = kset.queue.get()
 		work_dir = tmp_path + '/' + rel['version']
@@ -143,9 +144,12 @@ def process_kernel(num, kset):
 
 		all_config_name = os.path.join(work_dir, 'all.config')
 		all_config = open(all_config_name, 'w')
-		all_config.write("""
-CPTCFG_CFG80211_INTERNAL_REGDB=n
-""")
+		all_config.write("CPTCFG_CFG80211_INTERNAL_REGDB=n\n")
+		config_name = 'allnoconfig'
+		if cmdline_args.allyesconfig:
+			config_name = 'allyesconfig'
+		else:
+			all_config.write("CPTCFG_BACKPORT_USERSEL_BUILD_ALL=y\n")
 		all_config.close()
 
 		all_config_env = os.environ.copy()
@@ -153,7 +157,7 @@ CPTCFG_CFG80211_INTERNAL_REGDB=n
 
 		kset.baking(rel)
 
-		p = subprocess.Popen(nice + ['make'] + make_args + ['allyesconfig'],
+		p = subprocess.Popen(nice + ['make'] + make_args + [config_name],
 				     cwd = work_dir, env=all_config_env,
 				     stdin=null_file,
 				     stdout=log_file,
@@ -351,9 +355,9 @@ class kernel_set():
 			self.stdscr.addstr(rel['idx'], 30, "[        ]")
 			self.stdscr.refresh()
 			self.lock.release()
-	def create_threads(self):
+	def create_threads(self, cmdline_args):
 		for rel in self.releases:
-			th = Thread(target=process_kernel, args=(0, self))
+			th = Thread(target=process_kernel, args=(0, self, cmdline_args))
 			th.setDaemon(True)
 			th.start()
 	def kick_threads(self):
@@ -377,18 +381,23 @@ class kernel_set():
 		self.stdscr.refresh()
 		self.lock.release()
 
-def main(stdscr):
+def main(stdscr, args):
 	kset = kernel_set(stdscr)
 
 	kset.set_locale()
 	kset.parse_releases()
 	kset.setup_screen()
-	kset.create_threads()
+	kset.create_threads(args)
 	kset.kick_threads()
 	kset.wait_threads()
 	kset.refresh()
 
 if __name__ == "__main__":
+	parser = argparse.ArgumentParser(description='compile against all kernels you have')
+	parser.add_argument('--allyesconfig', const=True, default=False, action="store_const",
+			    help='Build allyesconfig rather than only backport code.')
+	args = parser.parse_args()
+
 	if not os.path.exists(modules):
 		print "%s does not exist" % (modules)
 		sys.exit(1)
@@ -402,7 +411,7 @@ if __name__ == "__main__":
 	if os.path.exists(tmp_path):
 		rmtree(tmp_path)
 	os.makedirs(tmp_path)
-	curses.wrapper(main)
+	curses.wrapper(main, args)
 	kill_curses()
 	process_logs()
 	clean()

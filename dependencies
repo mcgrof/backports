@@ -3,7 +3,7 @@
 
 # platform_get_device_id()
 ATH9K_AHB 2.6.30
-BT 2.6.27
+# BT 2.6.27 - also needs shash, see below
 BT_RFCOMM_TTY 2.6.33
 BT_HIDP 2.6.28
 BT_WILINK 2.6.39
@@ -57,3 +57,6 @@ RT2X00_LIB_LEDS 2.6.25
 # struct gpio_chip only got the required members in 2.6.28
 BCMA_DRIVER_GPIO 2.6.28
 SSB_DRIVER_GPIO 2.6.28
+
+# shash was only added in 2.6.29
+BT 2.6.29

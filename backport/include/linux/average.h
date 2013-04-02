@@ -1,6 +1,6 @@
 #include <linux/version.h>
 
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,37))
+#ifndef CPTCFG_BACKPORT_BUILD_AVERAGE
 #include_next <linux/average.h>
 #else
 /* Exponentially weighted moving average (EWMA) */

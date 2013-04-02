@@ -40,7 +40,8 @@ config BACKPORT_BUILD_FW_LOADER
 	tristate
 	# RHEL6, starting from 6.0, backports the FW loader already
 	depends on !BACKPORT_RHEL_KERNEL_6_0
-	default m if BACKPORT_FW_LOADER && (!FW_LOADER || BACKPORT_KERNEL_2_6_33)
+	depends on !FW_LOADER || BACKPORT_KERNEL_2_6_33
+	default m if BACKPORT_FW_LOADER
 	default m if BACKPORT_USERSEL_BUILD_ALL
 
 config BACKPORT_FW_LOADER

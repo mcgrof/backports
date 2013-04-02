@@ -1,5 +1,6 @@
 include .config
 export
 
+.PHONY:
 modules:
 	@$(MAKE) -C $(KLIB_BUILD) M=$(BACKPORT_PWD) modules

@@ -41,6 +41,7 @@ config BACKPORT_BUILD_FW_LOADER
 	# RHEL6, starting from 6.0, backports the FW loader already
 	depends on !BACKPORT_RHEL_KERNEL_6_0
 	default m if BACKPORT_FW_LOADER && (!FW_LOADER || BACKPORT_KERNEL_2_6_33)
+	default m if BACKPORT_USERSEL_BUILD_ALL
 
 config BACKPORT_FW_LOADER
 	bool
@@ -50,12 +51,14 @@ config BACKPORT_USERSEL_NET_SCH_CODEL
 	depends on m
 	depends on !BACKPORT_KERNEL_2_6_25
 	default m if NET_SCH_CODEL=n
+	default m if BACKPORT_USERSEL_BUILD_ALL
 
 config BACKPORT_USERSEL_NET_SCH_FQ_CODEL
 	tristate "FQ codel"
 	depends on m
 	depends on !BACKPORT_KERNEL_2_6_25
 	default m if NET_SCH_FQ_CODEL=n
+	default m if BACKPORT_USERSEL_BUILD_ALL
 
 config BACKPORT_BUILD_KFIFO
 	def_bool y
@@ -66,6 +69,7 @@ config BACKPORT_BUILD_KFIFO
 config BACKPORT_BUILD_CORDIC
 	tristate
 	default m if BACKPORT_CORDIC && !CORDIC
+	default m if BACKPORT_USERSEL_BUILD_ALL
 
 config BACKPORT_CORDIC
 	bool
@@ -73,6 +77,7 @@ config BACKPORT_CORDIC
 config BACKPORT_BUILD_CRC8
 	tristate
 	default m if BACKPORT_CRC8 && !CRC8
+	default m if BACKPORT_USERSEL_BUILD_ALL
 
 config BACKPORT_CRC8
 	bool
@@ -88,6 +93,7 @@ config BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN
 
 config BACKPORT_BUILD_AVERAGE
 	bool
+	default y if BACKPORT_USERSEL_BUILD_ALL
 	default y if !AVERAGE && BACKPORT_AVERAGE
 
 config BACKPORT_AVERAGE
@@ -103,14 +109,7 @@ config BACKPORT_MII
 
 
 config BACKPORT_USERSEL_BUILD_ALL
-	tristate "Build all compat code"
-	depends on m
-	select BACKPORT_USERSEL_NET_SCH_CODEL
-	select BACKPORT_USERSEL_NET_SCH_FQ_CODEL
-	select BACKPORT_CRC8
-	select BACKPORT_CORDIC
-	select BACKPORT_AVERAGE
-	select BACKPORT_FW_LOADER
+	bool "Build all compat code"
 	help
 	  This option selects all the compat code options
 	  that would otherwise only be selected by drivers.

@@ -12,6 +12,9 @@ obj-$(CPTCFG_BACKPORT_USERSEL_NET_SCH_CODEL) += sch_codel.o
 sch_fq_codel-y = sch_fq_codel_core.o flow_dissector.o
 obj-$(CPTCFG_BACKPORT_USERSEL_NET_SCH_FQ_CODEL) += sch_fq_codel.o
 
+obj-$(CPTCFG_BACKPORT_BUILD_CORDIC) += cordic.o
+obj-$(CPTCFG_BACKPORT_BUILD_CRC8) += crc8.o
+
 # Compat kernel compatibility code
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_14) += compat-2.6.14.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_18) += compat-2.6.18.o
@@ -45,6 +48,4 @@ compat-$(CPTCFG_BACKPORT_KERNEL_3_8) += compat-3.8.o
 compat-$(CPTCFG_BACKPORT_KERNEL_3_9) += compat-3.9.o
 
 compat-$(CPTCFG_BACKPORT_BUILD_KFIFO) += kfifo.o
-compat-$(CPTCFG_BACKPORT_BUILD_CORDIC) += cordic.o
-compat-$(CPTCFG_BACKPORT_BUILD_CRC8) += crc8.o
 compat-$(CPTCFG_BACKPORT_BUILD_GENERIC_ATOMIC64) += compat_atomic.o

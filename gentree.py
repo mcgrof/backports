@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 #
-# Generate the output tree, by default in the output/ directory
-# but a different one may be specified. The directory must be
-# empty already. It's also allowed to not exist.
+# Generate the output tree into a specified directory.
 #
 
 import argparse, sys, os, errno, shutil, re, subprocess
@@ -10,9 +8,16 @@ import argparse, sys, os, errno, shutil, re, subprocess
 # find self
 source_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
 sys.path.append(os.path.join(source_dir, 'lib'))
+# and import libraries we have
 import kconfig, git, patch, make
 
+
 def read_copy_list(copyfile):
+    """
+    Read a copy-list file and return a list of (source, target)
+    tuples. The source and target are usually the same, but in
+    the copy-list file there may be a rename included.
+    """
     ret = []
     for item in copyfile:
         # remove leading/trailing whitespace
@@ -31,9 +36,16 @@ def read_copy_list(copyfile):
         ret.append((srcitem, dstitem))
     return ret
 
+
 def read_dependencies(depfilename):
+    """
+    Read a (the) dependency file and return the list of
+    dependencies as a dictionary, mapping a Kconfig symbol
+    to a list of kernel version dependencies. While reading
+    ignore blank/commented lines.
+    """
     ret = {}
-    depfile = open(depfilename)
+    depfile = open(depfilename, 'r')
     for item in depfile:
         item = item.strip()
         if not item or item[0] == '#':
@@ -45,7 +57,14 @@ def read_dependencies(depfilename):
             ret[sym].append(dep)
     return ret
 
+
 def check_output_dir(d, clean):
+    """
+    Check that the output directory doesn't exist or is empty,
+    unless clean is True in which case it's nuked. This helps
+    sanity check the output when generating a tree, so usually
+    running with --clean isn't suggested.
+    """
     if clean:
         shutil.rmtree(d, ignore_errors=True)
     try:
@@ -54,7 +73,12 @@ def check_output_dir(d, clean):
         if e.errno != errno.ENOENT:
             raise
 
+
 def copytree(src, dst, symlinks=False, ignore=None):
+    """
+    Copy a directory tree. This differs from shutil.copytree()
+    in that it allows destination directories to already exist.
+    """
     names = os.listdir(src)
     if ignore is not None:
         ignored_names = ignore(src, names)
@@ -93,7 +117,19 @@ def copytree(src, dst, symlinks=False, ignore=None):
     if errors:
         raise shutil.Error(errors)
 
+
 def copy_files(srcpath, copy_list, outdir):
+    """
+    Copy the copy_list files and directories from the srcpath
+    to the outdir. The copy_list contains source and target
+    names.
+
+    For now, it also ignores any *~ editor backup files, though
+    this should probably be generalized (maybe using .gitignore?)
+    Similarly the code that only copies some files (*.c, *.h,
+    *.awk, Kconfig, Makefile) to avoid any build remnants in the
+    kernel if they should exist.
+    """
     for srcitem, tgtitem in copy_list:
         if tgtitem == '':
             copytree(srcpath, outdir, ignore=shutil.ignore_patterns('*~'))
@@ -120,7 +156,12 @@ def copy_files(srcpath, copy_list, outdir):
             shutil.copy(os.path.join(srcpath, srcitem),
                         os.path.join(outdir, tgtitem))
 
+
 def copy_git_files(srcpath, copy_list, rev, outdir):
+    """
+    "Copy" files from a git repository. This really means listing them with
+    ls-tree and then using git show to obtain all the blobs.
+    """
     for srcitem, tgtitem in copy_list:
         for m, t, h, f in git.ls_tree(rev=rev, files=(srcitem,), tree=srcpath):
             assert t == 'blob'
@@ -133,16 +174,27 @@ def copy_git_files(srcpath, copy_list, rev, outdir):
             outf.close()
             os.chmod(f, int(m, 8))
 
+
 def git_debug_init(args):
+    """
+    Initialize a git repository in the output directory and commit the current
+    code in it. This is only used for debugging the transformations this code
+    will do to the output later.
+    """
     if not args.gitdebug:
         return
     git.init(tree=args.outdir)
     git.commit_all("Copied code", tree=args.outdir)
 
+
 def git_debug_snapshot(args, name):
+    """
+    Take a git snapshot for the debugging.
+    """
     if not args.gitdebug:
         return
     git.commit_all(name, tree=args.outdir)
+
 
 def main():
     # set up and parse arguments
@@ -173,9 +225,9 @@ def main():
                         action='append', default=[], help='Extra driver directory/copy-list.')
     args = parser.parse_args()
 
-    # then add stuff from the copy list file
-    copy_list = read_copy_list(args.copy_list)
+    # start processing ...
 
+    copy_list = read_copy_list(args.copy_list)
     deplist = read_dependencies(os.path.join(source_dir, 'dependencies'))
 
     # validate output directory
@@ -191,12 +243,11 @@ def main():
         copy_files(os.path.join(source_dir, 'backport'), [('', '')], args.outdir)
         copy_git_files(args.kerneldir, copy_list, args.git_revision, args.outdir)
 
+    # FIXME: should we add a git version of this (e.g. --git-extra-driver)?
     for src, copy_list in args.extra_driver:
         copy_files(src, read_copy_list(open(copy_list, 'r')), args.outdir)
 
     git_debug_init(args)
-
-    git_debug_snapshot(args, "add versions/symbols files")
 
     print 'Apply patches ...'
     patchdirs = []
@@ -208,12 +259,17 @@ def main():
         l = os.listdir(pdir)
         printed = False
         for pfile in l:
+            # FIXME: again, use .gitignore?
             if pfile[-1] == '~':
                 continue
             pfile = os.path.join(pdir, pfile)
+            # read the patch file
             p = patch.fromfile(pfile)
+            # if it is one ...
             if not p:
                 continue
+            # check if the first file the patch touches exists, if so
+            # assume the patch needs to be applied -- otherwise continue
             patched_file = '/'.join(p.items[0].source.split('/')[1:])
             fullfn = os.path.join(args.outdir, patched_file)
             if not os.path.exists(fullfn):
@@ -223,10 +279,12 @@ def main():
                     print "Applying changes from", os.path.basename(pdir)
                 printed = True
             if args.refresh:
+                # but for refresh, of course look at all files the patch touches
                 for patchitem in p.items:
                     patched_file = '/'.join(patchitem.source.split('/')[1:])
                     fullfn = os.path.join(args.outdir, patched_file)
                     shutil.copyfile(fullfn, fullfn + '.orig_file')
+
             process = subprocess.Popen(['patch', '-p1'], stdout=subprocess.PIPE,
                                        stderr=subprocess.STDOUT, stdin=subprocess.PIPE,
                                        close_fds=True, universal_newlines=True,
@@ -243,7 +301,8 @@ def main():
                     print "Failed to apply changes from", os.path.basename(pdir)
                     for line in output:
                         print '>', line
-                sys.exit(2)
+                return 2
+
             if args.refresh:
                 pfilef = open(pfile + '.tmp', 'w')
                 for patchitem in p.items:
@@ -260,9 +319,10 @@ def main():
                         print "Diffing for refresh failed!"
                         pfilef.close()
                         os.unlink(pfile + '.tmp')
-                        sys.exit(3)
+                        return 3
                 pfilef.close()
                 os.rename(pfile + '.tmp', pfile)
+
         # remove orig/rej files that patch sometimes creates
         for root, dirs, files in os.walk(args.outdir):
             for f in files:
@@ -295,11 +355,13 @@ def main():
 
     symbols = configtree.symbols()
 
-    # write local symbol list
+    # write local symbol list -- needed during build
     f = open(os.path.join(args.outdir, '.local-symbols'), 'w')
     for sym in symbols:
         f.write('%s=\n' % sym)
     f.close()
+
+    git_debug_snapshot(args, "add versions/symbols files")
 
     print 'Rewrite Makefiles and Kconfig files ...'
 
@@ -335,6 +397,8 @@ def main():
     configtree.disable_symbols(disable_kconfig)
     git_debug_snapshot(args, "disable impossible kconfig symbols")
 
+    # add kernel version dependencies to Kconfig, from the dependency list
+    # we read previously
     for sym in tuple(deplist.keys()):
         new = []
         for dep in deplist[sym]:
@@ -343,6 +407,14 @@ def main():
     configtree.add_dependencies(deplist)
     git_debug_snapshot(args, "add kernel version dependencies")
 
+    # disable things in makefiles that can't be selected and that the
+    # build shouldn't recurse into because they don't exist -- if we
+    # don't do that then a symbol from the kernel could cause the build
+    # to attempt to recurse and fail
+    #
+    # Note that we split the regex after 50 symbols, this is because of a
+    # limitation in the regex implementation (it only supports 100 nested
+    # groups -- 50 seemed safer and is still fast)
     regexes = []
     for some_symbols in [disable_makefile[i:i + 50] for i in range(0, len(disable_makefile), 50)]:
         r = '(CONFIG_(' + '|'.join([s for s in some_symbols]) + '))'
@@ -358,4 +430,6 @@ def main():
 
     print 'Done!'
 
-main()
+ret = main()
+if ret:
+    sys.exit(ret)

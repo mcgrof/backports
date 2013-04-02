@@ -234,13 +234,17 @@ def main():
     check_output_dir(args.outdir, args.clean)
 
     # do the copy
+    backport_files = [(x, x) for x in [
+        'Kconfig', 'Makefile', 'Makefile.build', 'Makefile.kernel',
+        'Makefile.real', 'compat/', 'include/', 'kconfig/',
+    ]]
     if not args.git_revision:
         print 'Copy original source files ...'
-        copy_files(os.path.join(source_dir, 'backport'), [('', '')], args.outdir)
+        copy_files(os.path.join(source_dir, 'backport'), backport_files, args.outdir)
         copy_files(args.kerneldir, copy_list, args.outdir)
     else:
         print 'Get original source files from git ...'
-        copy_files(os.path.join(source_dir, 'backport'), [('', '')], args.outdir)
+        copy_files(os.path.join(source_dir, 'backport'), backport_files, args.outdir)
         copy_git_files(args.kerneldir, copy_list, args.git_revision, args.outdir)
 
     # FIXME: should we add a git version of this (e.g. --git-extra-driver)?

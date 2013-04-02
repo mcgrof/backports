@@ -13,3 +13,5 @@ obj-$(CPTCFG_RFKILL) += net/rfkill/
 obj-$(CPTCFG_WLAN) += drivers/net/wireless/
 obj-$(CPTCFG_BT) += net/bluetooth/
 obj-$(CPTCFG_BT) += drivers/bluetooth/
+obj-$(CPTCFG_SSB) += drivers/ssb/
+obj-$(CPTCFG_BCMA) += drivers/bcma/

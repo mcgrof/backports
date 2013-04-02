@@ -176,12 +176,14 @@ def main():
     check_output_dir(args.outdir, args.clean)
 
     # do the copy
+    print 'Copy original source files ...'
     copy_files(copy_list, args.outdir)
 
     git_debug_init(args)
 
     # some post-processing is required
     configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))
+    print 'Modify Kconfig tree ...'
     configtree.prune_sources(ignore=['Kconfig.kernel', 'Kconfig.versions'])
     git_debug_snapshot(args, "prune Kconfig tree")
     configtree.force_tristate_modular()
@@ -208,6 +210,7 @@ def main():
 
     git_debug_snapshot(args, "add versions/symbols files")
 
+    print 'Apply patches ...'
     patchdirs = []
     for root, dirs, files in os.walk(os.path.join(source_dir, 'patches')):
         if not dirs:
@@ -284,6 +287,8 @@ def main():
             git_debug_snapshot(args, "apply backport patches from %s" % (os.path.basename(pdir),))
 
 
+    print 'Rewrite Makefiles and Kconfig files ...'
+
     # rewrite Makefile and source symbols
     regexes = []
     for some_symbols in [symbols[i:i + 50] for i in range(0, len(symbols), 50)]:
@@ -336,5 +341,7 @@ def main():
         fo.write(data)
         fo.close()
     git_debug_snapshot(args, "disable unsatisfied Makefile parts")
+
+    print 'Done!'
 
 main()

@@ -49,3 +49,7 @@ DRM_NOUVEAU 3.3
 
 # This requires proc_create(), and that doesn't exist before 2.6.24
 LIBIPW_DEBUG 2.6.25
+
+# blink_set is used unconditionally and we don't carry a patch, so
+# this option must depend on 2.6.25 which got blink_set()
+RT2X00_LIB_LEDS 2.6.25

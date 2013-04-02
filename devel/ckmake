@@ -129,31 +129,47 @@ def process_kernel(num, kset):
 		work_dir = tmp_path + '/' + rel['version']
 		copytree(my_cwd, \
 			 work_dir, \
-			 ignore=ignore_patterns('\.git*', '.tmp*', ".git"))
+			 ignore=ignore_patterns('.tmp*', ".git"))
 		build = '%s/build/' % rel['full_path']
-		jobs = ' -j%d ' % kset.build_jobs
-		make_args = 'KLIB=%(build)s KLIB_BUILD=%(build)s' % \
-			    { "build": build }
-		log_file = work_dir + '/' + 'ckmake.n.log'
-		rel['log'] = log_file
-		# XXX: figure out how to properly address logging
-		# without this nasty ass hack.
-		log = ' > %(log)s 2>&1' % { "log": log_file }
-		nice = 'ionice -c 3 nice -n 20 '
-		cmd = nice + 'make ' + jobs + make_args + log
+		jobs = '-j%d' % kset.build_jobs
+		make_args =['KLIB=%s' % build,
+		            'KLIB_BUILD=%s' % build]
+		nice = ['ionice', '-c', '3', 'nice', '-n', '20']
 
-		my_env = os.environ.copy()
-		my_env["KCFLAGS"] = "-Wno-unused-but-set-variable"
+		log_file_name = work_dir + '/' + 'ckmake.n.log'
+		rel['log'] = log_file_name
+		log_file = open(log_file_name, 'w')
+		null_file = open('/dev/null', 'r')
+
+		all_config_name = os.path.join(work_dir, 'all.config')
+		all_config = open(all_config_name, 'w')
+		all_config.write("""
+CPTCFG_CFG80211_INTERNAL_REGDB=n
+""")
+		all_config.close()
+
+		all_config_env = os.environ.copy()
+		all_config_env["KCONFIG_ALLCONFIG"] = all_config_name
 
 		kset.baking(rel)
 
-		p = subprocess.Popen([cmd],
-				     env = my_env,
-				     cwd = work_dir,
-				     stdout=None,
-				     stderr=None,
-				     shell=True)
+		p = subprocess.Popen(nice + ['make'] + make_args + ['allyesconfig'],
+				     cwd = work_dir, env=all_config_env,
+				     stdin=null_file,
+				     stdout=log_file,
+				     stderr=log_file)
 		p.wait()
+
+		if p.returncode == 0:
+			p = subprocess.Popen(nice + ['make', jobs] + make_args,
+					     cwd = work_dir,
+					     stdin=null_file,
+					     stdout=log_file,
+					     stderr=log_file)
+			p.wait()
+
+		log_file.close()
+		null_file.close()
 
 		kset.update_status(rel, p.returncode)
 		kset.queue.task_done()

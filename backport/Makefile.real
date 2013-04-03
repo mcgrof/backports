@@ -22,13 +22,13 @@ alldefconfig randconfig:
 	@$(MAKE) -C kconfig conf
 	@./kconfig/conf --$@ Kconfig
 
-.PHONY: defconfig
-defconfig:
+.PHONY: usedefconfig
+usedefconfig:
 	@$(MAKE) -C kconfig conf
-	@./kconfig/conf --defconfig defconfig
+	@./kconfig/conf --defconfig=defconfig Kconfig
 
 .config:
-	@test -f defconfig && (yes '' | $(MAKE) alldefconfig) || (	\
+	@test -f defconfig && (yes '' | $(MAKE) usedefconfig) || (	\
 	echo "/--------------"						;\
 	echo "| Your backport package isn't configured, please configure it" ;\
 	echo "| using one of the following options:"			;\

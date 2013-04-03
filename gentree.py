@@ -224,11 +224,11 @@ def _main():
     parser.add_argument('--extra-driver', nargs=2, metavar=('<source dir>', '<copy-list>'), type=str,
                         action='append', default=[], help='Extra driver directory/copy-list.')
     args = parser.parse_args()
-    process(args.kerneldir, args.outdir, args.copy_list,
-            git_revision=args.git_revision, clean=args.clean,
-            refresh=args.refresh, base_name=args.base_name,
-            gitdebug=args.gitdebug, verbose=args.verbose,
-            extra_driver=args.extra_driver)
+    return process(args.kerneldir, args.outdir, args.copy_list,
+                   git_revision=args.git_revision, clean=args.clean,
+                   refresh=args.refresh, base_name=args.base_name,
+                   gitdebug=args.gitdebug, verbose=args.verbose,
+                   extra_driver=args.extra_driver)
 
 def process(kerneldir, outdir, copy_list_file, git_revision=None,
             clean=False, refresh=False, base_name="Linux", gitdebug=False,

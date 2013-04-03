@@ -23,7 +23,7 @@
 #	# this is an example of backporting where the version of
 #	# the FOO subsystem that we need is only available from
 #	# kernel version X.Z
-#	depends on FOO = n || BACKPORT_KERNEL_X_Z
+#	depends on !FOO || BACKPORT_KERNEL_X_Z
 #
 #	# build if driver needs it (it selects BACKPORT_FOO)
 #	default m if BACKPORT_FOO
@@ -57,7 +57,7 @@ config BACKPORT_BUILD_FW_LOADER
 	tristate
 	# RHEL6, starting from 6.0, backports the FW loader already
 	depends on !BACKPORT_RHEL_KERNEL_6_0
-	depends on FW_LOADER = n || BACKPORT_KERNEL_2_6_33
+	depends on !FW_LOADER || BACKPORT_KERNEL_2_6_33
 	default m if BACKPORT_FW_LOADER
 	default m if BACKPORT_USERSEL_BUILD_ALL
 
@@ -86,7 +86,7 @@ config BACKPORT_BUILD_KFIFO
 
 config BACKPORT_BUILD_CORDIC
 	tristate
-	depends on CORDIC = n
+	depends on !CORDIC
 	default m if BACKPORT_CORDIC
 	default m if BACKPORT_USERSEL_BUILD_ALL
 
@@ -95,7 +95,7 @@ config BACKPORT_CORDIC
 
 config BACKPORT_BUILD_CRC8
 	tristate
-	depends on CRC8 = n
+	depends on !CRC8
 	default m if BACKPORT_CRC8
 	default m if BACKPORT_USERSEL_BUILD_ALL
 
@@ -113,7 +113,7 @@ config BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN
 
 config BACKPORT_BUILD_AVERAGE
 	bool
-	depends on AVERAGE = n
+	depends on !AVERAGE
 	default y if BACKPORT_USERSEL_BUILD_ALL
 	default y if BACKPORT_AVERAGE
 

@@ -7,9 +7,9 @@ import argparse, sys, os, errno, shutil, re, subprocess
 
 # find self
 source_dir = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(os.path.join(source_dir, 'lib'))
+sys.path.append(os.path.join(source_dir))
 # and import libraries we have
-import kconfig, git, patch, make
+from lib import kconfig, git, patch, make
 
 
 def read_copy_list(copyfile):

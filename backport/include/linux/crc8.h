@@ -13,6 +13,10 @@
  * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
+#ifndef CPTCFG_BACKPORT_BUILD_CRC8_MODULE
+#include_next <linux/crc8.h>
+#else
+
 #ifndef __CRC8_H_
 #define __CRC8_H_
 
@@ -102,3 +106,4 @@ void crc8_populate_msb(u8 table[CRC8_TABLE_SIZE], u8 polynomial);
 u8 crc8(const u8 table[CRC8_TABLE_SIZE], u8 *pdata, size_t nbytes, u8 crc);
 
 #endif /* __CRC8_H_ */
+#endif /* BACKPORT_BUILD_CRC8_MODULE */

@@ -65,3 +65,21 @@ include/linux/compat_autoconf.h: .config
 .PHONY: modules
 modules: include/linux/compat_autoconf.h
 	@$(MAKE) -f Makefile.build modules
+
+.PHONY: install
+install: modules
+	@$(MAKE) -C $(KLIB_BUILD) M=$(BACKPORT_PWD)			\
+		INSTALL_MOD_DIR=$(KMODDIR) $(KMODPATH_ARG)		\
+		modules_install
+	@/sbin/depmod -ae
+	@echo
+	@echo Your backported driver modules should be installed now.
+	@echo Try loading them with modprobe.
+	@echo
+# FIXME:
+#	compress modules
+#	check depmod
+#	iwlwifi vs. iwlagn
+#	iwl4965 vs. iwlagn
+#	install/load/unload/... scripts?
+#	compat firmware class udev stuff

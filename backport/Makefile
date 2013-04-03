@@ -8,13 +8,19 @@ MAKEFLAGS += --no-print-directory
 SHELL := /bin/bash
 BACKPORT_PWD := $(shell pwd)
 
-KLIB ?= /lib/modules/$(shell uname -r)/
+KMODDIR ?= updates
+ifneq ($(origin KLIB), undefined)
+KMODPATH_ARG := "INSTALL_MOD_PATH=$(KLIB)"
+else
+KLIB := /lib/modules/$(shell uname -r)/
+KMODPATH_ARG :=
+endif
 KLIB_BUILD ?= $(KLIB)/build/
 KERNEL_CONFIG := $(KLIB_BUILD)/.config
 KERNEL_MAKEFILE := $(KLIB_BUILD)/Makefile
 CONFIG_MD5 := $(shell md5sum $(KERNEL_CONFIG) | sed 's/\s.*//')
 
-export KLIB_BUILD BACKPORT_PWD
+export KLIB KLIB_BUILD BACKPORT_PWD KMODDIR KMODPATH_ARG
 
 # disable built-in rules for this file
 .SUFFIXES:

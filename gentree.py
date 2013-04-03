@@ -137,10 +137,7 @@ def copy_files(srcpath, copy_list, outdir):
             def copy_ignore(dir, entries):
                 r = []
                 for i in entries:
-                    if (not i[-1] in ('c', 'h') and
-                        i[-4:] != '.awk' and
-                        not i in ('Kconfig', 'Makefile') and
-                        not os.path.isdir(os.path.join(dir, i))):
+                    if i[-1] in ('o', '~'):
                         r.append(i)
                 return r
             copytree(os.path.join(srcpath, srcitem),
@@ -267,7 +264,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     # do the copy
     backport_files = [(x, x) for x in [
         'Kconfig', 'Makefile', 'Makefile.build', 'Makefile.kernel',
-        'Makefile.real', 'compat/', 'include/', 'kconfig/',
+        'Makefile.real', 'compat/', 'include/', 'kconfig/', 'defconfigs/',
     ]]
     if not args.git_revision:
         logwrite('Copy original source files ...')

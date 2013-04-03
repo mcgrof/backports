@@ -27,13 +27,23 @@ usedefconfig:
 	@$(MAKE) -C kconfig conf
 	@./kconfig/conf --defconfig=defconfig Kconfig
 
+defconfig-%::
+	@$(MAKE) -C kconfig conf
+	@./kconfig/conf --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
+
 .config:
 	@test -f defconfig && (yes '' | $(MAKE) usedefconfig) || (	\
 	echo "/--------------"						;\
 	echo "| Your backport package isn't configured, please configure it" ;\
 	echo "| using one of the following options:"			;\
+	echo "| To configure manually:"					;\
+	echo "|     make oldconfig"					;\
 	echo "|     make menuconfig"					;\
-	echo "|     make allyesconfig"					;\
+	echo "|"							;\
+	echo "| To get defaults for certain drivers:"			;\
+	(cd defconfigs ; for f in $$(ls) ; do				\
+		echo "|     make defconfig-$$f"				;\
+	done )								;\
 	echo "\--"							;\
 	false )
 

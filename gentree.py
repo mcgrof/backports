@@ -224,15 +224,21 @@ def _main():
     parser.add_argument('--extra-driver', nargs=2, metavar=('<source dir>', '<copy-list>'), type=str,
                         action='append', default=[], help='Extra driver directory/copy-list.')
     args = parser.parse_args()
+
+    def logwrite(msg):
+        sys.stdout.write(msg)
+        sys.stdout.write('\n')
+        sys.stdout.flush()
+
     return process(args.kerneldir, args.outdir, args.copy_list,
                    git_revision=args.git_revision, clean=args.clean,
                    refresh=args.refresh, base_name=args.base_name,
                    gitdebug=args.gitdebug, verbose=args.verbose,
-                   extra_driver=args.extra_driver)
+                   extra_driver=args.extra_driver, logwrite=logwrite)
 
 def process(kerneldir, outdir, copy_list_file, git_revision=None,
             clean=False, refresh=False, base_name="Linux", gitdebug=False,
-            verbose=False, extra_driver=[]):
+            verbose=False, extra_driver=[], logwrite=lambda x:None):
     class Args(object):
         def __init__(self, kerneldir, outdir, copy_list_file,
                      git_revision, clean, refresh, base_name,
@@ -264,11 +270,11 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         'Makefile.real', 'compat/', 'include/', 'kconfig/',
     ]]
     if not args.git_revision:
-        print 'Copy original source files ...'
+        logwrite('Copy original source files ...')
         copy_files(os.path.join(source_dir, 'backport'), backport_files, args.outdir)
         copy_files(args.kerneldir, copy_list, args.outdir)
     else:
-        print 'Get original source files from git ...'
+        logwrite('Get original source files from git ...')
         copy_files(os.path.join(source_dir, 'backport'), backport_files, args.outdir)
         copy_git_files(args.kerneldir, copy_list, args.git_revision, args.outdir)
 
@@ -278,7 +284,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
 
     git_debug_init(args)
 
-    print 'Apply patches ...'
+    logwrite('Apply patches ...')
     patchdirs = []
     for root, dirs, files in os.walk(os.path.join(source_dir, 'patches')):
         if not dirs:
@@ -305,7 +311,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
                 continue
             if not printed:
                 if args.verbose:
-                    print "Applying changes from", os.path.basename(pdir)
+                    logwrite("Applying changes from %s" % os.path.basename(pdir))
                 printed = True
             if args.refresh:
                 # but for refresh, of course look at all files the patch touches
@@ -324,12 +330,12 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
                 output = output[:-1]
             if args.verbose:
                 for line in output:
-                    print '>', line
+                    logwrite('> %s' % line)
             if process.returncode != 0:
                 if not args.verbose:
-                    print "Failed to apply changes from", os.path.basename(pdir)
+                    logwrite("Failed to apply changes from %s" % os.path.basename(pdir))
                     for line in output:
-                        print '>', line
+                        logwrite('> %s' % line)
                 return 2
 
             if args.refresh:
@@ -345,7 +351,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
                     process.wait()
                     os.unlink(fullfn + '.orig_file')
                     if not process.returncode in (0, 1):
-                        print "Diffing for refresh failed!"
+                        logwrite("Diffing for refresh failed!")
                         pfilef.close()
                         os.unlink(pfile + '.tmp')
                         return 3
@@ -359,13 +365,13 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
                     os.unlink(os.path.join(root, f))
         if not printed:
             if args.verbose:
-                print "Not applying changes from %s, not needed" % (os.path.basename(pdir),)
+                logwrite("Not applying changes from %s, not needed" % (os.path.basename(pdir),))
         else:
             git_debug_snapshot(args, "apply backport patches from %s" % (os.path.basename(pdir),))
 
     # some post-processing is required
     configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))
-    print 'Modify Kconfig tree ...'
+    logwrite('Modify Kconfig tree ...')
     configtree.prune_sources(ignore=['Kconfig.kernel', 'Kconfig.versions'])
     git_debug_snapshot(args, "prune Kconfig tree")
     configtree.force_tristate_modular()
@@ -392,7 +398,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
 
     git_debug_snapshot(args, "add versions/symbols files")
 
-    print 'Rewrite Makefiles and Kconfig files ...'
+    logwrite('Rewrite Makefiles and Kconfig files ...')
 
     # rewrite Makefile and source symbols
     regexes = []
@@ -455,7 +461,8 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         fo.close()
     git_debug_snapshot(args, "disable unsatisfied Makefile parts")
 
-    print 'Done!'
+    logwrite('Done!')
+    return 0
 
 if __name__ == '__main__':
     ret = _main()

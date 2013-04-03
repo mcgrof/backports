@@ -6,7 +6,7 @@
 import argparse, sys, os, errno, shutil, re, subprocess
 
 # find self
-source_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+source_dir = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(source_dir, 'lib'))
 # and import libraries we have
 import kconfig, git, patch, make
@@ -196,7 +196,7 @@ def git_debug_snapshot(args, name):
     git.commit_all(name, tree=args.outdir)
 
 
-def main():
+def _main():
     # set up and parse arguments
     parser = argparse.ArgumentParser(description='generate backport tree')
     parser.add_argument('kerneldir', metavar='<kernel tree>', type=str,
@@ -224,7 +224,32 @@ def main():
     parser.add_argument('--extra-driver', nargs=2, metavar=('<source dir>', '<copy-list>'), type=str,
                         action='append', default=[], help='Extra driver directory/copy-list.')
     args = parser.parse_args()
+    process(args.kerneldir, args.outdir, args.copy_list,
+            git_revision=args.git_revision, clean=args.clean,
+            refresh=args.refresh, base_name=args.base_name,
+            gitdebug=args.gitdebug, verbose=args.verbose,
+            extra_driver=args.extra_driver)
 
+def process(kerneldir, outdir, copy_list_file, git_revision=None,
+            clean=False, refresh=False, base_name="Linux", gitdebug=False,
+            verbose=False, extra_driver=[]):
+    class Args(object):
+        def __init__(self, kerneldir, outdir, copy_list_file,
+                     git_revision, clean, refresh, base_name,
+                     gitdebug, verbose, extra_driver):
+            self.kerneldir = kerneldir
+            self.outdir = outdir
+            self.copy_list = copy_list_file
+            self.git_revision = git_revision
+            self.clean = clean
+            self.refresh = refresh
+            self.base_name = base_name
+            self.gitdebug = gitdebug
+            self.verbose = verbose
+            self.extra_driver = extra_driver
+    args = Args(kerneldir, outdir, copy_list_file,
+                git_revision, clean, refresh, base_name,
+                gitdebug, verbose, extra_driver)
     # start processing ...
 
     copy_list = read_copy_list(args.copy_list)
@@ -434,6 +459,7 @@ def main():
 
     print 'Done!'
 
-ret = main()
-if ret:
-    sys.exit(ret)
+if __name__ == '__main__':
+    ret = _main()
+    if ret:
+        sys.exit(ret)

@@ -8,7 +8,8 @@ MAKEFLAGS += --no-print-directory
 SHELL := /bin/bash
 BACKPORT_PWD := $(shell pwd)
 
-KLIB_BUILD ?= /lib/modules/$(shell uname -r)/build/
+KLIB ?= /lib/modules/$(shell uname -r)/
+KLIB_BUILD ?= $(KLIB)/build/
 KERNEL_CONFIG := $(KLIB_BUILD)/.config
 KERNEL_MAKEFILE := $(KLIB_BUILD)/Makefile
 CONFIG_MD5 := $(shell md5sum $(KERNEL_CONFIG) | sed 's/\s.*//')

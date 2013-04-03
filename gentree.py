@@ -418,10 +418,8 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     disable_kconfig = []
     disable_makefile = []
     for sym in maketree.get_impossible_symbols():
-        if sym[:7] == 'CPTCFG_':
-            disable_kconfig.append(sym[7:])
-        else:
-            disable_makefile.append(sym[7:])
+        disable_kconfig.append(sym[7:])
+        disable_makefile.append(sym[7:])
 
     configtree.disable_symbols(disable_kconfig)
     git_debug_snapshot(args, "disable impossible kconfig symbols")
@@ -446,12 +444,12 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     # groups -- 50 seemed safer and is still fast)
     regexes = []
     for some_symbols in [disable_makefile[i:i + 50] for i in range(0, len(disable_makefile), 50)]:
-        r = '(CONFIG_(' + '|'.join([s for s in some_symbols]) + '))'
+        r = '((CPTCFG|CONFIG)_(' + '|'.join([s for s in some_symbols]) + '))'
         regexes.append(re.compile(r, re.MULTILINE))
     for f in maketree.get_makefiles():
         data = open(f, 'r').read()
         for r in regexes:
-            data = r.sub(r'IMPOSSIBLE_\2', data)
+            data = r.sub(r'IMPOSSIBLE_\3', data)
         fo = open(f, 'w')
         fo.write(data)
         fo.close()

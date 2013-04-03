@@ -12,7 +12,24 @@
 #
 # config BACKPORT_BUILD_FOO
 #	tristate
-#	default m if BACKPORT_FOO && !FOO
+#	# or bool
+#
+#	# not possible on kernel < X.Y, build will fail if any
+#	# drivers are allowed to build on kernels < X.Y
+#	depends on BACKPORT_KERNEL_X_Y
+#
+#	# don't build the backport code if FOO is in the kernel
+#	# already, but only if the kernel version is also >= X.Z;
+#	# this is an example of backporting where the version of
+#	# the FOO subsystem that we need is only available from
+#	# kernel version X.Z
+#	depends on !FOO || BACKPORT_KERNEL_X_Z
+#
+#	# build if driver needs it (it selects BACKPORT_FOO)
+#	default m if BACKPORT_FOO
+#
+#	# or for build-testing (BACKPORT_USERSEL_BUILD_ALL is enabled)
+#	default m if BACKPORT_USERSEL_BUILD_ALL
 #
 # config BACKPORT_FOO
 #	bool
@@ -69,7 +86,8 @@ config BACKPORT_BUILD_KFIFO
 
 config BACKPORT_BUILD_CORDIC
 	tristate
-	default m if BACKPORT_CORDIC && !CORDIC
+	depends on !CORDIC
+	default m if BACKPORT_CORDIC
 	default m if BACKPORT_USERSEL_BUILD_ALL
 
 config BACKPORT_CORDIC
@@ -77,7 +95,8 @@ config BACKPORT_CORDIC
 
 config BACKPORT_BUILD_CRC8
 	tristate
-	default m if BACKPORT_CRC8 && !CRC8
+	depends on !CRC8
+	default m if BACKPORT_CRC8
 	default m if BACKPORT_USERSEL_BUILD_ALL
 
 config BACKPORT_CRC8
@@ -94,8 +113,9 @@ config BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN
 
 config BACKPORT_BUILD_AVERAGE
 	bool
+	depends on !AVERAGE
 	default y if BACKPORT_USERSEL_BUILD_ALL
-	default y if !AVERAGE && BACKPORT_AVERAGE
+	default y if BACKPORT_AVERAGE
 
 config BACKPORT_AVERAGE
 	bool

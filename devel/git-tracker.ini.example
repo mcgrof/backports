@@ -27,7 +27,10 @@ cachedir = /tmp/work
 #
 # Optional parameters in each section are:
 #  * branches	comma separated list of branches, default "master"
+#  * defconfig	if given, create a symlink defconfig -> defconfigs/<this>
+#		to allow just 'make' to work in the output directory
 #
 [iwlwifi]
 input = git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi.git
 output = /tmp/test.git
+defconfig = iwlwifi

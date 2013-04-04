@@ -39,7 +39,7 @@ def update_cache_objects(gittree, objdir):
         git.remote_update(objdir)
 
 def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, backport_rev, kernel_rev,
-                  prev_kernel_rev=None):
+                  prev_kernel_rev=None, defconfig=None):
     log = []
     def logwrite(l):
         log.append(l)
@@ -65,6 +65,8 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
 
         if not failure:
             git.rm(opts=['--ignore-unmatch', '-q', '--cached', '-r', '.'], tree=wdir)
+            if defconfig:
+                os.symlink('defconfigs/%s' % defconfig, os.path.join(wdir, 'defconfig'))
             git.add('.', tree=wdir)
         else:
             git.reset(opts=['-q'], tree=wdir)
@@ -137,6 +139,9 @@ if __name__ == '__main__':
         for tree in trees:
             input = config.get(tree, 'input')
             output = config.get(tree, 'output')
+            defconfig = None
+            if config.has_option(tree, 'defconfig'):
+                defconfig = config.get(tree, 'defconfig')
             branches = [r.strip() for r in config.get(tree, 'branches').split(',')]
 
             update_cache_objects(input, kernelobjdir)
@@ -173,7 +178,7 @@ if __name__ == '__main__':
                         handle_commit(args, "Initialize backport branch\n\nCreate the new git tracker backport branch.",
                                       branch, tree, kernelobjdir,
                                       branch_tmpdir, wgitdir, backport_rev,
-                                      kernel_head)
+                                      kernel_head, defconfig=defconfig)
                         continue
                     if old_data['backport'] == backport_rev and old_data[tree] == kernel_head:
                         continue
@@ -182,7 +187,7 @@ if __name__ == '__main__':
                         handle_commit(args, "Update backport tree\n\n",
                                       branch, tree, kernelobjdir,
                                       branch_tmpdir, wgitdir, backport_rev,
-                                      kernel_head)
+                                      kernel_head, defconfig=defconfig)
                         continue
                     # update from old to new
                     if prefail in old_data:
@@ -206,6 +211,6 @@ if __name__ == '__main__':
                             pass
                         failure = handle_commit(args, msg, branch, tree, kernelobjdir, branch_tmpdir,
                                                 wgitdir, backport_rev, commit,
-                                                prev_kernel_rev=prev)
+                                                prev_kernel_rev=prev, defconfig=defconfig)
                         if not failure:
                             prev = commit

@@ -10,3 +10,5 @@ Kconfig.versions
 modules.order
 include/linux/compat_autoconf.h
 modules
+kconfig/mconf
+kconfig/conf

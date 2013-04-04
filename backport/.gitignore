@@ -5,8 +5,12 @@ Kconfig.versions
 .config.old
 *~
 *.o
+*.d
+.tmp_*
 *.ko
 *.cmd
+*.tmp
+*.ver
 modules.order
 include/linux/compat_autoconf.h
 modules

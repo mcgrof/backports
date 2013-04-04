@@ -381,8 +381,8 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     kernel_version = git.describe(tree=args.kerneldir)
     f = open(os.path.join(args.outdir, 'versions'), 'w')
     f.write('BACKPORTS_VERSION="%s"\n' % backports_version)
-    f.write('KERNEL_VERSION="%s"\n' % kernel_version)
-    f.write('KERNEL_NAME="%s"\n' % args.base_name)
+    f.write('BACKPORTED_KERNEL_VERSION="%s"\n' % kernel_version)
+    f.write('BACKPORTED_KERNEL_NAME="%s"\n' % args.base_name)
     f.close()
 
     symbols = configtree.symbols()

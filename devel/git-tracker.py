@@ -93,17 +93,13 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
     return failure
 
 if __name__ == '__main__':
-    os.chdir(source_dir)
-
     parser = argparse.ArgumentParser(description='backport git tracker')
     parser.add_argument('--config', metavar='<config-file>', type=str,
-                        default='git-tracker.ini',
+                        default=os.path.join(source_dir, 'devel', 'git-tracker.ini'),
                         help='Configuration file for the tracker')
     parser.add_argument('--copy-list', metavar='<listfile>', type=str,
-                        default='copy-list',
+                        default=os.path.join(source_dir, 'copy-list'),
                         help='File containing list of files/directories to copy')
-    parser.add_argument('--verbose', const=True, default=False, action="store_const",
-                        help='Print more verbose information')
     args = parser.parse_args()
 
     # Load configuration

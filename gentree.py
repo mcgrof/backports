@@ -235,7 +235,8 @@ def _main():
 
 def process(kerneldir, outdir, copy_list_file, git_revision=None,
             clean=False, refresh=False, base_name="Linux", gitdebug=False,
-            verbose=False, extra_driver=[], logwrite=lambda x:None):
+            verbose=False, extra_driver=[], logwrite=lambda x:None,
+            kernel_version_name=None, backport_version_name=None):
     class Args(object):
         def __init__(self, kerneldir, outdir, copy_list_file,
                      git_revision, clean, refresh, base_name,
@@ -377,8 +378,8 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     git_debug_snapshot(args, "convert select to depends on")
 
     # write the versioning file
-    backports_version = git.describe(tree=source_dir)
-    kernel_version = git.describe(tree=args.kerneldir)
+    backports_version = backport_version_name or git.describe(tree=source_dir)
+    kernel_version = kernel_version_name or git.describe(tree=args.kerneldir)
     f = open(os.path.join(args.outdir, 'versions'), 'w')
     f.write('BACKPORTS_VERSION="%s"\n' % backports_version)
     f.write('BACKPORTED_KERNEL_VERSION="%s"\n' % kernel_version)

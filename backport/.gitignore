@@ -12,3 +12,6 @@ include/linux/compat_autoconf.h
 modules
 kconfig/mconf
 kconfig/conf
+.tmp_versions
+Module.symvers
+*.mod.c

@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/broadcom/b44.c
 +++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -2170,7 +2170,7 @@
+@@ -2170,7 +2170,7 @@ static int b44_init_one(struct ssb_devic
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ath/ath6kl/usb.c
 +++ b/drivers/net/wireless/ath/ath6kl/usb.c
-@@ -1207,7 +1207,9 @@
+@@ -1207,7 +1207,9 @@ static struct usb_driver ath6kl_usb_driv
  	.disconnect = ath6kl_usb_remove,
  	.id_table = ath6kl_usb_ids,
  	.supports_autosuspend = true,

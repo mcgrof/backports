@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atlx/atlx.c
 +++ b/drivers/net/ethernet/atheros/atlx/atlx.c
-@@ -149,7 +149,11 @@
+@@ -149,7 +149,11 @@ static void atlx_set_multi(struct net_de
  
  	/* compute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev) {

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/iwlwifi/pcie/internal.h
 +++ b/drivers/net/wireless/iwlwifi/pcie/internal.h
-@@ -311,6 +311,9 @@
+@@ -311,6 +311,9 @@ struct iwl_trans_pcie {
  
  	/*protect hw register */
  	spinlock_t reg_lock;

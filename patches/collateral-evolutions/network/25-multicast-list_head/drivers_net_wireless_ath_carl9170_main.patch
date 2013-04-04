@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ath/carl9170/main.c
 +++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -967,17 +967,35 @@
+@@ -967,17 +967,35 @@ out:
  	return err;
  }
  

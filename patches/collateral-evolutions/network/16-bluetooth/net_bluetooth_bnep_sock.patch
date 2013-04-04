@@ -1,6 +1,6 @@
 --- a/net/bluetooth/bnep/sock.c
 +++ b/net/bluetooth/bnep/sock.c
-@@ -186,8 +186,12 @@
+@@ -186,8 +186,12 @@ static struct proto bnep_proto = {
  	.obj_size	= sizeof(struct bt_sock)
  };
  

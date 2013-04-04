@@ -1,6 +1,6 @@
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -160,6 +160,7 @@
+@@ -160,6 +160,7 @@ int cfg80211_dev_rename(struct cfg80211_
  	return 0;
  }
  
@@ -8,7 +8,7 @@
  int cfg80211_switch_netns(struct cfg80211_registered_device *rdev,
  			  struct net *net)
  {
-@@ -204,6 +205,7 @@
+@@ -204,6 +205,7 @@ int cfg80211_switch_netns(struct cfg8021
  
  	return 0;
  }
@@ -16,7 +16,7 @@
  
  static void cfg80211_rfkill_poll(struct rfkill *rfkill, void *data)
  {
-@@ -372,7 +374,9 @@
+@@ -372,7 +374,9 @@ struct wiphy *wiphy_new(const struct cfg
  	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
  #endif
  
@@ -26,7 +26,7 @@
  
  	rdev->rfkill_ops.set_block = cfg80211_rfkill_set_block;
  	rdev->rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
-@@ -919,8 +923,10 @@
+@@ -919,8 +923,10 @@ static int cfg80211_netdev_notifier_call
  		wdev->identifier = ++rdev->wdev_id;
  		list_add_rcu(&wdev->list, &rdev->wdev_list);
  		rdev->devlist_generation++;
@@ -37,7 +37,7 @@
  
  		if (sysfs_create_link(&dev->dev.kobj, &rdev->wiphy.dev.kobj,
  				      "phy80211")) {
-@@ -1081,6 +1087,7 @@
+@@ -1081,6 +1087,7 @@ static struct notifier_block cfg80211_ne
  	.notifier_call = cfg80211_netdev_notifier_call,
  };
  
@@ -45,7 +45,7 @@
  static void __net_exit cfg80211_pernet_exit(struct net *net)
  {
  	struct cfg80211_registered_device *rdev;
-@@ -1098,14 +1105,17 @@
+@@ -1098,14 +1105,17 @@ static void __net_exit cfg80211_pernet_e
  static struct pernet_operations cfg80211_pernet_ops = {
  	.exit = cfg80211_pernet_exit,
  };
@@ -63,7 +63,7 @@
  
  	err = wiphy_sysfs_init();
  	if (err)
-@@ -1142,8 +1152,10 @@
+@@ -1142,8 +1152,10 @@ out_fail_nl80211:
  out_fail_notifier:
  	wiphy_sysfs_exit();
  out_fail_sysfs:
@@ -74,7 +74,7 @@
  	return err;
  }
  subsys_initcall(cfg80211_init);
-@@ -1155,7 +1167,9 @@
+@@ -1155,7 +1167,9 @@ static void __exit cfg80211_exit(void)
  	unregister_netdevice_notifier(&cfg80211_netdev_notifier);
  	wiphy_sysfs_exit();
  	regulatory_exit();

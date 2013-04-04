@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2019,10 +2019,10 @@
+@@ -2019,10 +2019,10 @@ static int hwsim_register_received_nl(st
  	if (info == NULL)
  		goto out;
  
@@ -13,7 +13,7 @@
  
  	return 0;
  out:
-@@ -2059,7 +2059,7 @@
+@@ -2059,7 +2059,7 @@ static int mac80211_hwsim_netlink_notify
  	if (state != NETLINK_URELEASE)
  		return NOTIFY_DONE;
  

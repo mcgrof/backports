@@ -1,6 +1,6 @@
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -161,8 +161,12 @@
+@@ -161,8 +161,12 @@ static int bnep_net_proto_filter(struct
  }
  #endif
  

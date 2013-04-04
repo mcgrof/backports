@@ -1,6 +1,6 @@
 --- a/drivers/bluetooth/bcm203x.c
 +++ b/drivers/bluetooth/bcm203x.c
-@@ -273,7 +273,9 @@
+@@ -273,7 +273,9 @@ static struct usb_driver bcm203x_driver
  	.probe		= bcm203x_probe,
  	.disconnect	= bcm203x_disconnect,
  	.id_table	= bcm203x_table,

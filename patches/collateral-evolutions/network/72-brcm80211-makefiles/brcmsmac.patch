@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/brcm80211/brcmsmac/Makefile
 +++ b/drivers/net/wireless/brcm80211/brcmsmac/Makefile
-@@ -21,7 +21,7 @@
+@@ -21,7 +21,7 @@ ccflags-y := \
  	-I$(obj)/phy				\
  	-I$(obj)/../include
  
@@ -9,7 +9,7 @@
  	mac80211_if.o \
  	ucode_loader.o \
  	ampdu.o \
-@@ -43,11 +43,6 @@
+@@ -43,11 +43,6 @@ BRCMSMAC_OFILES := \
  	brcms_trace_events.o \
  	debug.o
  

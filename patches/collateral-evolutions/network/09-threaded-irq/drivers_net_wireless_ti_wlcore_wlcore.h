@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ti/wlcore/wlcore.h
 +++ b/drivers/net/wireless/ti/wlcore/wlcore.h
-@@ -175,7 +175,9 @@
+@@ -175,7 +175,9 @@ struct wl1271 {
  	bool initialized;
  	struct ieee80211_hw *hw;
  	bool mac80211_registered;

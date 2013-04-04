@@ -1,6 +1,6 @@
 --- a/net/mac80211/rx.c
 +++ b/net/mac80211/rx.c
-@@ -3317,7 +3317,12 @@
+@@ -3317,7 +3317,12 @@ void ieee80211_rx(struct ieee80211_hw *h
   drop:
  	kfree_skb(skb);
  }

@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2877,6 +2877,9 @@
+@@ -2877,6 +2877,9 @@ static int atl1_resume(struct device *de
  	return 0;
  }
  
@@ -10,7 +10,7 @@
  static SIMPLE_DEV_PM_OPS(atl1_pm_ops, atl1_suspend, atl1_resume);
  #define ATL1_PM_OPS	(&atl1_pm_ops)
  
-@@ -3147,7 +3150,12 @@
+@@ -3147,7 +3150,12 @@ static struct pci_driver atl1_driver = {
  	.probe = atl1_probe,
  	.remove = atl1_remove,
  	.shutdown = atl1_shutdown,

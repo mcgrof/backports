@@ -1,6 +1,6 @@
 --- a/net/mac80211/driver-ops.h
 +++ b/net/mac80211/driver-ops.h
-@@ -227,20 +227,35 @@
+@@ -227,20 +227,35 @@ static inline void drv_bss_info_changed(
  }
  
  static inline u64 drv_prepare_multicast(struct ieee80211_local *local,
@@ -36,7 +36,7 @@
  static inline void drv_set_multicast_list(struct ieee80211_local *local,
  					  struct ieee80211_sub_if_data *sdata,
  					  struct netdev_hw_addr_list *mc_list)
-@@ -256,6 +271,23 @@
+@@ -256,6 +271,23 @@ static inline void drv_set_multicast_lis
  					       allmulti, mc_list);
  	trace_drv_return_void(local);
  }

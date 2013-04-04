@@ -1,6 +1,6 @@
 --- a/drivers/bluetooth/bt3c_cs.c
 +++ b/drivers/bluetooth/bt3c_cs.c
-@@ -186,7 +186,11 @@
+@@ -186,7 +186,11 @@ static void bt3c_write_wakeup(bt3c_info_
  		return;
  
  	do {
@@ -12,7 +12,7 @@
  		register struct sk_buff *skb;
  		int len;
  
-@@ -224,7 +228,11 @@
+@@ -224,7 +228,11 @@ static void bt3c_receive(bt3c_info_t *in
  		return;
  	}
  
@@ -24,7 +24,7 @@
  
  	avail = bt3c_read(iobase, 0x7006);
  	//printk("bt3c_cs: receiving %d bytes\n", avail);
-@@ -345,7 +353,11 @@
+@@ -345,7 +353,11 @@ static irqreturn_t bt3c_interrupt(int ir
  		/* our irq handler is shared */
  		return IRQ_NONE;
  
@@ -36,7 +36,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -473,7 +485,11 @@
+@@ -473,7 +485,11 @@ static int bt3c_load_firmware(bt3c_info_
  	unsigned int iobase, size, addr, fcs, tmp;
  	int i, err = 0;
  
@@ -48,7 +48,7 @@
  
  	/* Reset */
  	bt3c_io_write(iobase, 0x8040, 0x0404);
-@@ -645,8 +661,27 @@
+@@ -645,8 +661,27 @@ static int bt3c_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -76,7 +76,7 @@
  
  	return bt3c_config(link);
  }
-@@ -657,6 +692,7 @@
+@@ -657,6 +692,7 @@ static void bt3c_detach(struct pcmcia_de
  	bt3c_release(link);
  }
  
@@ -84,7 +84,7 @@
  static int bt3c_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -695,6 +731,63 @@
+@@ -695,6 +731,63 @@ static int bt3c_check_config_notpicky(st
  	}
  	return -ENODEV;
  }
@@ -148,7 +148,7 @@
  
  static int bt3c_config(struct pcmcia_device *link)
  {
-@@ -718,9 +811,15 @@
+@@ -718,9 +811,15 @@ static int bt3c_config(struct pcmcia_dev
  	goto failed;
  
  found_port:
@@ -164,7 +164,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -755,7 +854,13 @@
+@@ -755,7 +854,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
  
  static struct pcmcia_driver bt3c_driver = {
  	.owner		= THIS_MODULE,

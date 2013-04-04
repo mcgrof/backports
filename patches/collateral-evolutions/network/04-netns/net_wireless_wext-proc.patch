@@ -1,6 +1,6 @@
 --- a/net/wireless/wext-proc.c
 +++ b/net/wireless/wext-proc.c
-@@ -98,7 +98,11 @@
+@@ -98,7 +98,11 @@ static void *wireless_dev_seq_start(stru
  		return SEQ_START_TOKEN;
  
  	off = 1;

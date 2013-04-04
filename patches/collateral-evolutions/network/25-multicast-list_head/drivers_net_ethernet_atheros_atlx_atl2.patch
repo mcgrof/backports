@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atlx/atl2.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl2.c
-@@ -159,7 +159,11 @@
+@@ -159,7 +159,11 @@ static void atl2_set_multi(struct net_de
  
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev) {

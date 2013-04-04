@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/orinoco/fw.c
 +++ b/drivers/net/wireless/orinoco/fw.c
-@@ -123,7 +123,7 @@
+@@ -123,7 +123,7 @@ orinoco_dl_firmware(struct orinoco_priva
  	dev_dbg(dev, "Attempting to download firmware %s\n", firmware);
  
  	/* Read current plug data */
@@ -9,7 +9,7 @@
  	dev_dbg(dev, "Read PDA returned %d\n", err);
  	if (err)
  		goto free;
-@@ -225,7 +225,7 @@
+@@ -225,7 +225,7 @@ symbol_dl_image(struct orinoco_private *
  		if (!pda)
  			return -ENOMEM;
  

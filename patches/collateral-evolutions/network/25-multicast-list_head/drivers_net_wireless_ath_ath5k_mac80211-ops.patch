@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ath/ath5k/mac80211-ops.c
 +++ b/drivers/net/wireless/ath/ath5k/mac80211-ops.c
-@@ -318,20 +318,42 @@
+@@ -318,20 +318,42 @@ ath5k_bss_info_changed(struct ieee80211_
  
  static u64
  ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -43,7 +43,7 @@
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -340,6 +362,9 @@
+@@ -340,6 +362,9 @@ ath5k_prepare_multicast(struct ieee80211
  		* need to inform below not to reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */

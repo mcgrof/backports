@@ -1,6 +1,6 @@
 --- a/net/rfkill/core.c
 +++ b/net/rfkill/core.c
-@@ -826,7 +826,7 @@
+@@ -826,7 +826,7 @@ static int rfkill_resume(struct device *
  }
  
  static struct class rfkill_class = {

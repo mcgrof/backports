@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/orinoco/hw.c
 +++ b/drivers/net/wireless/orinoco/hw.c
-@@ -1093,7 +1093,11 @@
+@@ -1093,7 +1093,11 @@ int __orinoco_hw_set_multicast_list(stru
  		netdev_for_each_mc_addr(ha, dev) {
  			if (i == mc_count)
  				break;

@@ -8,7 +8,7 @@
  
  #include <asm/uaccess.h>
  #include <asm/io.h>
-@@ -1638,10 +1639,17 @@
+@@ -1638,10 +1639,17 @@ static int b44_close(struct net_device *
  	return 0;
  }
  
@@ -26,7 +26,7 @@
  	struct b44_hw_stats *hwstat = &bp->hw_stats;
  	unsigned int start;
  
-@@ -2130,7 +2138,11 @@
+@@ -2130,7 +2138,11 @@ static const struct net_device_ops b44_n
  	.ndo_open		= b44_open,
  	.ndo_stop		= b44_close,
  	.ndo_start_xmit		= b44_start_xmit,

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -1015,7 +1015,7 @@
+@@ -1015,7 +1015,7 @@ static int lbs_add_mesh(struct lbs_priva
  	mesh_dev->ieee80211_ptr = mesh_wdev;
  	priv->mesh_dev = mesh_dev;
  

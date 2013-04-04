@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/orinoco/orinoco_cs.c
 +++ b/drivers/net/wireless/orinoco/orinoco_cs.c
-@@ -78,7 +78,11 @@
+@@ -78,7 +78,11 @@ orinoco_cs_hard_reset(struct orinoco_pri
  	/* We need atomic ops here, because we're not holding the lock */
  	set_bit(0, &card->hard_reset_in_progress);
  
@@ -12,7 +12,7 @@
  	if (err)
  		return err;
  
-@@ -108,6 +112,16 @@
+@@ -108,6 +112,16 @@ orinoco_cs_probe(struct pcmcia_device *l
  	card->p_dev = link;
  	link->priv = priv;
  
@@ -29,7 +29,7 @@
  	return orinoco_cs_config(link);
  }				/* orinoco_cs_attach */
  
-@@ -122,6 +136,7 @@
+@@ -122,6 +136,7 @@ static void orinoco_cs_detach(struct pcm
  	free_orinocodev(priv);
  }				/* orinoco_cs_detach */
  
@@ -37,7 +37,7 @@
  static int orinoco_cs_config_check(struct pcmcia_device *p_dev, void *priv_data)
  {
  	if (p_dev->config_index == 0)
-@@ -129,6 +144,98 @@
+@@ -129,6 +144,98 @@ static int orinoco_cs_config_check(struc
  
  	return pcmcia_request_io(p_dev);
  };
@@ -136,7 +136,7 @@
  
  static int
  orinoco_cs_config(struct pcmcia_device *link)
-@@ -138,10 +245,12 @@
+@@ -138,10 +245,12 @@ orinoco_cs_config(struct pcmcia_device *
  	int ret;
  	void __iomem *mem;
  
@@ -149,7 +149,7 @@
  	ret = pcmcia_loop_config(link, orinoco_cs_config_check, NULL);
  	if (ret) {
  		if (!ignore_cis_vcc)
-@@ -151,8 +260,12 @@
+@@ -151,8 +260,12 @@ orinoco_cs_config(struct pcmcia_device *
  		goto failed;
  	}
  
@@ -162,7 +162,7 @@
  	if (!mem)
  		goto failed;
  
-@@ -161,7 +274,11 @@
+@@ -161,7 +274,11 @@ orinoco_cs_config(struct pcmcia_device *
  	 * called. */
  	hermes_struct_init(hw, mem, HERMES_16BIT_REGSPACING);
  
@@ -174,7 +174,7 @@
  	if (ret)
  		goto failed;
  
-@@ -176,8 +293,16 @@
+@@ -176,8 +293,16 @@ orinoco_cs_config(struct pcmcia_device *
  	}
  
  	/* Register an interface with the stack */
@@ -191,7 +191,7 @@
  		printk(KERN_ERR PFX "orinoco_if_add() failed\n");
  		goto failed;
  	}
-@@ -331,7 +456,13 @@
+@@ -331,7 +456,13 @@ MODULE_DEVICE_TABLE(pcmcia, orinoco_cs_i
  
  static struct pcmcia_driver orinoco_driver = {
  	.owner		= THIS_MODULE,

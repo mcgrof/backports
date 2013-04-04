@@ -1,6 +1,6 @@
 --- a/net/rfkill/input.c
 +++ b/net/rfkill/input.c
-@@ -230,7 +230,7 @@
+@@ -230,7 +230,7 @@ static int rfkill_connect(struct input_h
  
  	handle->dev = dev;
  	handle->handler = handler;

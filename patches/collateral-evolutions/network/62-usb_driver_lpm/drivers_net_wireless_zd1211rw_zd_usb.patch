@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/zd1211rw/zd_usb.c
 +++ b/drivers/net/wireless/zd1211rw/zd_usb.c
-@@ -1540,7 +1540,9 @@
+@@ -1540,7 +1540,9 @@ static struct usb_driver driver = {
  	.disconnect	= disconnect,
  	.pre_reset	= pre_reset,
  	.post_reset	= post_reset,

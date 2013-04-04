@@ -1,6 +1,6 @@
 --- a/net/bluetooth/hidp/sock.c
 +++ b/net/bluetooth/hidp/sock.c
-@@ -235,8 +235,12 @@
+@@ -235,8 +235,12 @@ static struct proto hidp_proto = {
  	.obj_size	= sizeof(struct bt_sock)
  };
  

@@ -1,6 +1,6 @@
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -93,8 +93,13 @@
+@@ -93,8 +93,13 @@ static void bnep_net_set_mc_list(struct
  		netdev_for_each_mc_addr(ha, dev) {
  			if (i == BNEP_MAX_MULTICAST_FILTERS)
  				break;

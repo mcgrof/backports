@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atl1e/atl1e_ethtool.c
 +++ b/drivers/net/ethernet/atheros/atl1e/atl1e_ethtool.c
-@@ -384,6 +384,11 @@
+@@ -384,6 +384,11 @@ static const struct ethtool_ops atl1e_et
  	.get_eeprom_len         = atl1e_get_eeprom_len,
  	.get_eeprom             = atl1e_get_eeprom,
  	.set_eeprom             = atl1e_set_eeprom,

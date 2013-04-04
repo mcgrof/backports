@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/orinoco/spectrum_cs.c
 +++ b/drivers/net/wireless/orinoco/spectrum_cs.c
-@@ -170,6 +170,16 @@
+@@ -170,6 +170,16 @@ spectrum_cs_probe(struct pcmcia_device *
  	card->p_dev = link;
  	link->priv = priv;
  
@@ -17,7 +17,7 @@
  	return spectrum_cs_config(link);
  }				/* spectrum_cs_attach */
  
-@@ -184,6 +194,7 @@
+@@ -184,6 +194,7 @@ static void spectrum_cs_detach(struct pc
  	free_orinocodev(priv);
  }				/* spectrum_cs_detach */
  
@@ -25,7 +25,7 @@
  static int spectrum_cs_config_check(struct pcmcia_device *p_dev,
  				    void *priv_data)
  {
-@@ -192,6 +203,98 @@
+@@ -192,6 +203,98 @@ static int spectrum_cs_config_check(stru
  
  	return pcmcia_request_io(p_dev);
  };
@@ -124,7 +124,7 @@
  
  static int
  spectrum_cs_config(struct pcmcia_device *link)
-@@ -201,10 +304,12 @@
+@@ -201,10 +304,12 @@ spectrum_cs_config(struct pcmcia_device
  	int ret;
  	void __iomem *mem;
  
@@ -137,7 +137,7 @@
  	ret = pcmcia_loop_config(link, spectrum_cs_config_check, NULL);
  	if (ret) {
  		if (!ignore_cis_vcc)
-@@ -214,8 +319,12 @@
+@@ -214,8 +319,12 @@ spectrum_cs_config(struct pcmcia_device
  		goto failed;
  	}
  
@@ -150,7 +150,7 @@
  	if (!mem)
  		goto failed;
  
-@@ -225,7 +334,11 @@
+@@ -225,7 +334,11 @@ spectrum_cs_config(struct pcmcia_device
  	hermes_struct_init(hw, mem, HERMES_16BIT_REGSPACING);
  	hw->eeprom_pda = true;
  
@@ -162,7 +162,7 @@
  	if (ret)
  		goto failed;
  
-@@ -244,8 +357,16 @@
+@@ -244,8 +357,16 @@ spectrum_cs_config(struct pcmcia_device
  	}
  
  	/* Register an interface with the stack */
@@ -179,7 +179,7 @@
  		printk(KERN_ERR PFX "orinoco_if_add() failed\n");
  		goto failed;
  	}
-@@ -311,7 +432,13 @@
+@@ -311,7 +432,13 @@ MODULE_DEVICE_TABLE(pcmcia, spectrum_cs_
  
  static struct pcmcia_driver orinoco_driver = {
  	.owner		= THIS_MODULE,

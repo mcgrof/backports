@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/iwlwifi/dvm/led.c
 +++ b/drivers/net/wireless/iwlwifi/dvm/led.c
-@@ -162,6 +162,7 @@
+@@ -162,6 +162,7 @@ static void iwl_led_brightness_set(struc
  	iwl_led_cmd(priv, on, 0);
  }
  
@@ -8,7 +8,7 @@
  static int iwl_led_blink_set(struct led_classdev *led_cdev,
  			     unsigned long *delay_on,
  			     unsigned long *delay_off)
-@@ -170,6 +171,7 @@
+@@ -170,6 +171,7 @@ static int iwl_led_blink_set(struct led_
  
  	return iwl_led_cmd(priv, *delay_on, *delay_off);
  }
@@ -16,7 +16,7 @@
  
  void iwl_leds_init(struct iwl_priv *priv)
  {
-@@ -186,7 +188,9 @@
+@@ -186,7 +188,9 @@ void iwl_leds_init(struct iwl_priv *priv
  	priv->led.name = kasprintf(GFP_KERNEL, "%s-led",
  				   wiphy_name(priv->hw->wiphy));
  	priv->led.brightness_set = iwl_led_brightness_set;

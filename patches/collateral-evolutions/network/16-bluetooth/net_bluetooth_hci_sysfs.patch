@@ -1,6 +1,6 @@
 --- a/net/bluetooth/hci_sysfs.c
 +++ b/net/bluetooth/hci_sysfs.c
-@@ -72,7 +72,11 @@
+@@ -72,7 +72,11 @@ static struct attribute_group bt_link_gr
  	.attrs = bt_link_attrs,
  };
  
@@ -12,7 +12,7 @@
  	&bt_link_group,
  	NULL
  };
-@@ -141,7 +145,11 @@
+@@ -141,7 +145,11 @@ void hci_conn_del_sysfs(struct hci_conn
  		dev = device_find_child(&conn->dev, NULL, __match_tty);
  		if (!dev)
  			break;
@@ -24,7 +24,7 @@
  		put_device(dev);
  	}
  
-@@ -379,7 +387,11 @@
+@@ -379,7 +387,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  

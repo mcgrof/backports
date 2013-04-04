@@ -1,6 +1,6 @@
 --- a/net/bluetooth/cmtp/capi.c
 +++ b/net/bluetooth/cmtp/capi.c
-@@ -384,7 +384,11 @@
+@@ -384,7 +384,11 @@ static void cmtp_reset_ctr(struct capi_c
  
  	BT_DBG("ctrl %p", ctrl);
  

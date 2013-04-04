@@ -1,6 +1,6 @@
 --- a/net/bluetooth/cmtp/sock.c
 +++ b/net/bluetooth/cmtp/sock.c
-@@ -195,8 +195,12 @@
+@@ -195,8 +195,12 @@ static struct proto cmtp_proto = {
  	.obj_size	= sizeof(struct bt_sock)
  };
  

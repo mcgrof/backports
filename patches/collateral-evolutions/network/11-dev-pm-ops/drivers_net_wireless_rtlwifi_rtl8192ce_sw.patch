@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/rtlwifi/rtl8192ce/sw.c
 +++ b/drivers/net/wireless/rtlwifi/rtl8192ce/sw.c
-@@ -372,6 +372,9 @@
+@@ -372,6 +372,9 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
  MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
  MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
  
@@ -10,7 +10,7 @@
  static SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
  
  static struct pci_driver rtl92ce_driver = {
-@@ -379,7 +382,12 @@
+@@ -379,7 +382,12 @@ static struct pci_driver rtl92ce_driver
  	.id_table = rtl92ce_pci_ids,
  	.probe = rtl_pci_probe,
  	.remove = rtl_pci_disconnect,

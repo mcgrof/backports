@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/orinoco/hermes.h
 +++ b/drivers/net/wireless/orinoco/hermes.h
-@@ -393,7 +393,7 @@
+@@ -393,7 +393,7 @@ struct hermes_ops {
  			 u16 id, u16 offset);
  	int (*bap_pwrite)(struct hermes *hw, int bap, const void *buf,
  			  int len, u16 id, u16 offset);

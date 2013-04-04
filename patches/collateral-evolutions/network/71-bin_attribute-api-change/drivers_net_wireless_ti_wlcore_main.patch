@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ti/wlcore/main.c
 +++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -5518,7 +5518,11 @@
+@@ -5518,7 +5518,11 @@ static ssize_t wl1271_sysfs_show_hw_pg_v
  static DEVICE_ATTR(hw_pg_ver, S_IRUGO,
  		   wl1271_sysfs_show_hw_pg_ver, NULL);
  

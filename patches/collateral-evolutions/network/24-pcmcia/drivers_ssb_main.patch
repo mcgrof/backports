@@ -1,6 +1,6 @@
 --- a/drivers/ssb/main.c
 +++ b/drivers/ssb/main.c
-@@ -517,7 +517,11 @@
+@@ -517,7 +517,11 @@ static int ssb_devices_register(struct s
  			break;
  		case SSB_BUSTYPE_PCMCIA:
  #ifdef CONFIG_SSB_PCMCIAHOST

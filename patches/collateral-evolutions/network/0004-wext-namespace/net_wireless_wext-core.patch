@@ -1,6 +1,6 @@
 --- a/net/wireless/wext-core.c
 +++ b/net/wireless/wext-core.c
-@@ -342,6 +342,7 @@
+@@ -342,6 +342,7 @@ static const int compat_event_type_size[
  
  /* IW event code */
  
@@ -8,7 +8,7 @@
  static int __net_init wext_pernet_init(struct net *net)
  {
  	skb_queue_head_init(&net->wext_nlevents);
-@@ -384,6 +385,29 @@
+@@ -384,6 +385,29 @@ static void wireless_nlevent_process(str
  
  static DECLARE_WORK(wireless_nlevent_work, wireless_nlevent_process);
  
@@ -38,7 +38,7 @@
  static struct nlmsghdr *rtnetlink_ifinfo_prep(struct net_device *dev,
  					      struct sk_buff *skb)
  {
-@@ -597,8 +621,13 @@
+@@ -597,8 +621,13 @@ void wireless_send_event(struct net_devi
  
  	skb_shinfo(skb)->frag_list = compskb;
  #endif

@@ -341,7 +341,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
                 for patchitem in p.items:
                     patched_file = '/'.join(patchitem.source.split('/')[1:])
                     fullfn = os.path.join(args.outdir, patched_file)
-                    process = subprocess.Popen(['diff', '-u', patched_file + '.orig_file', patched_file,
+                    process = subprocess.Popen(['diff', '-p', '-u', patched_file + '.orig_file', patched_file,
                                                 '--label', 'a/' + patched_file,
                                                 '--label', 'b/' + patched_file],
                                                stdout=pfilef, close_fds=True,

@@ -379,7 +379,8 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
 
     # write the versioning file
     backports_version = backport_version_name or git.describe(tree=source_dir)
-    kernel_version = kernel_version_name or git.describe(tree=args.kerneldir)
+    kernel_version = kernel_version_name or git.describe(rev=args.git_revision or 'HEAD',
+                                                         tree=args.kerneldir)
     f = open(os.path.join(args.outdir, 'versions'), 'w')
     f.write('BACKPORTS_VERSION="%s"\n' % backports_version)
     f.write('BACKPORTED_KERNEL_VERSION="%s"\n' % kernel_version)

@@ -204,6 +204,6 @@ if __name__ == '__main__':
                             pass
                         failure = handle_commit(args, msg, branch, tree, kernelobjdir, branch_tmpdir,
                                                 wgitdir, backport_rev, commit,
-                                                prev_kernel_rev=prev_kernel_rev)
+                                                prev_kernel_rev=prev)
                         if not failure:
                             prev = commit

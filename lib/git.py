@@ -109,7 +109,7 @@ def remote_update(gitdir):
 
 def shortlog(from_commit, to_commit, tree=None):
     process = subprocess.Popen(['git', 'shortlog', from_commit + '..' + to_commit],
-                               stdout=subprocess.PIPE,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                close_fds=True, universal_newlines=True,
                                cwd=tree)
     stdout = process.communicate()[0]

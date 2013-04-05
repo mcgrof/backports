@@ -45,14 +45,6 @@ static inline struct sk_buff *__netdev_alloc_skb_ip_align(struct net_device *dev
 
 #define genl_dump_check_consistent(cb, user_hdr, family)
 
-/*
- * IS_ENABLED(CONFIG_FOO) evaluates to 1 if CONFIG_FOO is set to 'y' or 'm',
- * 0 otherwise.
- *
- */
-#define IS_ENABLED(option) \
-        (config_enabled(option) || config_enabled(option##_MODULE))
-
 #define IFF_TX_SKB_SHARING	0x10000	/* The interface supports sharing
 					 * skbs on transmit */
 

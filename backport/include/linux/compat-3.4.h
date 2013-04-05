@@ -6,6 +6,10 @@
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0))
 
 #include <linux/poll.h>
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,1,0))
+/* need to import it, but it only exists since kernel 3.1 */
+#include <linux/kconfig.h>
+#endif
 
 /*
  * defined here to allow things to compile but technically
@@ -145,6 +149,11 @@ static inline void eth_hw_addr_random(struct net_device *dev)
 #define _config_enabled(value) __config_enabled(__ARG_PLACEHOLDER_##value)
 #define __config_enabled(arg1_or_junk) ___config_enabled(arg1_or_junk 1, 0)
 #define ___config_enabled(__ignored, val, ...) val
+
+/* 3.1 - 3.3 had a broken version of this, so undef */
+#undef IS_ENABLED
+#define IS_ENABLED(option) \
+        (config_enabled(option) || config_enabled(option##_MODULE))
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
 /*

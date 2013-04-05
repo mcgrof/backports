@@ -9,6 +9,7 @@
 #include <linux/mm.h>
 #include <linux/fb.h>
 #include <linux/proc_fs.h>
+#include <linux/printk.h>
 
 #define sg_page_iter_page LINUX_BACKPORT(sg_page_iter_page)
 /**
@@ -105,6 +106,15 @@ static inline void *PDE_DATA(const struct inode *inode)
  * set on older kernels, so sock_flag() will always return false.
  */
 #define SOCK_SELECT_ERR_QUEUE (SOCK_QUEUE_SHRUNK + 14)
+
+/*
+ * DRM requires this, but we can't really backport it well
+ */
+static inline void __iomem *pci_platform_rom(struct pci_dev *pdev, size_t *size)
+{
+	printk(KERN_WARNING "compat: not providing pci_platform_rom!\n");
+	return NULL;
+}
 
 #else /* kernel is >= 3.10 */
 /*

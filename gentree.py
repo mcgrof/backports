@@ -137,7 +137,7 @@ def copy_files(srcpath, copy_list, outdir):
             def copy_ignore(dir, entries):
                 r = []
                 for i in entries:
-                    if i[-1] in ('o', '~'):
+                    if i[-2] == '.o' or i[-1] == '~':
                         r.append(i)
                 return r
             copytree(os.path.join(srcpath, srcitem),

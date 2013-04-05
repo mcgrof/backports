@@ -127,7 +127,18 @@ config BACKPORT_OPTION_USB_URB_THREAD_FIX
 config BACKPORT_MII
 	bool
 
+config BACKPORT_BUILD_DMA_SHARED_BUFFER
+	bool
+	depends on ANON_INODES
+	depends on !BACKPORT_KERNEL_3_0
+	depends on !DMA_SHARED_BUFFER || BACKPORT_KERNEL_3_5
+	default y if BACKPORT_DMA_SHARED_BUFFER
+	default y if BACKPORT_USERSEL_BUILD_ALL
+	#h-file linux/dma-buf.h
+	#c-file drivers/base/dma-buf.c
 
+config BACKPORT_DMA_SHARED_BUFFER
+	bool
 
 config BACKPORT_USERSEL_BUILD_ALL
 	bool "Build all compat code"

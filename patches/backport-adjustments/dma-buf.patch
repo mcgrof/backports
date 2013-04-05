@@ -1,0 +1,52 @@
+--- a/compat/dma-buf.c
++++ b/compat/dma-buf.c
+@@ -27,6 +27,9 @@
+ #include <linux/dma-buf.h>
+ #include <linux/anon_inodes.h>
+ #include <linux/export.h>
++#include <linux/file.h>
++#include <linux/fdtable.h>
++#include <linux/bitops.h>
+ 
+ static inline int is_dma_buf_file(struct file *);
+ 
+@@ -126,6 +129,27 @@ struct dma_buf *dma_buf_export(void *pri
+ }
+ EXPORT_SYMBOL_GPL(dma_buf_export);
+ 
++static void dma_buf_fd_set_flag(int fd, int flags)
++{
++	struct fdtable *fdt;
++	struct files_struct *files = current->files;
++
++	spin_lock(&files->file_lock);
++	fdt = files_fdtable(files);
++	if (flags & O_CLOEXEC)
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
++		__set_bit(fd, fdt->close_on_exec);
++#else
++		FD_SET(fd, fdt->close_on_exec);
++#endif
++	else
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
++		__clear_bit(fd, fdt->close_on_exec);
++#else
++		FD_CLR(fd, fdt->close_on_exec);
++#endif
++	spin_unlock(&files->file_lock);
++}
+ 
+ /**
+  * dma_buf_fd - returns a file descriptor for the given dma_buf
+@@ -141,9 +165,10 @@ int dma_buf_fd(struct dma_buf *dmabuf, i
+ 	if (!dmabuf || !dmabuf->file)
+ 		return -EINVAL;
+ 
+-	fd = get_unused_fd_flags(flags);
++	fd = get_unused_fd();
+ 	if (fd < 0)
+ 		return fd;
++	dma_buf_fd_set_flag(fd, flags);
+ 
+ 	fd_install(fd, dmabuf->file);
+ 

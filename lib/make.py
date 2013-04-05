@@ -4,7 +4,7 @@
 
 import os, re
 
-obj_line = re.compile(r'^obj-(?P<dep>[^\s]*)\s*.?=\s*(?P<tgt>[^\\]*)\s*(?P<cont>\\?)')
+obj_line = re.compile(r'^obj-(?P<dep>[^\s+:=]*)\s*[+:]?=\s*(?P<tgt>[^\\]*)\s*(?P<cont>\\?)')
 
 class MakeTree(object):
     def __init__(self, rootfile):

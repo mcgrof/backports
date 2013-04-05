@@ -172,6 +172,51 @@ def copy_git_files(srcpath, copy_list, rev, outdir):
             os.chmod(f, int(m, 8))
 
 
+def add_automatic_backports(args):
+    export = re.compile(r'^EXPORT_SYMBOL(_GPL)?\((?P<sym>[^\)]*)\)')
+    bpi = kconfig.get_backport_info(os.path.join(args.outdir, 'compat', 'Kconfig'))
+    for sym, vals in bpi.iteritems():
+        symtype, c_files, h_files = vals
+
+        # first copy files
+        files = []
+        for f in c_files:
+            files.append((f, os.path.join('compat', os.path.basename(f))))
+        for f in h_files:
+            files.append((os.path.join('include', f),
+                          os.path.join('include', os.path.dirname(f), 'backport-' + os.path.basename(f))))
+        if args.git_revision:
+            copy_git_files(args.kerneldir, files, args.git_revision, args.outdir)
+        else:
+            copy_files(args.kerneldir, files, args.outdir)
+
+        # now add the Makefile line
+        mf = open(os.path.join(args.outdir, 'compat', 'Makefile'), 'a+')
+        o_files = [os.path.basename(f)[:-1] + 'o' for f in c_files]
+        if symtype == 'tristate':
+            mf.write('obj-$(CPTCFG_%s) += %s\n' % (sym, ' '.join(o_files)))
+        elif symtype == 'bool':
+            mf.write('compat-$(CPTCFG_%s) += %s\n' % (sym, ' '.join(o_files)))
+
+        # finally create the include file
+        syms = []
+        for f in c_files:
+            for l in open(os.path.join(args.outdir, 'compat', os.path.basename(f)), 'r'):
+                m = export.match(l)
+                if m:
+                    syms.append(m.group('sym'))
+        for f in h_files:
+            outf = open(os.path.join(args.outdir, 'include', f), 'w')
+            outf.write('/* Automatically created during backport process */\n')
+            outf.write('#ifndef CPTCFG_%s\n' % sym)
+            outf.write('#include_next <%s>\n' % f)
+            outf.write('#else\n');
+            for s in syms:
+                outf.write('#undef %s\n' % s)
+                outf.write('#define %s LINUX_BACKPORT(%s)\n' % (s, s))
+            outf.write('#include <%s>\n' % (os.path.dirname(f) + '/backport-' + os.path.basename(f), ))
+            outf.write('#endif /* CPTCFG_%s */\n' % sym)
+
 def git_debug_init(args):
     """
     Initialize a git repository in the output directory and commit the current
@@ -181,7 +226,7 @@ def git_debug_init(args):
     if not args.gitdebug:
         return
     git.init(tree=args.outdir)
-    git.commit_all("Copied code", tree=args.outdir)
+    git.commit_all("Copied backport", tree=args.outdir)
 
 
 def git_debug_snapshot(args, name):
@@ -269,18 +314,26 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     ]]
     if not args.git_revision:
         logwrite('Copy original source files ...')
-        copy_files(os.path.join(source_dir, 'backport'), backport_files, args.outdir)
-        copy_files(args.kerneldir, copy_list, args.outdir)
     else:
         logwrite('Get original source files from git ...')
-        copy_files(os.path.join(source_dir, 'backport'), backport_files, args.outdir)
+    
+    copy_files(os.path.join(source_dir, 'backport'), backport_files, args.outdir)
+
+    git_debug_init(args)
+
+    add_automatic_backports(args)
+    git_debug_snapshot(args, 'Add automatic backports')
+
+    if not args.git_revision:
+        copy_files(args.kerneldir, copy_list, args.outdir)
+    else:
         copy_git_files(args.kerneldir, copy_list, args.git_revision, args.outdir)
 
     # FIXME: should we add a git version of this (e.g. --git-extra-driver)?
     for src, copy_list in args.extra_driver:
         copy_files(src, read_copy_list(open(copy_list, 'r')), args.outdir)
 
-    git_debug_init(args)
+    git_debug_snapshot(args, 'Add driver sources')
 
     logwrite('Apply patches ...')
     patchdirs = []

@@ -6,8 +6,10 @@ import os, re
 
 src_line = re.compile(r'^source\s+"?(?P<src>[^\s"]*)"?\s*$')
 tri_line = re.compile(r'^(?P<spc>\s+)tristate')
+bool_line = re.compile(r'^(?P<spc>\s+)bool')
 cfg_line = re.compile(r'^(config|menuconfig)\s+(?P<sym>[^\s]*)')
 sel_line = re.compile(r'^(?P<spc>\s+)select\s+(?P<sym>[^\s]*)\s*$')
+ch_line = re.compile(r'^\s+#(?P<ch>[ch])-file\s*(?P<file>.*)')
 
 class ConfigTree(object):
     def __init__(self, rootfile):
@@ -104,3 +106,51 @@ class ConfigTree(object):
             outf = open(os.path.join(self.basedir, nf), 'w')
             outf.write(out)
             outf.close()
+
+def get_backport_info(filename):
+    """
+    Return a dictionary of
+
+    CONFIG_SYMBOL => (type, C-files, H-files)
+
+    where type is 'bool' or 'tristate' and the C-files/H-files are lists
+    """
+    f = open(filename, 'r')
+    result = {}
+    conf = None
+
+    # trick to always have an empty line last
+    def append_empty(f):
+        for l in f:
+            yield l
+        yield ''
+
+    for line in append_empty(f):
+        m = cfg_line.match(line)
+        if not line.strip() or m:
+            if conf and conf_type and (c_files or h_files):
+                result[conf] = (conf_type, c_files, h_files)
+            conf = None
+            conf_type = None
+            c_files = []
+            h_files = []
+            if m:
+                conf = m.group('sym')
+            continue
+        if not conf:
+            continue
+        m = tri_line.match(line)
+        if m:
+            conf_type = 'tristate'
+            continue
+        m = bool_line.match(line)
+        if m:
+            conf_type = 'bool'
+            continue
+        m = ch_line.match(line)
+        if m:
+            if m.group('ch') == 'c':
+                c_files.append(m.group('file'))
+            elif m.group('ch') == 'h':
+                h_files.append(m.group('file'))
+    return result

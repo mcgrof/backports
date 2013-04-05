@@ -19,7 +19,7 @@
  	while (atomic_read(&sdiodev->suspend) && retry++ != 30)
  		wait_event_timeout(*wq, false, HZ/100);
 @@ -546,7 +546,7 @@ static void brcmf_ops_sdio_remove(struct
- 	brcmf_dbg(TRACE, "Exit\n");
+ 	brcmf_dbg(SDIO, "Exit\n");
  }
  
 -#ifdef CONFIG_PM_SLEEP

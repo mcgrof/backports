@@ -70,7 +70,7 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
                 print l
             newline=''
             if prev_kernel_rev:
-                msg += '\n%sprefail-%s: %s' % (PREFIX, tree, prev_kernel_rev)
+                msg += '\n%s%s-last-success: %s' % (PREFIX, tree, prev_kernel_rev)
 
         os.rename(wgitdir, os.path.join(wdir, '.git'))
 
@@ -194,8 +194,8 @@ if __name__ == '__main__':
                         continue
                     if old_data['backport'] == backport_rev and old_data[tree] == kernel_head:
                         continue
-                    prefail = 'prefail-%s' % tree
-                    if old_data[tree] == kernel_head and not prefail in old_data:
+                    last_success = '%s-last-success' % tree
+                    if old_data[tree] == kernel_head and not last_success in old_data:
                         handle_commit(args, "Update backport tree\n\n",
                                       branch, tree, kernelobjdir,
                                       branch_tmpdir, wgitdir, backport_rev,
@@ -203,8 +203,8 @@ if __name__ == '__main__':
                                       env=backport_author_env)
                         continue
                     # update from old to new
-                    if prefail in old_data:
-                        prev = old_data[prefail]
+                    if last_success in old_data:
+                        prev = old_data[last_success]
                     else:
                         prev = old_data[tree]
                     commits = git.log_commits(prev, kernel_head, tree=kernelobjdir)

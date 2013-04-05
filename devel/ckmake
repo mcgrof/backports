@@ -183,7 +183,7 @@ def cpu_info_build_jobs():
 	if not os.path.exists('/proc/cpuinfo'):
 		return 1
 	f = open('/proc/cpuinfo', 'r')
-	max_cpus = 1
+	max_cpu = 1
 	for line in f:
 		m = re.match(r"(?P<PROC>processor\s*:)\s*" \
 			     "(?P<NUM>\d+)",
@@ -191,9 +191,10 @@ def cpu_info_build_jobs():
 		if not m:
 			continue
 		proc_specs = m.groupdict()
-		if (proc_specs['NUM'] > max_cpus):
-			max_cpus = proc_specs['NUM']
-	return int(max_cpus) + 1
+		cpu_num = int(proc_specs['NUM'])
+		if cpu_num > max_cpu:
+			max_cpu = cpu_num
+	return max_cpu + 1
 
 def kill_curses():
 	curses.endwin()

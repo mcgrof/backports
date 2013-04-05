@@ -148,6 +148,8 @@ def process_kernel(num, kset, cmdline_args):
 		config_name = 'allnoconfig'
 		if cmdline_args.allyesconfig:
 			config_name = 'allyesconfig'
+		elif cmdline_args.defconfig:
+			all_config.write(open(os.path.join(work_dir, 'defconfigs', cmdline_args.defconfig)).read())
 		else:
 			all_config.write("CPTCFG_BACKPORT_USERSEL_BUILD_ALL=y\n")
 		all_config.close()
@@ -397,6 +399,8 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='compile against all kernels you have')
 	parser.add_argument('--allyesconfig', const=True, default=False, action="store_const",
 			    help='Build allyesconfig rather than only backport code.')
+	parser.add_argument('--defconfig', metavar='<name>', type=str,
+			    help='Build this defconfig rather than only backport code.')
 	args = parser.parse_args()
 
 	if not os.path.exists(modules):

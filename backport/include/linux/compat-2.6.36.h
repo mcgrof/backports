@@ -168,10 +168,10 @@ void backport_system_workqueue_destroy(void);
 int schedule_work(struct work_struct *work);
 #define schedule_work_on LINUX_BACKPORT(schedule_work_on)
 int schedule_work_on(int cpu, struct work_struct *work);
-#define compat_schedule_delayed_work LINUX_BACKPORT(compat_schedule_delayed_work)
+#define schedule_delayed_work LINUX_BACKPORT(schedule_delayed_work)
 int schedule_delayed_work(struct delayed_work *dwork,
 			  unsigned long delay);
-#define compat_schedule_delayed_work_on LINUX_BACKPORT(compat_schedule_delayed_work_on)
+#define schedule_delayed_work_on LINUX_BACKPORT(schedule_delayed_work_on)
 int schedule_delayed_work_on(int cpu,
 			     struct delayed_work *dwork,
 			     unsigned long delay);

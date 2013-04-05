@@ -41,7 +41,7 @@ def update_cache_objects(gittree, objdir):
         git.remote_update(objdir)
 
 def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, backport_rev, kernel_rev,
-                  prev_kernel_rev=None, defconfig=None, env={}):
+                  prev_kernel_rev=None, defconfig=None, env={}, commit_failure=True):
     log = []
     def logwrite(l):
         log.append(l)
@@ -93,8 +93,9 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
         'krev': kernel_rev,
       }
 
-        git.commit(msg, tree=wdir, env=env, opts=['-q', '--allow-empty'])
-        git.push(opts=['-f', '-q', 'origin', branch], tree=wdir)
+        if not failure or commit_failure:
+            git.commit(msg, tree=wdir, env=env, opts=['-q', '--allow-empty'])
+            git.push(opts=['-f', '-q', 'origin', branch], tree=wdir)
         os.rename(os.path.join(wdir, '.git'), wgitdir)
     finally:
         if os.path.isdir(wdir):
@@ -205,26 +206,42 @@ if __name__ == '__main__':
                     # update from old to new
                     if last_success in old_data:
                         prev = old_data[last_success]
+                        catch_up_from_failure = True
                     else:
                         prev = old_data[tree]
+                        catch_up_from_failure = False
                     commits = git.log_commits(prev, kernel_head, tree=kernelobjdir)
                     if len(commits) > MAX_COMMITS:
                         print "too many commits (%d)!" % len(commits)
                         sys.exit(10)
+                    prev_commits = {}
+                    p = None
+                    for commit in commits:
+                        prev_commits[commit] = p
+                        p = commit
                     for commit in commits:
                         print 'updating to commit', commit
                         env = git.commit_env_vars(commit, tree=kernelobjdir)
-                        msg = git.commit_message(commit, kernelobjdir)
-                        try:
-                            # add information about commits that went into this
-                            shortlog = git.shortlog(prev, '%s^2' % commit,
-                                                    tree=kernelobjdir)
-                            msg += "\nCommits in this merge:\n\n" + shortlog
-                        except git.ExecutionError, e:
-                            # will fail if it wasn't a merge commit
-                            pass
+                        if prev_commits[commit] == prev:
+                            # committing multiple commits
+                            msg = git.commit_message(commit, kernelobjdir)
+                            try:
+                                # add information about commits that went into this
+                                shortlog = git.shortlog(prev, '%s^2' % commit,
+                                                        tree=kernelobjdir)
+                                msg += "\nCommits in this merge:\n\n" + shortlog
+                            except git.ExecutionError, e:
+                                # will fail if it wasn't a merge commit
+                                pass
+                        else:
+                            # multiple commits
+                            env = backport_author_env
+                            msg = "update multiple kernel commits\n\nCommits taken:\n\n"
+                            msg += git.shortlog(prev, commit, tree=kernelobjdir)
                         failure = handle_commit(args, msg, branch, tree, kernelobjdir, branch_tmpdir,
                                                 wgitdir, backport_rev, commit, env=env,
-                                                prev_kernel_rev=prev, defconfig=defconfig)
+                                                prev_kernel_rev=prev, defconfig=defconfig,
+                                                commit_failure=not catch_up_from_failure)
                         if not failure:
                             prev = commit
+                            catch_up_from_failure = False

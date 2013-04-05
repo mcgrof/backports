@@ -29,6 +29,8 @@ MAX_COMMITS = 100
 
 PREFIX = 'x-git-tracker-'
 FAIL = 'failed'
+SCRIPT_GIT_NAME = 'backports git tracker'
+SCRIPT_GIT_EMAIL = ''
 
 
 def update_cache_objects(gittree, objdir):
@@ -39,12 +41,17 @@ def update_cache_objects(gittree, objdir):
         git.remote_update(objdir)
 
 def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, backport_rev, kernel_rev,
-                  prev_kernel_rev=None, defconfig=None):
+                  prev_kernel_rev=None, defconfig=None, env={}):
     log = []
     def logwrite(l):
         log.append(l)
     wdir = os.path.join(tmpdir, kernel_rev)
     os.makedirs(wdir)
+    env = env.copy()
+    env.update({
+        'GIT_COMMITTER_NAME': SCRIPT_GIT_NAME,
+        'GIT_COMMITTER_EMAIL': SCRIPT_GIT_EMAIL,
+    })
     try:
         failure = gentree.process(kernelobjdir, wdir, open(args.copy_list, 'r'),
                                   git_revision=kernel_rev,
@@ -54,6 +61,10 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
 
         newline = '\n'
         if failure:
+            env.update({
+                'GIT_AUTHOR_NAME': SCRIPT_GIT_NAME,
+                'GIT_AUTHOR_EMAIL': SCRIPT_GIT_EMAIL,
+            })
             msg = 'Failed to create backport\n\n%s%s: %s' % (PREFIX, FAIL, failure)
             for l in log:
                 print l
@@ -82,7 +93,6 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
         'krev': kernel_rev,
       }
 
-        env = git.commit_env_vars(kernel_rev, tree=kernelobjdir)
         git.commit(msg, tree=wdir, env=env, opts=['-q', '--allow-empty'])
         git.push(opts=['-f', '-q', 'origin', branch], tree=wdir)
         os.rename(os.path.join(wdir, '.git'), wgitdir)
@@ -156,6 +166,11 @@ if __name__ == '__main__':
 
                     kernel_head = git.ls_remote(branch, tree=kernelobjdir)
 
+                    backport_author_env = {
+                        'GIT_AUTHOR_NAME': SCRIPT_GIT_NAME,
+                        'GIT_AUTHOR_EMAIL': SCRIPT_GIT_EMAIL,
+                    }
+
                     old_data = {}
                     try:
                         msg = git.commit_message('HEAD', wgitdir)
@@ -174,7 +189,8 @@ if __name__ == '__main__':
                         handle_commit(args, "Initialize backport branch\n\nCreate the new git tracker backport branch.",
                                       branch, tree, kernelobjdir,
                                       branch_tmpdir, wgitdir, backport_rev,
-                                      kernel_head, defconfig=defconfig)
+                                      kernel_head, defconfig=defconfig,
+                                      env=backport_author_env)
                         continue
                     if old_data['backport'] == backport_rev and old_data[tree] == kernel_head:
                         continue
@@ -183,7 +199,8 @@ if __name__ == '__main__':
                         handle_commit(args, "Update backport tree\n\n",
                                       branch, tree, kernelobjdir,
                                       branch_tmpdir, wgitdir, backport_rev,
-                                      kernel_head, defconfig=defconfig)
+                                      kernel_head, defconfig=defconfig,
+                                      env=backport_author_env)
                         continue
                     # update from old to new
                     if prefail in old_data:
@@ -196,6 +213,7 @@ if __name__ == '__main__':
                         sys.exit(10)
                     for commit in commits:
                         print 'updating to commit', commit
+                        env = git.commit_env_vars(commit, tree=kernelobjdir)
                         msg = git.commit_message(commit, kernelobjdir)
                         try:
                             # add information about commits that went into this
@@ -206,7 +224,7 @@ if __name__ == '__main__':
                             # will fail if it wasn't a merge commit
                             pass
                         failure = handle_commit(args, msg, branch, tree, kernelobjdir, branch_tmpdir,
-                                                wgitdir, backport_rev, commit,
+                                                wgitdir, backport_rev, commit, env=env,
                                                 prev_kernel_rev=prev, defconfig=defconfig)
                         if not failure:
                             prev = commit

@@ -338,15 +338,14 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     logwrite('Apply patches ...')
     patchdirs = []
     for root, dirs, files in os.walk(os.path.join(source_dir, 'patches')):
-        if not dirs:
-            patchdirs.append(root)
+        patchdirs.append(root)
     patchdirs.sort()
     for pdir in patchdirs:
         l = os.listdir(pdir)
         printed = False
         for pfile in l:
-            # FIXME: again, use .gitignore?
-            if pfile[-1] == '~':
+            # only take .patch files
+            if pfile[-6:] != '.patch':
                 continue
             pfile = os.path.join(pdir, pfile)
             # read the patch file

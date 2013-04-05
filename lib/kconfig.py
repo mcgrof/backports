@@ -15,12 +15,12 @@ class ConfigTree(object):
         self.rootfile = os.path.basename(rootfile)
 
     def _walk(self, f):
-        list = [f]
+        yield f
         for l in open(os.path.join(self.basedir, f), 'r'):
             m = src_line.match(l)
             if m and os.path.exists(os.path.join(self.basedir, m.group('src'))):
-                list.extend(self._walk(m.group('src')))
-        return list
+                for i in self._walk(m.group('src')):
+                    yield i
 
     def _prune_sources(self, f, ignore):
         for nf in self._walk(f):

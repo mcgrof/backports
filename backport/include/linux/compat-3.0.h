@@ -119,6 +119,7 @@ static inline int __must_check kstrtos32_from_user(const char __user *s, size_t 
  * The rcu callback could happen every time also after the module was
  *  unloaded and this will cause problems.
  */
+#if !defined(kfree_rcu)
 #define kfree_rcu(data, rcuhead)		do {			\
 		void __kfree_rcu_fn(struct rcu_head *rcu_head)		\
 		{							\
@@ -128,7 +129,7 @@ static inline int __must_check kstrtos32_from_user(const char __user *s, size_t 
 		}							\
 		call_rcu(&(data)->rcuhead, __kfree_rcu_fn);		\
 	} while (0)
-
+#endif
 #ifdef MODULE
 
 /*

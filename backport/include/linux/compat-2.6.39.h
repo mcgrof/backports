@@ -18,7 +18,9 @@ static inline int __must_check PTR_RET(const void *ptr)
 		return 0;
 }
 
+#if !defined(NETIF_F_RXCSUM)
 #define NETIF_F_RXCSUM 0
+#endif
 
 #define tiocmget(tty) tiocmget(tty, NULL)
 #define tiocmset(tty, set, clear) tiocmset(tty, NULL, set, clear)

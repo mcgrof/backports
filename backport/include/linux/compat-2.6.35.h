@@ -25,6 +25,9 @@
 #define netdev_hw_addr dev_mc_list
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+
+#define qdisc_reset_all_tx_gt LINUX_BACKPORT(qdisc_reset_all_tx_gt)
+
 /* Reset all TX qdiscs greater then index of a device.  */
 static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
 {

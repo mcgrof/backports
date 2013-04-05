@@ -56,6 +56,9 @@ static inline void netdev_reset_queue(struct net_device *dev_queue)
 }
 #endif /* CONFIG_BQL */
 
+
+#define ethtool_adv_to_mii_adv_t LINUX_BACKPORT(ethtool_adv_to_mii_adv_t)
+
 /**
  * ethtool_adv_to_mii_adv_t
  * @ethadv: the ethtool advertisement settings
@@ -84,6 +87,8 @@ static inline u32 ethtool_adv_to_mii_adv_t(u32 ethadv)
 	return result;
 }
 
+#define mii_adv_to_ethtool_adv_t LINUX_BACKPORT(mii_adv_to_ethtool_adv_t)
+
 /**
  * mii_adv_to_ethtool_adv_t
  * @adv: value of the MII_ADVERTISE register
@@ -111,6 +116,8 @@ static inline u32 mii_adv_to_ethtool_adv_t(u32 adv)
 	return result;
 }
 
+#define ethtool_adv_to_mii_ctrl1000_t LINUX_BACKPORT(ethtool_adv_to_mii_ctrl1000_t)
+
 /**
  * ethtool_adv_to_mii_ctrl1000_t
  * @ethadv: the ethtool advertisement settings
@@ -130,6 +137,8 @@ static inline u32 ethtool_adv_to_mii_ctrl1000_t(u32 ethadv)
 
 	return result;
 }
+
+#define mii_ctrl1000_to_ethtool_adv_t LINUX_BACKPORT(mii_ctrl1000_to_ethtool_adv_t)
 
 /**
  * mii_ctrl1000_to_ethtool_adv_t
@@ -151,6 +160,8 @@ static inline u32 mii_ctrl1000_to_ethtool_adv_t(u32 adv)
 	return result;
 }
 
+#define mii_lpa_to_ethtool_lpa_t LINUX_BACKPORT(mii_lpa_to_ethtool_lpa_t)
+
 /**
  * mii_lpa_to_ethtool_lpa_t
  * @adv: value of the MII_LPA register
@@ -168,6 +179,8 @@ static inline u32 mii_lpa_to_ethtool_lpa_t(u32 lpa)
 
 	return result | mii_adv_to_ethtool_adv_t(lpa);
 }
+
+#define mii_stat1000_to_ethtool_lpa_t LINUX_BACKPORT(mii_stat1000_to_ethtool_lpa_t)
 
 /**
  * mii_stat1000_to_ethtool_lpa_t
@@ -189,6 +202,7 @@ static inline u32 mii_stat1000_to_ethtool_lpa_t(u32 lpa)
 	return result;
 }
 
+#define ethtool_adv_to_mii_adv_x LINUX_BACKPORT(ethtool_adv_to_mii_adv_x)
 /**
  * ethtool_adv_to_mii_adv_x
  * @ethadv: the ethtool advertisement settings
@@ -213,6 +227,8 @@ static inline u32 ethtool_adv_to_mii_adv_x(u32 ethadv)
 	return result;
 }
 
+#define mii_adv_to_ethtool_adv_x LINUX_BACKPORT(mii_adv_to_ethtool_adv_x)
+
 /**
  * mii_adv_to_ethtool_adv_x
  * @adv: value of the MII_CTRL1000 register
@@ -236,6 +252,8 @@ static inline u32 mii_adv_to_ethtool_adv_x(u32 adv)
 
 	return result;
 }
+
+#define mii_lpa_to_ethtool_lpa_x LINUX_BACKPORT(mii_lpa_to_ethtool_lpa_x)
 
 /**
  * mii_lpa_to_ethtool_lpa_x

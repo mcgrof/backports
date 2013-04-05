@@ -86,7 +86,13 @@ These are the problems and their solutions:
     original CONFIG_*. This requires that all code files (and makefiles)
     are updated to use CPTCFG_* and CPTCFG_*_MODULE instead of the CONFIG_
     versions of the same. However, not *all* CONFIG_* usage may be changed
-    since some options must come from the kernel still.
+    since some options must come from the kernel still. More importantly,
+    kernel options "leak" into the backport build and the rename avoids
+    using them. For example, if MAC80211_DEBUGFS is enabled in the kernel
+    that the backports are compiled against, but disabled in the backport
+    configuration, the rewrite ensures that it really is disabled and the
+    CONFIG_MAC80211_DEBUGFS symbol that "leaked" from the kernel has no
+    effect on the backport compilation.
     To achieve this, all Kconfig files are walked during the backporting
     process, starting at the root "Kconfig", and any symbols defined in
     them collected. Later then, only those options are renamed. They are

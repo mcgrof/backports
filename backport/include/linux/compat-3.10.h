@@ -8,6 +8,7 @@
 #include <linux/scatterlist.h>
 #include <linux/mm.h>
 #include <linux/fb.h>
+#include <linux/proc_fs.h>
 
 #define sg_page_iter_page LINUX_BACKPORT(sg_page_iter_page)
 /**
@@ -87,6 +88,15 @@ static inline void fb_enable_skip_vt_switch(struct fb_info *info)
 #define ETH_P_802_3_MIN 0x0600
 #endif
 
+/*
+ * backport of:
+ * procfs: new helper - PDE_DATA(inode)
+ */
+static inline void *PDE_DATA(const struct inode *inode)
+{
+	return PROC_I(inode)->pde->data;
+}
+
 #else /* kernel is >= 3.10 */
 /*
  * We'd delete this upstream ever got this, we use our
@@ -104,6 +114,7 @@ static inline void fb_enable_skip_vt_switch(struct fb_info *info)
 {
 	info->skip_vt_switch = true;
 }
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)) */
 
 #endif /* LINUX_3_10_COMPAT_H */

@@ -162,7 +162,7 @@ def copy_git_files(srcpath, copy_list, rev, outdir):
     for srcitem, tgtitem in copy_list:
         for m, t, h, f in git.ls_tree(rev=rev, files=(srcitem,), tree=srcpath):
             assert t == 'blob'
-            f = os.path.join(outdir, f)
+            f = os.path.join(outdir, f.replace(srcitem, tgtitem))
             d = os.path.dirname(f)
             if not os.path.exists(d):
                 os.makedirs(d)

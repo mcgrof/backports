@@ -114,3 +114,23 @@ drivers/net/ethernet/broadcom/Kconfig
 drivers/net/ethernet/broadcom/Makefile
 drivers/net/ethernet/broadcom/b44.c
 drivers/net/ethernet/broadcom/b44.h
+
+# DRM
+include/drm/
+include/uapi/drm/
+drivers/platform/x86/intel_ips.h
+
+drivers/gpu/drm/Makefile
+drivers/gpu/drm/Kconfig
+drivers/gpu/drm/ast/
+drivers/gpu/drm/cirrus/
+drivers/gpu/drm/gma500/
+drivers/gpu/drm/i2c/
+drivers/gpu/drm/i810/
+drivers/gpu/drm/i915/
+drivers/gpu/drm/mgag200/
+drivers/gpu/drm/nouveau/
+drivers/gpu/drm/radeon/
+drivers/gpu/drm/ttm/
+drivers/gpu/drm/via/
+drivers/gpu/drm/vmwgfx/

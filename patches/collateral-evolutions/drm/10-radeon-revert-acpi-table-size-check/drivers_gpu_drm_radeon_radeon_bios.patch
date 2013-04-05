@@ -1,6 +1,6 @@
 --- a/drivers/gpu/drm/radeon/radeon_bios.c
 +++ b/drivers/gpu/drm/radeon/radeon_bios.c
-@@ -554,12 +554,21 @@
+@@ -577,12 +577,21 @@ static bool radeon_acpi_vfct_bios(struct
  {
  	bool ret = false;
  	struct acpi_table_header *hdr;

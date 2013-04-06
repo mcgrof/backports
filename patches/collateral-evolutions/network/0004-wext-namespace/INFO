@@ -1,4 +1,0 @@
-
-This patch backports the namespace changes added
-through net/wireless/wext.c.
-

@@ -1,3 +1,15 @@
+ksize() was added as of 2.6.29, it gives you the actual
+size of the allocated data. Since we have no support for
+this we simply do not optimize for it and deal with
+large alloocations for the IEs.
+
+We technically could backport this as
+
+define ksize(bleh) SOME_LARGE_NUMBER
+
+but doing it this way emphasis careful review
+of the situation.
+
 --- a/drivers/net/wireless/orinoco/wext.c
 +++ b/drivers/net/wireless/orinoco/wext.c
 @@ -31,8 +31,22 @@ static int orinoco_set_key(struct orinoc

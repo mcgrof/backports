@@ -336,88 +336,82 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     git_debug_snapshot(args, 'Add driver sources')
 
     logwrite('Apply patches ...')
-    patchdirs = []
+    patches = []
     for root, dirs, files in os.walk(os.path.join(source_dir, 'patches')):
-        patchdirs.append(root)
-    patchdirs.sort()
-    for pdir in patchdirs:
-        l = os.listdir(pdir)
-        printed = False
-        for pfile in l:
-            # only take .patch files
-            if pfile[-6:] != '.patch':
-                continue
-            pfile = os.path.join(pdir, pfile)
-            # read the patch file
-            p = patch.fromfile(pfile)
-            # if it is one ...
-            if not p:
-                continue
-            # check if the first file the patch touches exists, if so
-            # assume the patch needs to be applied -- otherwise continue
-            patched_file = '/'.join(p.items[0].source.split('/')[1:])
-            fullfn = os.path.join(args.outdir, patched_file)
-            if not os.path.exists(fullfn):
-                continue
-            if not printed:
-                if args.verbose:
-                    logwrite("Applying changes from %s" % os.path.basename(pdir))
-                printed = True
-            if args.refresh:
-                # but for refresh, of course look at all files the patch touches
-                for patchitem in p.items:
-                    patched_file = '/'.join(patchitem.source.split('/')[1:])
-                    fullfn = os.path.join(args.outdir, patched_file)
-                    shutil.copyfile(fullfn, fullfn + '.orig_file')
-
-            process = subprocess.Popen(['patch', '-p1'], stdout=subprocess.PIPE,
-                                       stderr=subprocess.STDOUT, stdin=subprocess.PIPE,
-                                       close_fds=True, universal_newlines=True,
-                                       cwd=args.outdir)
-            output = process.communicate(input=open(pfile, 'r').read())[0]
-            output = output.split('\n')
-            if output[-1] == '':
-                output = output[:-1]
+        for f in files:
+            if f.endswith('.patch'):
+                patches.append(os.path.join(root, f))
+    patches.sort()
+    prefix_len = len(os.path.join(source_dir, 'patches')) + 1
+    for pfile in patches:
+        print_name = pfile[prefix_len:]
+        # read the patch file
+        p = patch.fromfile(pfile)
+        # complain if it's not a patch
+        if not p:
+            raise Exception('No patch content found in %s' % print_name)
+        # check if the first file the patch touches exists, if so
+        # assume the patch needs to be applied -- otherwise continue
+        patched_file = '/'.join(p.items[0].source.split('/')[1:])
+        fullfn = os.path.join(args.outdir, patched_file)
+        if not os.path.exists(fullfn):
             if args.verbose:
+                logwrite("Not applying %s, not needed" % print_name)
+            continue
+        if args.verbose:
+            logwrite("Applying patch %s" % print_name)
+
+        if args.refresh:
+            # but for refresh, of course look at all files the patch touches
+            for patchitem in p.items:
+                patched_file = '/'.join(patchitem.source.split('/')[1:])
+                fullfn = os.path.join(args.outdir, patched_file)
+                shutil.copyfile(fullfn, fullfn + '.orig_file')
+
+        process = subprocess.Popen(['patch', '-p1'], stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT, stdin=subprocess.PIPE,
+                                   close_fds=True, universal_newlines=True,
+                                   cwd=args.outdir)
+        output = process.communicate(input=open(pfile, 'r').read())[0]
+        output = output.split('\n')
+        if output[-1] == '':
+            output = output[:-1]
+        if args.verbose:
+            for line in output:
+                logwrite('> %s' % line)
+        if process.returncode != 0:
+            if not args.verbose:
+                logwrite("Failed to apply changes from %s" % print_name)
                 for line in output:
                     logwrite('> %s' % line)
-            if process.returncode != 0:
-                if not args.verbose:
-                    logwrite("Failed to apply changes from %s" % os.path.basename(pdir))
-                    for line in output:
-                        logwrite('> %s' % line)
-                return 2
+            return 2
 
-            if args.refresh:
-                pfilef = open(pfile + '.tmp', 'w')
-                for patchitem in p.items:
-                    patched_file = '/'.join(patchitem.source.split('/')[1:])
-                    fullfn = os.path.join(args.outdir, patched_file)
-                    process = subprocess.Popen(['diff', '-p', '-u', patched_file + '.orig_file', patched_file,
-                                                '--label', 'a/' + patched_file,
-                                                '--label', 'b/' + patched_file],
-                                               stdout=pfilef, close_fds=True,
-                                               universal_newlines=True, cwd=args.outdir)
-                    process.wait()
-                    os.unlink(fullfn + '.orig_file')
-                    if not process.returncode in (0, 1):
-                        logwrite("Diffing for refresh failed!")
-                        pfilef.close()
-                        os.unlink(pfile + '.tmp')
-                        return 3
-                pfilef.close()
-                os.rename(pfile + '.tmp', pfile)
+        if args.refresh:
+            pfilef = open(pfile + '.tmp', 'w')
+            for patchitem in p.items:
+                patched_file = '/'.join(patchitem.source.split('/')[1:])
+                fullfn = os.path.join(args.outdir, patched_file)
+                process = subprocess.Popen(['diff', '-p', '-u', patched_file + '.orig_file', patched_file,
+                                            '--label', 'a/' + patched_file,
+                                            '--label', 'b/' + patched_file],
+                                           stdout=pfilef, close_fds=True,
+                                           universal_newlines=True, cwd=args.outdir)
+                process.wait()
+                os.unlink(fullfn + '.orig_file')
+                if not process.returncode in (0, 1):
+                    logwrite("Failed to diff to refresh %s" % print_name)
+                    pfilef.close()
+                    os.unlink(pfile + '.tmp')
+                    return 3
+            pfilef.close()
+            os.rename(pfile + '.tmp', pfile)
 
         # remove orig/rej files that patch sometimes creates
         for root, dirs, files in os.walk(args.outdir):
             for f in files:
                 if f[-5:] == '.orig' or f[-4:] == '.rej':
                     os.unlink(os.path.join(root, f))
-        if not printed:
-            if args.verbose:
-                logwrite("Not applying changes from %s, not needed" % (os.path.basename(pdir),))
-        else:
-            git_debug_snapshot(args, "apply backport patches from %s" % (os.path.basename(pdir),))
+        git_debug_snapshot(args, "apply backport patch %s" % print_name)
 
     # some post-processing is required
     configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))

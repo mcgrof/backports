@@ -121,3 +121,17 @@ include/uapi/drm/
 drivers/platform/x86/intel_ips.h
 
 drivers/gpu/drm/
+
+# NFC core
+net/nfc/
+net/nfc/hci/
+net/nfc/llcp/
+net/nfc/nci/
+include/net/nfc/
+include/uapi/linux/nfc.h
+
+# NFC drivers
+drivers/nfc/
+drivers/nfc/microread/
+drivers/nfc/pn544/
+include/linux/platform_data/pn544.h

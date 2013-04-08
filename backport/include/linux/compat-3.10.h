@@ -116,6 +116,12 @@ static inline void __iomem *pci_platform_rom(struct pci_dev *pdev, size_t *size)
 	return NULL;
 }
 
+/*
+ * backport SOL_NFC -- see commit:
+ * NFC: llcp: Implement socket options
+ */
+#define SOL_NFC		280
+
 #else /* kernel is >= 3.10 */
 /*
  * We'd delete this upstream ever got this, we use our

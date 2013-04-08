@@ -65,6 +65,15 @@ class ConfigTree(object):
                     syms.append(m.group('sym'))
         return syms
 
+    def all_selects(self):
+        result = []
+        for nf in self._walk(self.rootfile):
+            for l in open(os.path.join(self.basedir, nf), 'r'):
+                m = sel_line.match(l)
+                if m:
+                    result.append(m.group('sym'))
+        return result
+
     def modify_selects(self):
         syms = self.symbols()
         for nf in self._walk(self.rootfile):

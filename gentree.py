@@ -178,7 +178,12 @@ def automatic_backport_mangle_c_file(name):
 def add_automatic_backports(args):
     export = re.compile(r'^EXPORT_SYMBOL(_GPL)?\((?P<sym>[^\)]*)\)')
     bpi = kconfig.get_backport_info(os.path.join(args.outdir, 'compat', 'Kconfig'))
+    configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))
+    all_selects = configtree.all_selects()
     for sym, vals in bpi.iteritems():
+        if sym.startswith('BACKPORT_BUILD_'):
+            if not sym[15:] in all_selects:
+                continue
         symtype, module_name, c_files, h_files = vals
 
         # first copy files
@@ -329,9 +334,6 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
 
     git_debug_init(args)
 
-    add_automatic_backports(args)
-    git_debug_snapshot(args, 'Add automatic backports')
-
     if not args.git_revision:
         copy_files(args.kerneldir, copy_list, args.outdir)
     else:
@@ -342,6 +344,9 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         copy_files(src, read_copy_list(open(copy_list, 'r')), args.outdir)
 
     git_debug_snapshot(args, 'Add driver sources')
+
+    add_automatic_backports(args)
+    git_debug_snapshot(args, 'Add automatic backports')
 
     logwrite('Apply patches ...')
     patches = []

@@ -1,5 +1,5 @@
---- a/compat/dma-buf.c
-+++ b/compat/dma-buf.c
+--- a/compat/drivers-base-dma-buf.c
++++ b/compat/drivers-base-dma-buf.c
 @@ -27,6 +27,9 @@
  #include <linux/dma-buf.h>
  #include <linux/anon_inodes.h>

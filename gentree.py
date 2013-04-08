@@ -171,17 +171,20 @@ def copy_git_files(srcpath, copy_list, rev, outdir):
             outf.close()
             os.chmod(f, int(m, 8))
 
+def automatic_backport_mangle_c_file(name):
+    return name.replace('/', '-')
+
 
 def add_automatic_backports(args):
     export = re.compile(r'^EXPORT_SYMBOL(_GPL)?\((?P<sym>[^\)]*)\)')
     bpi = kconfig.get_backport_info(os.path.join(args.outdir, 'compat', 'Kconfig'))
     for sym, vals in bpi.iteritems():
-        symtype, c_files, h_files = vals
+        symtype, module_name, c_files, h_files = vals
 
         # first copy files
         files = []
         for f in c_files:
-            files.append((f, os.path.join('compat', os.path.basename(f))))
+            files.append((f, os.path.join('compat', automatic_backport_mangle_c_file(f))))
         for f in h_files:
             files.append((os.path.join('include', f),
                           os.path.join('include', os.path.dirname(f), 'backport-' + os.path.basename(f))))
@@ -192,16 +195,21 @@ def add_automatic_backports(args):
 
         # now add the Makefile line
         mf = open(os.path.join(args.outdir, 'compat', 'Makefile'), 'a+')
-        o_files = [os.path.basename(f)[:-1] + 'o' for f in c_files]
+        o_files = [automatic_backport_mangle_c_file(f)[:-1] + 'o' for f in c_files]
         if symtype == 'tristate':
-            mf.write('obj-$(CPTCFG_%s) += %s\n' % (sym, ' '.join(o_files)))
+            if not module_name:
+                raise Exception('backporting a module requires a #module-name')
+            for of in o_files:
+                mf.write('%s-objs += %s\n' % (module_name, of))
+            mf.write('obj-$(CPTCFG_%s) += %s.o\n' % (sym, module_name))
         elif symtype == 'bool':
             mf.write('compat-$(CPTCFG_%s) += %s\n' % (sym, ' '.join(o_files)))
 
         # finally create the include file
         syms = []
         for f in c_files:
-            for l in open(os.path.join(args.outdir, 'compat', os.path.basename(f)), 'r'):
+            for l in open(os.path.join(args.outdir, 'compat',
+                                       automatic_backport_mangle_c_file(f)), 'r'):
                 m = export.match(l)
                 if m:
                     syms.append(m.group('sym'))

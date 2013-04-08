@@ -156,22 +156,6 @@ config BACKPORT_BUILD_HDMI
 config BACKPORT_HDMI
 	bool
 
-config BACKPORT_BUILD_LEDS
-	bool
-	depends on !NEW_LEDS || !LEDS_CLASS || !LEDS_TRIGGERS
-	default y if BACKPORT_NEW_LEDS
-	default y if BACKPORT_LEDS_CLASS
-	default y if BACKPORT_LEDS_TRIGGERS
-
-config BACKPORT_NEW_LEDS
-	bool
-
-config BACKPORT_LEDS_CLASS
-	bool
-
-config BACKPORT_LEDS_TRIGGERS
-	bool
-
 config BACKPORT_USERSEL_BUILD_ALL
 	bool "Build all compat code"
 	help

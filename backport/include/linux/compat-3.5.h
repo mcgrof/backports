@@ -297,6 +297,31 @@ do {								\
 #define ktime_get_monotonic_offset LINUX_BACKPORT(ktime_get_monotonic_offset)
 extern ktime_t ktime_get_monotonic_offset(void);
 
+/* This backports:
+ *
+ * commit 2033e9bf06f07e049bbc77e9452856df846714cc
+ * Author: Neil Horman <nhorman@tuxdriver.com>
+ * Date:   Tue May 29 09:30:40 2012 +0000
+ *
+ *     net: add MODULE_ALIAS_NET_PF_PROTO_NAME
+ */
+
+#define MODULE_ALIAS_NET_PF_PROTO_NAME(pf, proto, name) \
+	MODULE_ALIAS("net-pf-" __stringify(pf) "-proto-" __stringify(proto) \
+		     name)
+
+/* This backports:
+ *
+ * commit e9412c37082b5c932e83364aaed0c38c2ce33acb
+ * Author: Neil Horman <nhorman@tuxdriver.com>
+ * Date:   Tue May 29 09:30:41 2012 +0000
+ *
+ *     genetlink: Build a generic netlink family module alias
+ */
+
+#define MODULE_ALIAS_GENL_FAMILY(family)\
+ MODULE_ALIAS_NET_PF_PROTO_NAME(PF_NETLINK, NETLINK_GENERIC, "-family-" family)
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0)) */
 
 #endif /* LINUX_3_5_COMPAT_H */

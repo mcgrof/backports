@@ -155,7 +155,7 @@ int compat_genl_unregister_family(struct genl_family *family)
 }
 EXPORT_SYMBOL_GPL(compat_genl_unregister_family);
 
-#if defined(CONFIG_LEDS_CLASS) || defined(CONFIG_LEDS_CLASS_MODULE)
+#if IS_ENABLED(CONFIG_LEDS_CLASS) && !defined(CPTCFG_BACKPORT_BUILD_LEDS)
 
 #undef led_brightness_set
 #undef led_classdev_unregister

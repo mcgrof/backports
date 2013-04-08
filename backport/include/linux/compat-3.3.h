@@ -371,6 +371,27 @@ module_exit(__driver##_exit);
 #undef PCI_EXP_TYPE_RC_EC
 #define  PCI_EXP_TYPE_RC_EC    0xa     /* Root Complex Event Collector */
 
+
+/* This backports:
+ *
+ * commit 7c92784a546d2945b6d6973a30f7134be78eb7a4
+ * Author: Lars-Peter Clausen <lars@metafoo.de>
+ * Date:   Wed Nov 16 10:13:36 2011 +0100
+ *
+ *     I2C: Add helper macro for i2c_driver boilerplate
+ */
+/**
+ * module_i2c_driver() - Helper macro for registering a I2C driver
+ * @__i2c_driver: i2c_driver struct
+ *
+ * Helper macro for I2C drivers which do not do anything special in module
+ * init/exit. This eliminates a lot of boilerplate. Each module may only
+ * use this macro once, and calling it replaces module_init() and module_exit()
+ */
+#define module_i2c_driver(__i2c_driver) \
+	module_driver(__i2c_driver, i2c_add_driver, \
+			i2c_del_driver)
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)) */
 
 #endif /* LINUX_3_3_COMPAT_H */

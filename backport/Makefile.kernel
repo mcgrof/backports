@@ -23,3 +23,5 @@ obj-$(CPTCFG_SSB) += drivers/ssb/
 obj-$(CPTCFG_BCMA) += drivers/bcma/
 obj-$(CPTCFG_ETHERNET) += drivers/net/ethernet/
 obj-$(CPTCFG_DRM) += drivers/gpu/drm/
+obj-$(CPTCFG_NFC) += net/nfc/
+obj-$(CPTCFG_NFC) += drivers/nfc/

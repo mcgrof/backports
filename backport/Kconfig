@@ -36,3 +36,5 @@ source drivers/ssb/Kconfig
 source drivers/bcma/Kconfig
 
 source drivers/gpu/drm/Kconfig
+
+source net/nfc/Kconfig

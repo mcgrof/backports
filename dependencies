@@ -83,3 +83,7 @@ BRCMDBG 2.6.30
 # backport it, but I can't test that and this is a
 # lot easier right now.
 BT_HIDP 2.6.33
+
+# NFC core needs PF_NFC defined in socket.h which was
+# only introduced in kernel 3.1
+NFC 3.1

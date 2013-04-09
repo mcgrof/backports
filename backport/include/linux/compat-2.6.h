@@ -38,7 +38,11 @@ void backport_dependency_symbol(void);
 		backport_dependency_symbol();				\
 		return initfn();					\
 	}								\
-	int init_module(void) __attribute__((alias("__init_backport")));
+	int init_module(void) __attribute__((alias("__init_backport")));\
+	MODULE_VERSION("backports: " BACKPORTS_VERSION);		\
+	MODULE_VERSION("backported from: " 				\
+			BACKPORTED_KERNEL_NAME " ("			\
+			BACKPORTED_KERNEL_VERSION ")");
 
 /*
  * Each compat file represents compatibility code for new kernel

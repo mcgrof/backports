@@ -9,6 +9,9 @@ NOSTDINC_FLAGS := \
 	-I$(M)/include/drm \
 	-include $(M)/include/linux/compat-2.6.h \
 	$(call backport-cc-disable-warning, unused-but-set-variable) \
+	-DBACKPORTS_VERSION=\"$(BACKPORTS_VERSION)\" \
+	-DBACKPORTED_KERNEL_VERSION=\"$(BACKPORTED_KERNEL_VERSION)\" \
+	-DBACKPORTED_KERNEL_NAME=\"$(BACKPORTED_KERNEL_NAME)\" \
 	$(CFLAGS)
 
 obj-y += compat/

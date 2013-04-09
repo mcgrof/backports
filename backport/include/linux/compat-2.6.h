@@ -31,6 +31,16 @@
  */
 void backport_dependency_symbol(void);
 
+#ifdef BACKPORTS_GIT_TRACKED
+#define BACKPORT_MOD_VERSIONS MODULE_VERSION(BACKPORTS_GIT_TRACKED);
+#else
+#define BACKPORT_MOD_VERSIONS						\
+	MODULE_VERSION("backports: " BACKPORTS_VERSION);		\
+	MODULE_VERSION("backported from: " 				\
+			BACKPORTED_KERNEL_NAME " ("			\
+			BACKPORTED_KERNEL_VERSION ")");
+#endif
+
 #undef module_init
 #define module_init(initfn)						\
 	static int __init __init_backport(void)				\
@@ -39,10 +49,7 @@ void backport_dependency_symbol(void);
 		return initfn();					\
 	}								\
 	int init_module(void) __attribute__((alias("__init_backport")));\
-	MODULE_VERSION("backports: " BACKPORTS_VERSION);		\
-	MODULE_VERSION("backported from: " 				\
-			BACKPORTED_KERNEL_NAME " ("			\
-			BACKPORTED_KERNEL_VERSION ")");
+	BACKPORT_MOD_VERSIONS
 
 /*
  * Each compat file represents compatibility code for new kernel

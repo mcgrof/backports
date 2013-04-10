@@ -16,6 +16,26 @@
 #include <linux/printk.h>
 #include <linux/scatterlist.h>
 #include <linux/device.h>
+#include <linux/platform_device.h>
+
+/* module_platform_driver_probe() - Helper macro for drivers that don't do
+ * anything special in module init/exit.  This eliminates a lot of
+ * boilerplate.  Each module may only use this macro once, and
+ * calling it replaces module_init() and module_exit()
+ */
+#define module_platform_driver_probe(__platform_driver, __platform_probe) \
+static int __init __platform_driver##_init(void) \
+{ \
+	return platform_driver_probe(&(__platform_driver), \
+				     __platform_probe);    \
+} \
+module_init(__platform_driver##_init); \
+static void __exit __platform_driver##_exit(void) \
+{ \
+	platform_driver_unregister(&(__platform_driver)); \
+} \
+module_exit(__platform_driver##_exit);
+
 
 /* include this before changing hlist_for_each_* to use the old versions. */
 #include <net/sch_generic.h>

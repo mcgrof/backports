@@ -324,7 +324,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     backport_files = [(x, x) for x in [
         'Kconfig', 'Makefile', 'Makefile.build', 'Makefile.kernel', '.gitignore',
         'Makefile.real', 'compat/', 'include/', 'kconfig/', 'defconfigs/',
-        'scripts/', '.blacklist.map',
+        'scripts/', '.blacklist.map', 'udev/',
     ]]
     if not args.git_revision:
         logwrite('Copy original source files ...')

@@ -90,6 +90,7 @@ install: modules
 	@./scripts/blacklist.sh $(KLIB)/ $(KLIB)/$(KMODDIR)
 	@./scripts/compress_modules.sh $(KLIB)/$(KMODDIR)
 	@./scripts/check_depmod.sh
+	@./scripts/backport_firmware_install.sh
 	@/sbin/depmod -ae
 	@echo
 	@echo Your backported driver modules should be installed now.
@@ -97,4 +98,3 @@ install: modules
 	@echo
 # FIXME:
 #	install/load/unload/... scripts?
-#	compat firmware class udev stuff

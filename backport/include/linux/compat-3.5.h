@@ -11,6 +11,15 @@
 #include <net/netlink.h>
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
+#include <linux/regmap.h>
+
+#define dev_get_regmap LINUX_BACKPORT(dev_get_regmap)
+static inline
+struct regmap *dev_get_regmap(struct device *dev, const char *name)
+{
+	return NULL;
+}
+
 #define devres_release LINUX_BACKPORT(devres_release)
 extern int devres_release(struct device *dev, dr_release_t release,
 			  dr_match_t match, void *match_data);

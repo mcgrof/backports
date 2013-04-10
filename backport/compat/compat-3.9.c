@@ -10,6 +10,7 @@
 
 #include <linux/module.h>
 #include <linux/scatterlist.h>
+#include <linux/device.h>
 
 #ifdef __sg_page_iter_next
 
@@ -50,5 +51,16 @@ bool __sg_page_iter_next(struct sg_page_iter *piter)
 	return true;
 }
 EXPORT_SYMBOL_GPL(__sg_page_iter_next);
+
+void __iomem *devm_ioremap_resource(struct device *dev, struct resource *res)
+{
+	void __iomem *dest_ptr;
+
+	dest_ptr = devm_ioremap_resource(dev, res);
+	if (!dest_ptr)
+		return ERR_PTR(-ENOMEM);
+	return dest_ptr;
+}
+EXPORT_SYMBOL_GPL(devm_ioremap_resource);
 
 #endif /* __sg_page_iter_next */

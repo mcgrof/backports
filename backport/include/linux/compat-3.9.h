@@ -15,6 +15,7 @@
 #include <linux/tty_flip.h>
 #include <linux/printk.h>
 #include <linux/scatterlist.h>
+#include <linux/device.h>
 
 /* include this before changing hlist_for_each_* to use the old versions. */
 #include <net/sch_generic.h>
@@ -206,6 +207,9 @@ static inline struct inode *file_inode(struct file *f)
 {
 	return f->f_path.dentry->d_inode;
 }
+
+#define devm_ioremap_resource LINUX_BACKPORT(devm_ioremap_resource)
+void __iomem *devm_ioremap_resource(struct device *dev, struct resource *res);
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)) */
 

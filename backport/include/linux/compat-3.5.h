@@ -10,6 +10,12 @@
 
 #include <net/netlink.h>
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
+#define devres_release LINUX_BACKPORT(devres_release)
+extern int devres_release(struct device *dev, dr_release_t release,
+			  dr_match_t match, void *match_data);
+#endif
+
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
 #include <linux/ratelimit.h>
 #define dev_level_ratelimited(dev_level, dev, fmt, ...)			\

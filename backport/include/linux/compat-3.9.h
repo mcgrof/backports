@@ -18,6 +18,13 @@
 #include <linux/device.h>
 #include <linux/platform_device.h>
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
+int vb2_mmap_pfn_range(struct vm_area_struct *vma, unsigned long paddr,
+				unsigned long size,
+				const struct vm_operations_struct *vm_ops,
+				void *priv);
+#endif
+
 /* module_platform_driver_probe() - Helper macro for drivers that don't do
  * anything special in module init/exit.  This eliminates a lot of
  * boilerplate.  Each module may only use this macro once, and

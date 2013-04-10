@@ -7,6 +7,15 @@
 
 #include <linux/scatterlist.h>
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
+#include <linux/i2c.h>
+/* Unlocked flavor */
+#define __i2c_transfer LINUX_BACKPORT(__i2c_transfer)
+extern int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
+			  int num);
+#endif
+
+
 #define memweight LINUX_BACKPORT(memweight)
 extern size_t memweight(const void *ptr, size_t bytes);
 

@@ -92,6 +92,7 @@ install: modules
 	@./scripts/check_depmod.sh
 	@./scripts/backport_firmware_install.sh
 	@/sbin/depmod -a
+	@./scripts/update-initramfs.sh $(KLIB)
 	@echo
 	@echo Your backported driver modules should be installed now.
 	@echo Reboot.

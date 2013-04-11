@@ -1,6 +1,0 @@
-
-Undef/define/include printk.h for fixing redefinition warnings
-during build.
-
-Patch adapted from compat-wireless tree.
-

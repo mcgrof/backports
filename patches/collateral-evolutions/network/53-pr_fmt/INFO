@@ -1,3 +1,0 @@
-This is the correct way to use pr_fmt. This helps avoid
-compiler warnings. This is going to be sent upstream.
-

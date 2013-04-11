@@ -10,6 +10,7 @@
 
 #include <linux/compat.h>
 #include <linux/usb.h>
+#include <linux/compat-2.6.36.h>
 
 #ifdef CPTCFG_BACKPORT_OPTION_USB_URB_THREAD_FIX
 /* Callers must hold anchor->lock */

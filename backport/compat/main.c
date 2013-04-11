@@ -1,6 +1,7 @@
 #include <linux/module.h>
 #include <linux/pm_qos.h>
 #include "compat-2.6.34.h"
+#include <linux/compat-2.6.36.h>
 
 MODULE_AUTHOR("Luis R. Rodriguez");
 MODULE_DESCRIPTION("Kernel backport module");

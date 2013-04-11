@@ -14,6 +14,29 @@
 	dev_printk(KERN_CRIT , dev , format , ## arg)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
+/**
+ * module_driver() - Helper macro for drivers that don't do anything
+ * special in module init/exit. This eliminates a lot of boilerplate.
+ * Each module may only use this macro once, and calling it replaces
+ * module_init() and module_exit().
+ *
+ * Use this macro to construct bus specific macros for registering
+ * drivers, and do not use it on its own.
+ */
+#define module_driver(__driver, __register, __unregister) \
+static int __init __driver##_init(void) \
+{ \
+	return __register(&(__driver)); \
+} \
+module_init(__driver##_init); \
+static void __exit __driver##_exit(void) \
+{ \
+	__unregister(&(__driver)); \
+} \
+module_exit(__driver##_exit);
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
 #define devm_ioremap_resource LINUX_BACKPORT(devm_ioremap_resource)
 void __iomem *devm_ioremap_resource(struct device *dev, struct resource *res);

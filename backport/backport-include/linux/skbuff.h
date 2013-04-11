@@ -15,4 +15,15 @@ extern void v2_6_28_skb_add_rx_frag(struct sk_buff *skb, int i,
 	skb_add_rx_frag(skb, i, page, off, size)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
+#define __pskb_copy LINUX_BACKPORT(__pskb_copy)
+extern struct sk_buff *__pskb_copy(struct sk_buff *skb,
+				   int headroom, gfp_t gfp_mask);
+
+static inline void skb_complete_wifi_ack(struct sk_buff *skb, bool acked)
+{
+	WARN_ON(1);
+}
+#endif
+
 #endif /* __BACKPORT_SKBUFF_H */

@@ -24,4 +24,18 @@ extern int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
 #define I2C_FUNC_NOSTART 0x00000010 /* I2C_M_NOSTART */
 #endif
 
+/* This backports:
+ *
+ * commit 7c92784a546d2945b6d6973a30f7134be78eb7a4
+ * Author: Lars-Peter Clausen <lars@metafoo.de>
+ * Date:   Wed Nov 16 10:13:36 2011 +0100
+ *
+ *     I2C: Add helper macro for i2c_driver boilerplate
+ */
+#ifndef module_i2c_driver
+#define module_i2c_driver(__i2c_driver) \
+	module_driver(__i2c_driver, i2c_add_driver, \
+			i2c_del_driver)
+#endif
+
 #endif /* __BACKPORT_LINUX_I2C_H */

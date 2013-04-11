@@ -64,4 +64,22 @@
 #define  PCI_EXP_LNKCAP2_CROSSLINK 	0x100 /* Crosslink supported */
 #endif
 
+/*
+ * PCI_EXP_TYPE_RC_EC was added via 1b6b8ce2 on v2.6.30-rc4~20 :
+ *
+ * mcgrof@frijol ~/linux-next (git::master)$ git describe --contains 1b6b8ce2
+ * v2.6.30-rc4~20^2
+ *
+ * but the fix for its definition was merged on v3.3-rc1~101^2~67
+ *
+ * mcgrof@frijol ~/linux-next (git::master)$ git describe --contains 1830ea91
+ * v3.3-rc1~101^2~67
+ *
+ * while we can assume it got merged and backported on v3.2.28 (which it did
+ * see c1c3cd9) we cannot assume every kernel has it fixed so lets just undef
+ * it here and redefine it.
+ */
+#undef PCI_EXP_TYPE_RC_EC
+#define  PCI_EXP_TYPE_RC_EC    0xa     /* Root Complex Event Collector */
+
 #endif /* __BACKPORT_UAPI_PCI_REGS_H */

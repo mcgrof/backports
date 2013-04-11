@@ -122,4 +122,19 @@ static inline struct sk_buff *netdev_alloc_skb_ip_align(struct net_device *dev,
 	for (iter = skb_shinfo(skb)->frag_list; iter; iter = iter->next)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)
+static inline bool skb_queue_is_first(const struct sk_buff_head *list,
+				      const struct sk_buff *skb)
+{
+	return (skb->prev == (struct sk_buff *) list);
+}
+
+static inline struct sk_buff *skb_queue_prev(const struct sk_buff_head *list,
+					     const struct sk_buff *skb)
+{
+	BUG_ON(skb_queue_is_first(list, skb));
+	return skb->prev;
+}
+#endif
+
 #endif /* __BACKPORT_SKBUFF_H */

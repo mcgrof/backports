@@ -97,4 +97,19 @@ static inline void usb_autopm_put_interface_no_suspend(struct usb_interface *int
 #define USB_SUBCLASS_VENDOR_SPEC	0xff
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)
+static inline void usb_autopm_put_interface_async(struct usb_interface *intf)
+{ }
+static inline int usb_autopm_get_interface_async(struct usb_interface *intf)
+{ return 0; }
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29) && \
+    LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23)
+#if defined(CONFIG_USB) || defined(CONFIG_USB_MODULE)
+#define usb_unpoison_anchored_urbs LINUX_BACKPORT(usb_unpoison_anchored_urbs)
+extern void usb_unpoison_anchored_urbs(struct usb_anchor *anchor);
+#endif /* CONFIG_USB */
+#endif /* 2.6.23 - 2.6.28 */
+
 #endif /* __BACKPORT_USB_H */

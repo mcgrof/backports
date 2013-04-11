@@ -190,4 +190,16 @@ int hex_to_bin(char ch);
 #define round_down(x, y) ((x) & ~__round_mask(x, y))
 #endif
 
+#ifndef DIV_ROUND_CLOSEST
+#define DIV_ROUND_CLOSEST(x, divisor) ({		\
+	typeof(divisor) __divisor = divisor;		\
+	(((x) + ((__divisor) / 2)) / (__divisor));	\
+})
+#endif
+
+#ifndef swap
+#define swap(a, b) \
+	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+#endif
+
 #endif /* __BACKPORT_KERNEL_H */

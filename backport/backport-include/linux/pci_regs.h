@@ -103,4 +103,12 @@
 #define PCI_EXP_SLTCTL2			56      /* Slot Control 2 */
 #endif
 
+#ifndef PCI_EXP_LNKCTL_ES
+#define PCI_EXP_LNKCTL_ES     0x0080  /* Extended Synch */
+#endif
+
+#ifndef PCI_EXP_SLTSTA_PDS
+#define PCI_EXP_SLTSTA_PDS	0x0040  /* Presence Detect State */
+#endif
+
 #endif /* __BACKPORT_UAPI_PCI_REGS_H */

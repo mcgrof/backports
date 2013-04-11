@@ -103,6 +103,15 @@ static inline int is_unicast_ether_addr(const u8 *addr)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)
+#define eth_mac_addr LINUX_BACKPORT(eth_mac_addr)
+extern int eth_mac_addr(struct net_device *dev, void *p);
+#define eth_change_mtu LINUX_BACKPORT(eth_change_mtu)
+extern int eth_change_mtu(struct net_device *dev, int new_mtu);
+#define eth_validate_addr LINUX_BACKPORT(eth_validate_addr)
+extern int eth_validate_addr(struct net_device *dev);
+#endif /* < 2.6.29 */
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
 #define netdev_hw_addr dev_mc_list
 #endif

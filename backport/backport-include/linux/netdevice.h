@@ -15,6 +15,84 @@
 typedef int netdev_tx_t;
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)
+/*
+ * Older kernels do not have struct net_device_ops but what we can
+ * do is just define the data structure and use a caller to let us
+ * set the data structure's routines onto the old netdev, essentially
+ * doing it the old way. This avoids huge deltas on our backports.
+ */
+#define HAVE_NET_DEVICE_OPS
+struct net_device_ops {
+	int			(*ndo_init)(struct net_device *dev);
+	void			(*ndo_uninit)(struct net_device *dev);
+	int			(*ndo_open)(struct net_device *dev);
+	int			(*ndo_stop)(struct net_device *dev);
+	netdev_tx_t		(*ndo_start_xmit) (struct sk_buff *skb,
+						   struct net_device *dev);
+	u16			(*ndo_select_queue)(struct net_device *dev,
+						    struct sk_buff *skb);
+	void			(*ndo_change_rx_flags)(struct net_device *dev,
+						       int flags);
+	void			(*ndo_set_rx_mode)(struct net_device *dev);
+	void			(*ndo_set_multicast_list)(struct net_device *dev);
+	int			(*ndo_set_mac_address)(struct net_device *dev,
+						       void *addr);
+	int			(*ndo_validate_addr)(struct net_device *dev);
+	int			(*ndo_do_ioctl)(struct net_device *dev,
+					        struct ifreq *ifr, int cmd);
+	int			(*ndo_set_config)(struct net_device *dev,
+					          struct ifmap *map);
+	int			(*ndo_change_mtu)(struct net_device *dev,
+						  int new_mtu);
+	int			(*ndo_neigh_setup)(struct net_device *dev,
+						   struct neigh_parms *);
+	void			(*ndo_tx_timeout) (struct net_device *dev);
+
+	struct net_device_stats* (*ndo_get_stats)(struct net_device *dev);
+
+	void			(*ndo_vlan_rx_register)(struct net_device *dev,
+						        struct vlan_group *grp);
+	void			(*ndo_vlan_rx_add_vid)(struct net_device *dev,
+						       unsigned short vid);
+	void			(*ndo_vlan_rx_kill_vid)(struct net_device *dev,
+						        unsigned short vid);
+#ifdef CONFIG_NET_POLL_CONTROLLER
+	void                    (*ndo_poll_controller)(struct net_device *dev);
+#endif
+	int			(*ndo_set_vf_mac)(struct net_device *dev,
+						  int queue, u8 *mac);
+	int			(*ndo_set_vf_vlan)(struct net_device *dev,
+						   int queue, u16 vlan, u8 qos);
+	int			(*ndo_set_vf_tx_rate)(struct net_device *dev,
+						      int vf, int rate);
+#if defined(CONFIG_FCOE) || defined(CONFIG_FCOE_MODULE)
+	int			(*ndo_fcoe_enable)(struct net_device *dev);
+	int			(*ndo_fcoe_disable)(struct net_device *dev);
+	int			(*ndo_fcoe_ddp_setup)(struct net_device *dev,
+						      u16 xid,
+						      struct scatterlist *sgl,
+						      unsigned int sgc);
+	int			(*ndo_fcoe_ddp_done)(struct net_device *dev,
+						     u16 xid);
+#define NETDEV_FCOE_WWNN 0
+#define NETDEV_FCOE_WWPN 1
+	int			(*ndo_fcoe_get_wwn)(struct net_device *dev,
+						    u64 *wwn, int type);
+#endif
+};
+
+static inline struct net_device_stats *dev_get_stats(struct net_device *dev)
+{
+	return dev->get_stats(dev);
+}
+
+#define init_dummy_netdev LINUX_BACKPORT(init_dummy_netdev)
+extern int init_dummy_netdev(struct net_device *dev);
+
+#define napi_gro_receive(napi, skb) netif_receive_skb(skb)
+#endif /* < 2.6.29 */
+
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0))
 #define netdev_set_default_ethtool_ops LINUX_BACKPORT(netdev_set_default_ethtool_ops)
 extern void netdev_set_default_ethtool_ops(struct net_device *dev,
@@ -26,6 +104,38 @@ extern void netdev_set_default_ethtool_ops(struct net_device *dev,
 extern int __dev_addr_sync(struct dev_addr_list **to, int *to_count, struct dev_addr_list **from, int *from_count);
 #define __dev_addr_unsync LINUX_BACKPORT(__dev_addr_unsync)
 extern void __dev_addr_unsync(struct dev_addr_list **to, int *to_count, struct dev_addr_list **from, int *from_count);
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)
+#define netdev_attach_ops LINUX_BACKPORT(netdev_attach_ops)
+void netdev_attach_ops(struct net_device *dev,
+		       const struct net_device_ops *ops);
+
+static inline int ndo_do_ioctl(struct net_device *dev,
+			       struct ifreq *ifr,
+			       int cmd)
+{
+	if (dev->do_ioctl)
+		return dev->do_ioctl(dev, ifr, cmd);
+	return -EOPNOTSUPP;
+}
+#else
+/* XXX: this can probably just go upstream ! */
+static inline void netdev_attach_ops(struct net_device *dev,
+		       const struct net_device_ops *ops)
+{
+	dev->netdev_ops = ops;
+}
+
+/* XXX: this can probably just go upstream! */
+static inline int ndo_do_ioctl(struct net_device *dev,
+			       struct ifreq *ifr,
+			       int cmd)
+{
+	if (dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl)
+		return dev->netdev_ops->ndo_do_ioctl(dev, ifr, cmd);
+	return -EOPNOTSUPP;
+}
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)

@@ -91,4 +91,15 @@ static inline void skb_checksum_none_assert(struct sk_buff *skb)
 }
 #endif /* < 2.6.37 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
+static inline bool skb_defer_rx_timestamp(struct sk_buff *skb)
+{
+	return false;
+}
+
+static inline void skb_tx_timestamp(struct sk_buff *skb)
+{
+}
+#endif
+
 #endif /* __BACKPORT_SKBUFF_H */

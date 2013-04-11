@@ -8,6 +8,31 @@
 extern int tty_set_termios(struct tty_struct *tty, struct ktermios *kt);
 #endif
 
+/*
+ * This really belongs into uapi/asm-generic/termbits.h but
+ * that doesn't usually get included directly.
+ */
+#ifndef EXTPROC
+#define EXTPROC	0200000
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
+#include <linux/smp_lock.h>
+static inline void tty_lock(void) __acquires(kernel_lock)
+{
+#ifdef CONFIG_LOCK_KERNEL
+	/* kernel_locked is 1 for !CONFIG_LOCK_KERNEL */
+	WARN_ON(kernel_locked());
+#endif
+	lock_kernel();
+}
+static inline void tty_unlock(void) __releases(kernel_lock)
+{
+	unlock_kernel();
+}
+#define tty_locked()           (kernel_locked())
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0)
 /* Backports tty_lock: Localise the lock */
 #define tty_lock(__tty) tty_lock()

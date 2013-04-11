@@ -65,4 +65,23 @@ do {                                                           \
 #endif
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
+/* mask va_format as RHEL6 backports this */
+#define va_format LINUX_BACKPORT(va_format)
+
+struct va_format {
+	const char *fmt;
+	va_list *va;
+};
+
+/*
+ * Dummy printk for disabled debugging statements to use whilst maintaining
+ * gcc's format and side-effect checking.
+ */
+/* mask no_printk as RHEL6 backports this */
+#define no_printk LINUX_BACKPORT(no_printk)
+static inline __attribute__ ((format (printf, 1, 2)))
+int no_printk(const char *s, ...) { return 0; }
+#endif
+
 #endif	/* _COMPAT_LINUX_PRINTK_H */

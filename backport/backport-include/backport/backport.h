@@ -1,10 +1,10 @@
-#ifndef LINUX_26_COMPAT_H
-#define LINUX_26_COMPAT_H
+#ifndef LINUX_BACKPORT_H
+#define LINUX_BACKPORT_H
 
 #ifndef __ASSEMBLY__
 
 #define LINUX_BACKPORT(__sym) backport_ ##__sym
-#include <linux/backport_checks.h>
+#include <backport/checks.h>
 
 #include <linux/version.h>
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,1,0))
@@ -14,7 +14,7 @@
 #else
 #include <linux/autoconf.h>
 #endif
-#include <linux/compat_autoconf.h>
+#include <backport/autoconf.h>
 #include <linux/init.h>
 #include <linux/uidgid.h>
 #include <linux/module.h>
@@ -88,4 +88,4 @@ void backport_dependency_symbol(void);
 
 #endif /* __ASSEMBLY__ */
 
-#endif /* LINUX_26_COMPAT_H */
+#endif /* LINUX_BACKPORT_H */

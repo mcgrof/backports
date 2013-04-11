@@ -23,7 +23,7 @@ Once these are in place, the configuration process can start with any of
 the tools -- menuconfig, defconfig-*, ...
 
 When the configuration is complete and exists in .config, the autoconf
-header (include/linux/compat_autoconf.h) must be generated. This step is
+header (backport-include/backport/autoconf.h) must be generated. This step is
 also done in the make system (by a small embedded shell script) and needs
 the .local-symbols so it only includes the symbols from the backport.
 

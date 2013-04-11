@@ -52,9 +52,9 @@ defconfig-%::
 	echo "\--"							;\
 	false )
 
-include/linux/compat_autoconf.h: .config
+backport-include/backport/autoconf.h: .config
 	@$(MAKE) oldconfig
-	@echo -n "Building include/linux/compat_autoconf.h ..."
+	@echo -n "Building backport-include/backport/autoconf.h ..."
 	@grep -f .local-symbols .config | (				\
 		echo "#ifndef COMPAT_AUTOCONF_INCLUDED"			;\
 		echo "#define COMPAT_AUTOCONF_INCLUDED"			;\
@@ -75,11 +75,11 @@ include/linux/compat_autoconf.h: .config
 			esac						;\
 		done							;\
 		echo "#endif /* COMPAT_AUTOCONF_INCLUDED */"		;\
-	) > include/linux/compat_autoconf.h
+	) > backport-include/backport/autoconf.h
 	@echo " done."
 
 .PHONY: modules
-modules: include/linux/compat_autoconf.h
+modules: backport-include/backport/autoconf.h
 	@$(MAKE) -f Makefile.build modules
 
 .PHONY: install

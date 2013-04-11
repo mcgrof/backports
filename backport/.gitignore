@@ -12,7 +12,7 @@ Kconfig.versions
 *.tmp
 *.ver
 modules.order
-include/linux/compat_autoconf.h
+backport-include/backport/autoconf.h
 modules
 kconfig/mconf
 kconfig/conf

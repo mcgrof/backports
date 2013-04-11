@@ -13,13 +13,6 @@ obj-$(CPTCFG_BACKPORT_BUILD_CORDIC) += cordic.o
 obj-$(CPTCFG_BACKPORT_BUILD_CRC8) += crc8.o
 
 # Compat kernel compatibility code
-compat-$(CPTCFG_BACKPORT_KERNEL_2_6_14) += compat-2.6.14.o
-compat-$(CPTCFG_BACKPORT_KERNEL_2_6_18) += compat-2.6.18.o
-compat-$(CPTCFG_BACKPORT_KERNEL_2_6_19) += compat-2.6.19.o
-compat-$(CPTCFG_BACKPORT_KERNEL_2_6_21) += compat-2.6.21.o
-compat-$(CPTCFG_BACKPORT_KERNEL_2_6_22) += compat-2.6.22.o
-compat-$(CPTCFG_BACKPORT_KERNEL_2_6_23) += compat-2.6.23.o
-compat-$(CPTCFG_BACKPORT_KERNEL_2_6_24) += compat-2.6.24.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_25) += compat-2.6.25.o pm_qos_params.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_26) += compat-2.6.26.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_27) += compat-2.6.27.o

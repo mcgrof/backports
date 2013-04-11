@@ -39,4 +39,11 @@
 
 #endif /* < 2.6.37 */
 
+#ifndef list_for_each_entry_continue_rcu
+#define list_for_each_entry_continue_rcu(pos, head, member) 		\
+	for (pos = list_entry_rcu(pos->member.next, typeof(*pos), member); \
+	     prefetch(pos->member.next), &pos->member != (head);	\
+	     pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
+#endif
+
 #endif /* __BACKPORT_RCULIST_H */

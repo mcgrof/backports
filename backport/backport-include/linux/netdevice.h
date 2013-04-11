@@ -277,4 +277,10 @@ do {								\
 
 #endif /* < 2.6.34 */
 
+/* mask NETDEV_POST_INIT as RHEL6 backports this */
+/* this will never happen on older kernels */
+#ifndef NETDEV_POST_INIT
+#define NETDEV_POST_INIT 0xffff
+#endif
+
 #endif /* __BACKPORT_NETDEVICE_H */

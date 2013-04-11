@@ -13,4 +13,14 @@ static inline int __must_check PTR_RET(const void *ptr)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,33)
+/* mask IS_ERR_OR_NULL as debian squeeze also backports this */
+#define IS_ERR_OR_NULL LINUX_BACKPORT(IS_ERR_OR_NULL)
+
+static inline long __must_check IS_ERR_OR_NULL(const void *ptr)
+{
+	return !ptr || IS_ERR_VALUE((unsigned long)ptr);
+}
+#endif
+
 #endif /* __BACKPORT_LINUX_ERR_H */

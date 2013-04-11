@@ -10,4 +10,8 @@
 #define KEY_WPS_BUTTON		0x211
 #endif
 
+#ifndef KEY_RFKILL
+#define KEY_RFKILL		247
+#endif
+
 #endif /* __BACKPORT_INPUT_H */

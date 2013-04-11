@@ -74,4 +74,22 @@ static inline int usb_disable_autosuspend(struct usb_device *udev)
 { return 0; }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,33)
+#define usb_autopm_get_interface_no_resume LINUX_BACKPORT(usb_autopm_get_interface_no_resume)
+#define usb_autopm_put_interface_no_suspend LINUX_BACKPORT(usb_autopm_put_interface_no_suspend)
+#ifdef CONFIG_USB_SUSPEND
+extern void usb_autopm_get_interface_no_resume(struct usb_interface *intf);
+extern void usb_autopm_put_interface_no_suspend(struct usb_interface *intf);
+#else
+static inline void usb_autopm_get_interface_no_resume(struct usb_interface *intf)
+{
+	atomic_inc(&intf->pm_usage_cnt);
+}
+static inline void usb_autopm_put_interface_no_suspend(struct usb_interface *intf)
+{
+	atomic_dec(&intf->pm_usage_cnt);
+}
+#endif /* CONFIG_USB_SUSPEND */
+#endif /* < 2.6.33 */
+
 #endif /* __BACKPORT_USB_H */

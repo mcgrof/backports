@@ -78,4 +78,24 @@ static inline void __iomem *pci_platform_rom(struct pci_dev *pdev, size_t *size)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,33)
+/* mask pci_pcie_cap as debian squeeze also backports this */
+#define pci_pcie_cap LINUX_BACKPORT(pci_pcie_cap)
+static inline int pci_pcie_cap(struct pci_dev *dev)
+{
+	return pci_find_capability(dev, PCI_CAP_ID_EXP);
+}
+
+/* mask pci_is_pcie as RHEL6 backports this */
+#define pci_is_pcie LINUX_BACKPORT(pci_is_pcie)
+static inline bool pci_is_pcie(struct pci_dev *dev)
+{
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
+	return dev->is_pcie;
+#else
+	return !!pci_pcie_cap(dev);
+#endif
+}
+#endif /* < 2.6.33 */
+
 #endif /* _BACKPORT_LINUX_PCI_H */

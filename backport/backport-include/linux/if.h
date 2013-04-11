@@ -3,6 +3,11 @@
 #include_next <linux/if.h>
 #include <linux/version.h>
 
+/* mask IFF_DONT_BRIDGE as RHEL6 backports this */
+#if !defined(IFF_DONT_BRIDGE)
+#define IFF_DONT_BRIDGE 0x800		/* disallow bridging this ether dev */
+#endif
+
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36))
 #define br_port_exists(dev)	(dev->br_port)
 #else

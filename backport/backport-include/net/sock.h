@@ -52,4 +52,8 @@ static inline struct sock *sk_entry(const struct hlist_node *node)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,33)
+#define sock_recv_ts_and_drops(msg, sk, skb) sock_recv_timestamp(msg, sk, skb)
+#endif
+
 #endif /* __BACKPORT_NET_SOCK_H */

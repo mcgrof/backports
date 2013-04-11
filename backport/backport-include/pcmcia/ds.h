@@ -47,4 +47,23 @@ static inline int pcmcia_write_config_byte(struct pcmcia_device *p_dev, off_t wh
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,33)
+#define pcmcia_request_window(a, b, c) pcmcia_request_window(&a, b, c)
+#define pcmcia_map_mem_page(a, b, c) pcmcia_map_mem_page(b, c)
+
+#define pcmcia_loop_tuple LINUX_BACKPORT(pcmcia_loop_tuple)
+int pcmcia_loop_tuple(struct pcmcia_device *p_dev, cisdata_t code,
+		      int (*loop_tuple) (struct pcmcia_device *p_dev,
+					 tuple_t *tuple,
+					 void *priv_data),
+		      void *priv_data);
+
+#define pccard_loop_tuple LINUX_BACKPORT(pccard_loop_tuple)
+int pccard_loop_tuple(struct pcmcia_socket *s, unsigned int function,
+		      cisdata_t code, cisparse_t *parse, void *priv_data,
+		      int (*loop_tuple) (tuple_t *tuple,
+					 cisparse_t *parse,
+					 void *priv_data));
+#endif /* < 2.6.33 */
+
 #endif /* __BACKPORT_PCMCIA_DS_H */

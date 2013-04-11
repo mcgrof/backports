@@ -19,4 +19,12 @@ static void __exit __platform_driver##_exit(void) \
 module_exit(__platform_driver##_exit);
 #endif
 
+#ifndef PLATFORM_DEVID_NONE
+#define PLATFORM_DEVID_NONE	(-1)
+#endif
+
+#ifndef PLATFORM_DEVID_AUTO
+#define PLATFORM_DEVID_AUTO	(-1)
+#endif
+
 #endif /* __BACKPORT_PLATFORM_DEVICE_H */

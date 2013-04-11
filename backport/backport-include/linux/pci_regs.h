@@ -26,4 +26,8 @@
 #define  PCI_EXP_LNKCAP_SLS_5_0GB 0x2	/* LNKCAP2 SLS Vector bit 1 (5.0GT/s) */
 #endif
 
+#ifndef PCI_EXP_LNKSTA2
+#define PCI_EXP_LNKSTA2			50      /* Link Status 2 */
+#endif
+
 #endif /* __BACKPORT_UAPI_PCI_REGS_H */

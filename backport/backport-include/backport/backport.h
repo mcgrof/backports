@@ -56,7 +56,6 @@ void backport_dependency_symbol(void);
  * code introduced for *that* kernel revision.
  */
 
-#include <linux/compat-2.6.25.h>
 #include <linux/compat-2.6.26.h>
 #include <linux/compat-2.6.27.h>
 #include <linux/compat-2.6.28.h>

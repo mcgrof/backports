@@ -1,4 +1,5 @@
 #include <linux/module.h>
+#include <linux/pm_qos.h>
 #include "compat-2.6.34.h"
 
 MODULE_AUTHOR("Luis R. Rodriguez");

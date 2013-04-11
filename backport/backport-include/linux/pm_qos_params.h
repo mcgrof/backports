@@ -1,7 +1,6 @@
-#include <linux/version.h>
-
 #ifndef __COMPAT_LINUX_PM_QOS_PARAMS_H
 #define __COMPAT_LINUX_PM_QOS_PARAMS_H
+#include <linux/version.h>
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,25))
 #include_next <linux/pm_qos_params.h>

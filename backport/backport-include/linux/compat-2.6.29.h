@@ -2,6 +2,7 @@
 #define LINUX_26_29_COMPAT_H
 
 #include <linux/version.h>
+struct net_device;
 #include <linux/netdevice.h>
 #include <linux/if_link.h>
 

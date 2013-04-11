@@ -33,6 +33,7 @@ dma_common_get_sgtable(struct device *dev, struct sg_table *sgt,
 		       void *cpu_addr, dma_addr_t dma_addr, size_t size);
 
 #define dma_get_sgtable_attrs LINUX_BACKPORT(dma_get_sgtable_attrs)
+struct dma_attrs;
 static inline int
 dma_get_sgtable_attrs(struct device *dev, struct sg_table *sgt, void *cpu_addr,
 		      dma_addr_t dma_addr, size_t size, struct dma_attrs *attrs)

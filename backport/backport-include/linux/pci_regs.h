@@ -30,4 +30,38 @@
 #define PCI_EXP_LNKSTA2			50      /* Link Status 2 */
 #endif
 
+/**
+ * Backports
+ *
+ * commit cdcac9cd7741af2c2b9255cbf060f772596907bb
+ * Author: Dave Airlie <airlied@redhat.com>
+ * Date:   Wed Jun 27 08:35:52 2012 +0100
+ *
+ * 	pci_regs: define LNKSTA2 pcie cap + bits.
+ *
+ * 	We need these for detecting the max link speed for drm drivers.
+ *
+ * 	Acked-by: Bjorn Helgaas <bhelgass@google.com>
+ * 	Signed-off-by: Dave Airlie <airlied@redhat.com>
+ */
+#ifndef PCI_EXP_LNKCAP2
+#define  PCI_EXP_LNKCAP2 		44	/* Link Capability 2 */
+#endif
+
+#ifndef PCI_EXP_LNKCAP2_SLS_2_5GB
+#define  PCI_EXP_LNKCAP2_SLS_2_5GB 	0x01	/* Current Link Speed 2.5GT/s */
+#endif
+
+#ifndef PCI_EXP_LNKCAP2_SLS_5_0GB
+#define  PCI_EXP_LNKCAP2_SLS_5_0GB 	0x02	/* Current Link Speed 5.0GT/s */
+#endif
+
+#ifndef PCI_EXP_LNKCAP2_SLS_8_0GB
+#define  PCI_EXP_LNKCAP2_SLS_8_0GB 	0x04	/* Current Link Speed 8.0GT/s */
+#endif
+
+#ifndef PCI_EXP_LNKCAP2_CROSSLINK
+#define  PCI_EXP_LNKCAP2_CROSSLINK 	0x100 /* Crosslink supported */
+#endif
+
 #endif /* __BACKPORT_UAPI_PCI_REGS_H */

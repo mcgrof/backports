@@ -9,4 +9,8 @@
 #define genl_info_snd_portid(__genl_info) (__genl_info->snd_portid)
 #endif
 
+#ifndef GENLMSG_DEFAULT_SIZE
+#define GENLMSG_DEFAULT_SIZE (NLMSG_DEFAULT_SIZE - GENL_HDRLEN)
+#endif
+
 #endif /* __BACKPORT_NET_GENETLINK_H */

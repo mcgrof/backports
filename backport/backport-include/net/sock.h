@@ -27,4 +27,15 @@
 
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
+/*
+ * backport SOCK_SELECT_ERR_QUEUE -- see commit
+ * "net: add option to enable error queue packets waking select"
+ *
+ * Adding 14 to SOCK_QUEUE_SHRUNK will reach a bet that can't be
+ * set on older kernels, so sock_flag() will always return false.
+ */
+#define SOCK_SELECT_ERR_QUEUE (SOCK_QUEUE_SHRUNK + 14)
+#endif
+
 #endif /* __BACKPORT_NET_SOCK_H */

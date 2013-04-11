@@ -48,4 +48,28 @@ void __sg_page_iter_start(struct sg_page_iter *piter,
 #endif /* for_each_sg_page assumption */
 #endif /* version < 3.9 */
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0))
+
+#define sg_page_iter_page LINUX_BACKPORT(sg_page_iter_page)
+/**
+ * sg_page_iter_page - get the current page held by the page iterator
+ * @piter:     page iterator holding the page
+ */
+static inline struct page *sg_page_iter_page(struct sg_page_iter *piter)
+{
+	return nth_page(sg_page(piter->sg), piter->sg_pgoffset);
+}
+
+#define sg_page_iter_dma_address LINUX_BACKPORT(sg_page_iter_dma_address)
+/**
+ * sg_page_iter_dma_address - get the dma address of the current page held by
+ * the page iterator.
+ * @piter:     page iterator holding the page
+ */
+static inline dma_addr_t sg_page_iter_dma_address(struct sg_page_iter *piter)
+{
+	return sg_dma_address(piter->sg) + (piter->sg_pgoffset << PAGE_SHIFT);
+}
+#endif /* version < 3.10 */
+
 #endif /* __BACKPORT_SCATTERLIST_H */

@@ -6,4 +6,8 @@
 #define KEY_WIMAX		246
 #endif
 
+#ifndef KEY_WPS_BUTTON
+#define KEY_WPS_BUTTON		0x211
+#endif
+
 #endif /* __BACKPORT_INPUT_H */

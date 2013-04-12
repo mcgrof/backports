@@ -31,4 +31,14 @@ static inline struct user_namespace *seq_user_ns(struct seq_file *seq)
 #endif /* CONFIG_USER_NS */
 #endif /* < 3.7 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,34)
+#define seq_hlist_start_head LINUX_BACKPORT(seq_hlist_start_head)
+extern struct hlist_node *seq_hlist_start_head(struct hlist_head *head,
+					       loff_t pos);
+
+#define seq_hlist_next LINUX_BACKPORT(seq_hlist_next)
+extern struct hlist_node *seq_hlist_next(void *v, struct hlist_head *head,
+					 loff_t *ppos);
+#endif
+
 #endif /* __BACKPORT_SEQ_FILE_H */

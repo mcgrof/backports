@@ -7,4 +7,24 @@
 #define sdio_writeb_readb(func, write_byte, addr, err_ret) sdio_readb(func, addr, err_ret)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,34)
+/*
+ * Backports da68c4eb25
+ * sdio: introduce API for special power management features
+ *
+ * We simply carry around the data structures and flags, and
+ * make the host return no flags set by the driver.
+ *
+ * This is declared in mmc/pm.h upstream, but that files
+ * didn't exist before this commit and isn't included directly.
+ */
+typedef unsigned int mmc_pm_flag_t;
+
+#define MMC_PM_KEEP_POWER      (1 << 0)        /* preserve card power during suspend */
+#define MMC_PM_WAKE_SDIO_IRQ   (1 << 1)        /* wake up host system on SDIO IRQ assertion */
+
+extern mmc_pm_flag_t sdio_get_host_pm_caps(struct sdio_func *func);
+extern int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags);
+#endif
+
 #endif /* __BACKPORT_MMC_SDIO_FUNC_H */

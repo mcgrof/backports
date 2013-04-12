@@ -45,4 +45,11 @@ static inline wait_queue_head_t *sk_sleep(struct sock *sk)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,34)
+static inline struct sock *sk_entry(const struct hlist_node *node)
+{
+	return hlist_entry(node, struct sock, sk_node);
+}
+#endif
+
 #endif /* __BACKPORT_NET_SOCK_H */

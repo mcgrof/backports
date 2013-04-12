@@ -63,4 +63,15 @@ usb_pipe_endpoint(struct usb_device *dev, unsigned int pipe)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,34)
+#define usb_alloc_coherent(dev, size, mem_flags, dma) usb_buffer_alloc(dev, size, mem_flags, dma)
+#define usb_free_coherent(dev, size, addr, dma) usb_buffer_free(dev, size, addr, dma)
+
+/* USB autosuspend and autoresume */
+static inline int usb_enable_autosuspend(struct usb_device *udev)
+{ return 0; }
+static inline int usb_disable_autosuspend(struct usb_device *udev)
+{ return 0; }
+#endif
+
 #endif /* __BACKPORT_USB_H */

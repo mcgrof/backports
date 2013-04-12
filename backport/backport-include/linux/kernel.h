@@ -184,4 +184,10 @@ int __must_check kstrtos8(const char *s, unsigned int base, s8 *res);
 int hex_to_bin(char ch);
 #endif
 
+#ifndef __round_mask
+#define __round_mask(x, y) ((__typeof__(x))((y)-1))
+#define round_up(x, y) ((((x)-1) | __round_mask(x, y))+1)
+#define round_down(x, y) ((x) & ~__round_mask(x, y))
+#endif
+
 #endif /* __BACKPORT_KERNEL_H */

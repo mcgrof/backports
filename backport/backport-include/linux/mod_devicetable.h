@@ -10,4 +10,26 @@
 #define HID_GROUP_ANY                          0x0000
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0)
+#ifndef BCMA_CORE
+/* Broadcom's specific AMBA core, see drivers/bcma/ */
+struct bcma_device_id {
+	__u16	manuf;
+	__u16	id;
+	__u8	rev;
+	__u8	class;
+};
+#define BCMA_CORE(_manuf, _id, _rev, _class)  \
+	{ .manuf = _manuf, .id = _id, .rev = _rev, .class = _class, }
+#define BCMA_CORETABLE_END  \
+	{ 0, },
+
+#define BCMA_ANY_MANUF		0xFFFF
+#define BCMA_ANY_ID		0xFFFF
+#define BCMA_ANY_REV		0xFF
+#define BCMA_ANY_CLASS		0xFF
+#endif /* BCMA_CORE */
+
+#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0)) */
+
 #endif /* __BACKPORT_MOD_DEVICETABLE_H */

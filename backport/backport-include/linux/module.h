@@ -1,6 +1,7 @@
 #ifndef __BACKPORT_LINUX_MODULE_H
 #define __BACKPORT_LINUX_MODULE_H
 #include_next <linux/module.h>
+#include <linux/rcupdate.h>
 
 /*
  * The define overwriting module_init is based on the original module_init
@@ -33,5 +34,29 @@ extern void backport_dependency_symbol(void);
 	}								\
 	int init_module(void) __attribute__((alias("__init_backport")));\
 	BACKPORT_MOD_VERSIONS
+
+/*
+ * The define overwriting module_exit is based on the original module_exit
+ * which looks like this:
+ * #define module_exit(exitfn)                                    \
+ *         static inline exitcall_t __exittest(void)               \
+ *         { return exitfn; }                                      \
+ *         void cleanup_module(void) __attribute__((alias(#exitfn)));
+ *
+ * We replaced the call to the actual function exitfn() with a call to our
+ * function which calls the original exitfn() and then rcu_barrier()
+ *
+ * As a module will not be unloaded that ofter it should not have a big
+ * performance impact when rcu_barrier() is called on every module exit,
+ * also when no kfree_rcu() backport is used in that module.
+ */
+#undef module_exit
+#define module_exit(exitfn)						\
+	static void __exit __exit_compat(void)				\
+	{								\
+		exitfn();						\
+		rcu_barrier();						\
+	}								\
+	void cleanup_module(void) __attribute__((alias("__exit_compat")));
 
 #endif /* __BACKPORT_LINUX_MODULE_H */

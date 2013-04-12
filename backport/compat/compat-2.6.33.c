@@ -13,6 +13,9 @@
 #include <linux/usb.h>
 #include <linux/pm_runtime.h>
 #include <linux/platform_device.h>
+#include <pcmcia/cs_types.h>
+#include <pcmcia/cistpl.h>
+#include <pcmcia/ds.h>
 
 #ifdef CONFIG_USB_SUSPEND
 /**

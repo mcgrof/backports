@@ -11,6 +11,7 @@
 #include <linux/module.h>
 #include <linux/scatterlist.h>
 #include <linux/device.h>
+#include <linux/err.h>
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
 /**

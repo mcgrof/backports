@@ -10,6 +10,7 @@
 
 #include <linux/compat.h>
 #include <linux/netdevice.h>
+#include <linux/time.h>
 
 int __dev_addr_add(struct dev_addr_list **list, int *count,
 		   void *addr, int alen, int glbl)

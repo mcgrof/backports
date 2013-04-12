@@ -9,8 +9,7 @@
  */
 
 #include <linux/mmc/sdio_func.h>
-
-#include "compat-2.6.34.h"
+#include <linux/seq_file.h>
 
 static mmc_pm_flag_t backport_mmc_pm_flags;
 

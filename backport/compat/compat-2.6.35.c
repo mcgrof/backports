@@ -11,6 +11,11 @@
 
 #include <linux/compat.h>
 #include <linux/ctype.h>
+#include <linux/netdevice.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/uaccess.h>
+#include <net/sch_generic.h>
 
 #ifdef CONFIG_RPS
 int netif_set_real_num_rx_queues(struct net_device *dev, unsigned int rxq)

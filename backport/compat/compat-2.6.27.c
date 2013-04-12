@@ -7,7 +7,7 @@
  *
  * Compatibility file for Linux wireless for kernels 2.6.27
  */
-
+#include <linux/debugfs.h>
 #include <linux/compat.h>
 #include <linux/pci.h>
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))

@@ -1,3 +1,4 @@
+#include <net/sock.h>
 #include <net/compat.h>
 
 /* This is the backport of pm-qos params for kernels <= 2.6.25 */

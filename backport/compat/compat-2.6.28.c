@@ -11,6 +11,7 @@
 #include <linux/compat.h>
 #include <linux/usb.h>
 #include <linux/tty.h>
+#include <linux/skbuff.h>
 #include <asm/poll.h>
 
 /* 2.6.28 compat code goes here */
@@ -87,7 +88,8 @@ EXPORT_SYMBOL_GPL(usb_poison_urb);
 #endif /* CONFIG_USB */
 
 #if defined(CONFIG_PCMCIA) || defined(CONFIG_PCMCIA_MODULE)
-
+#include <pcmcia/cistpl.h>
+#include <pcmcia/cs_types.h>
 #include <pcmcia/ds.h>
 struct pcmcia_cfg_mem {
 	tuple_t tuple;

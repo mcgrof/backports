@@ -11,6 +11,7 @@
 
 #include <linux/module.h>
 #include <linux/highuid.h>
+#include <linux/uidgid.h>
 #include <linux/user_namespace.h>
 
 #ifdef CONFIG_USER_NS

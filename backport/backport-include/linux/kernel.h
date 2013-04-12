@@ -167,4 +167,21 @@ int __must_check kstrtos8(const char *s, unsigned int base, s8 *res);
 
 #endif /* < 2.6.39 */
 
+#ifndef USHRT_MAX
+#define USHRT_MAX      ((u16)(~0U))
+#endif
+
+#ifndef SHRT_MAX
+#define SHRT_MAX       ((s16)(USHRT_MAX>>1))
+#endif
+
+#ifndef SHRT_MIN
+#define SHRT_MIN       ((s16)(-SHRT_MAX - 1))
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+#define hex_to_bin LINUX_BACKPORT(hex_to_bin)
+int hex_to_bin(char ch);
+#endif
+
 #endif /* __BACKPORT_KERNEL_H */

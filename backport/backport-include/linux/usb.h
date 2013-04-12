@@ -50,4 +50,17 @@ extern void usb_scuttle_anchored_urbs(struct usb_anchor *anchor);
 #endif
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+/* mask usb_pipe_endpoint as RHEL6 backports this */
+#define usb_pipe_endpoint LINUX_BACKPORT(usb_pipe_endpoint)
+
+static inline struct usb_host_endpoint *
+usb_pipe_endpoint(struct usb_device *dev, unsigned int pipe)
+{
+	struct usb_host_endpoint **eps;
+	eps = usb_pipein(pipe) ? dev->ep_in : dev->ep_out;
+	return eps[usb_pipeendpoint(pipe)];
+}
+#endif
+
 #endif /* __BACKPORT_USB_H */

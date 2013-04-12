@@ -103,4 +103,8 @@ static inline int is_unicast_ether_addr(const u8 *addr)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+#define netdev_hw_addr dev_mc_list
+#endif
+
 #endif /* _BACKPORT_LINUX_ETHERDEVICE_H */

@@ -54,4 +54,30 @@ static inline void qdisc_bstats_update(struct Qdisc *sch,
 #endif
 #endif /* < 2.6.38 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27)
+
+#define qdisc_reset_all_tx_gt LINUX_BACKPORT(qdisc_reset_all_tx_gt)
+
+/* Reset all TX qdiscs greater then index of a device.  */
+static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
+{
+	struct Qdisc *qdisc;
+
+	for (; i < dev->num_tx_queues; i++) {
+		qdisc = netdev_get_tx_queue(dev, i)->qdisc;
+		if (qdisc) {
+			spin_lock_bh(qdisc_lock(qdisc));
+			qdisc_reset(qdisc);
+			spin_unlock_bh(qdisc_lock(qdisc));
+		}
+	}
+}
+#else
+static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
+{
+}
+#endif /* >= 2.6.27 */
+#endif /* < 2.6.35 */
+
 #endif /* __BACKPORT_NET_SCH_GENERIC_H */

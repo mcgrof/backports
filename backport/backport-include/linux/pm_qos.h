@@ -89,4 +89,8 @@ struct pm_qos_request_list {
 #endif /* < 2.6.35 */
 #endif /* < 2.6.36 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+#define pm_qos_request(_qos) pm_qos_requirement(_qos)
+#endif
+
 #endif	/* _COMPAT_LINUX_PM_QOS_H */

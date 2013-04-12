@@ -12,4 +12,14 @@ extern bool hid_ignore(struct hid_device *);
 #define HID_TYPE_USBNONE 2
 #endif
 
+#ifndef HID_QUIRK_NO_IGNORE
+#define HID_QUIRK_NO_IGNORE                    0x40000000
+#endif
+
+#ifndef HID_QUIRK_HIDDEV_FORCE
+#define HID_QUIRK_HIDDEV_FORCE                 0x00000010
+#endif
+
+
+
 #endif /* __BACKPORT_HID_H */

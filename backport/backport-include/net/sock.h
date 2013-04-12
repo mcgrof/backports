@@ -38,4 +38,11 @@
 #define SOCK_SELECT_ERR_QUEUE (SOCK_QUEUE_SHRUNK + 14)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+static inline wait_queue_head_t *sk_sleep(struct sock *sk)
+{
+	return sk->sk_sleep;
+}
+#endif
+
 #endif /* __BACKPORT_NET_SOCK_H */

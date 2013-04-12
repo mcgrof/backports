@@ -111,4 +111,21 @@ static inline int netif_set_real_num_rx_queues(struct net_device *dev,
 #endif
 #endif /* < 2.6.37 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+/*
+ * etherdevice.h requires netdev_hw_addr to not have been redefined,
+ * so while generally we shouldn't/wouldn't include unrelated header
+ * files here it's unavoidable. However, if we got included through
+ * it, then we let it sort out the netdev_hw_addr define so that it
+ * still gets the correct one later ...
+ */
+#include <linux/etherdevice.h>
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+#define netif_set_real_num_tx_queues LINUX_BACKPORT(netif_set_real_num_tx_queues)
+extern int netif_set_real_num_tx_queues(struct net_device *dev,
+					unsigned int txq);
+#endif
+
 #endif /* __BACKPORT_NETDEVICE_H */

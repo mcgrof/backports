@@ -14,4 +14,8 @@
 #define KEY_RFKILL		247
 #endif
 
+#ifndef SW_RFKILL_ALL
+#define SW_RFKILL_ALL           0x03
+#endif
+
 #endif /* __BACKPORT_INPUT_H */

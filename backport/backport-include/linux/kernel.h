@@ -206,4 +206,39 @@ int hex_to_bin(char ch);
 #define lower_32_bits(n) ((u32)(n))
 #endif
 
+#ifndef USHORT_MAX
+#define USHORT_MAX      ((u16)(~0U))
+#define SHORT_MAX       ((s16)(USHORT_MAX>>1))
+#define SHORT_MIN       (-SHORT_MAX - 1)
+#endif
+
+#ifndef clamp
+#define clamp(val, min, max) ({			\
+	typeof(val) __val = (val);		\
+	typeof(min) __min = (min);		\
+	typeof(max) __max = (max);		\
+	(void) (&__val == &__min);		\
+	(void) (&__val == &__max);		\
+	__val = __val < __min ? __min: __val;	\
+	__val > __max ? __max: __val; })
+#endif
+
+#ifndef clamp_t
+#define clamp_t(type, val, min, max) ({		\
+	type __val = (val);			\
+	type __min = (min);			\
+	type __max = (max);			\
+	__val = __val < __min ? __min: __val;	\
+	__val > __max ? __max: __val; })
+#endif
+
+#ifndef clamp_val
+#define clamp_val(val, min, max) ({             \
+	typeof(val) __val = (val);              \
+	typeof(val) __min = (min);              \
+	typeof(val) __max = (max);              \
+	__val = __val < __min ? __min: __val;   \
+	__val > __max ? __max: __val; })
+#endif
+
 #endif /* __BACKPORT_KERNEL_H */

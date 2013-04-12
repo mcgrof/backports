@@ -122,6 +122,14 @@ static inline void device_unlock(struct device *dev)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26)
+static inline const char *dev_name(struct device *dev)
+{
+	/* will be changed into kobject_name(&dev->kobj) in the near future */
+	return dev->bus_id;
+}
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)
 static inline void dev_set_uevent_suppress(struct device *dev, int val)
 {
@@ -139,6 +147,12 @@ static inline void dev_set_uevent_suppress(struct device *dev, int val)
 })
 
 #define dev_name(dev) dev_name((struct device *)dev)
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26)
+#define dev_set_name LINUX_BACKPORT(dev_set_name)
+extern int dev_set_name(struct device *dev, const char *name, ...)
+			__attribute__((format(printf, 2, 3)));
 #endif
 
 #endif /* __BACKPORT_DEVICE_H */

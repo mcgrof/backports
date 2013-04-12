@@ -435,4 +435,21 @@ static inline void netif_tx_stop_all_queues(struct net_device *dev)
 #define netif_wake_subqueue netif_start_subqueue
 #endif /* < 2.6.27 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26)
+static inline
+struct net *dev_net(const struct net_device *dev)
+{
+#ifdef CONFIG_NET_NS
+	/*
+	 * compat-wirelss backport note:
+	 * For older kernels we may just need to always return init_net,
+	 * not sure when we added dev->nd_net.
+	 */
+	return dev->nd_net;
+#else
+	return &init_net;
+#endif
+}
+#endif
+
 #endif /* __BACKPORT_NETDEVICE_H */

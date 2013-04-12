@@ -50,6 +50,13 @@
 
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26)
+static inline int list_is_singular(const struct list_head *head)
+{
+	return !list_empty(head) && (head->next == head->prev);
+}
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
 static inline void __list_cut_position(struct list_head *list,
 		struct list_head *head, struct list_head *entry)

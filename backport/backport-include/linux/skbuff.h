@@ -54,4 +54,18 @@ static inline dma_addr_t skb_frag_dma_map(struct device *dev,
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,1,0)
+/* mask __netdev_alloc_skb_ip_align as RHEL6 backports this */
+#define __netdev_alloc_skb_ip_align(a,b,c) compat__netdev_alloc_skb_ip_align(a,b,c)
+static inline struct sk_buff *__netdev_alloc_skb_ip_align(struct net_device *dev,
+							  unsigned int length, gfp_t gfp)
+{
+	struct sk_buff *skb = __netdev_alloc_skb(dev, length + NET_IP_ALIGN, gfp);
+
+	if (NET_IP_ALIGN && skb)
+		skb_reserve(skb, NET_IP_ALIGN);
+	return skb;
+}
+#endif
+
 #endif /* __BACKPORT_SKBUFF_H */

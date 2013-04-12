@@ -46,4 +46,17 @@ static inline char *hex_byte_pack(char *buf, u8 byte)
 }
 #endif
 
+/* This backports:
+ *
+ * commit 36a26c69b4c70396ef569c3452690fba0c1dec08
+ * Author: Nicholas Bellinger <nab@linux-iscsi.org>
+ * Date:   Tue Jul 26 00:35:26 2011 -0700
+ *
+ * 	kernel.h: Add DIV_ROUND_UP_ULL and DIV_ROUND_UP_SECTOR_T macro usage
+ */
+#ifndef DIV_ROUND_UP_ULL
+#define DIV_ROUND_UP_ULL(ll,d) \
+	({ unsigned long long _tmp = (ll)+(d)-1; do_div(_tmp, d); _tmp; })
+#endif
+
 #endif /* __BACKPORT_KERNEL_H */

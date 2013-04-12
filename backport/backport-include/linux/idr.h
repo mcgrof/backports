@@ -5,6 +5,15 @@
 #include_next <linux/idr.h>
 #include <linux/version.h>
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,1,0)
+#define ida_simple_get LINUX_BACKPORT(ida_simple_get)
+int ida_simple_get(struct ida *ida, unsigned int start, unsigned int end,
+		   gfp_t gfp_mask);
+
+#define ida_simple_remove LINUX_BACKPORT(ida_simple_remove)
+void ida_simple_remove(struct ida *ida, unsigned int id);
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
 #include <linux/errno.h>
 /**

@@ -13,4 +13,8 @@
 #define GENLMSG_DEFAULT_SIZE (NLMSG_DEFAULT_SIZE - GENL_HDRLEN)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,1,0)
+#define genl_dump_check_consistent(cb, user_hdr, family)
+#endif
+
 #endif /* __BACKPORT_NET_GENETLINK_H */

@@ -6,4 +6,8 @@
 #define PM_EVENT_SLEEP  (PM_EVENT_SUSPEND)
 #endif
 
+#ifndef PMSG_IS_AUTO
+#define PMSG_IS_AUTO(msg)	(((msg).event & PM_EVENT_AUTO) != 0)
+#endif
+
 #endif /* __BACKPORT_PM_H */

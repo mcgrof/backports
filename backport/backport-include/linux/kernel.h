@@ -26,4 +26,24 @@ extern int strict_strtol(const char *, unsigned int, long *);
 #define SIZE_MAX    (~(size_t)0)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26)
+extern const char hex_asc[];
+#endif
+
+#ifndef hex_asc_hi
+#define hex_asc_hi(x)	hex_asc[((x) & 0xf0) >> 4]
+#endif
+#ifndef hex_asc_lo
+#define hex_asc_lo(x)	hex_asc[((x) & 0x0f)]
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0)
+static inline char *hex_byte_pack(char *buf, u8 byte)
+{
+	*buf++ = hex_asc_hi(byte);
+	*buf++ = hex_asc_lo(byte);
+	return buf;
+}
+#endif
+
 #endif /* __BACKPORT_KERNEL_H */

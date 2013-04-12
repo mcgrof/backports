@@ -27,4 +27,10 @@ module_exit(__platform_driver##_exit);
 #define PLATFORM_DEVID_AUTO	(-1)
 #endif
 
+#ifndef module_platform_driver
+#define module_platform_driver(__platform_driver) \
+        module_driver(__platform_driver, platform_driver_register, \
+                        platform_driver_unregister)
+#endif
+
 #endif /* __BACKPORT_PLATFORM_DEVICE_H */

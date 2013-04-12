@@ -14,4 +14,8 @@
 #define ETH_P_802_3_MIN 0x0600
 #endif
 
+#ifndef ETH_P_TDLS
+#define ETH_P_TDLS	0x890D          /* TDLS */
+#endif
+
 #endif /* __BACKPORT_IF_ETHER_H */

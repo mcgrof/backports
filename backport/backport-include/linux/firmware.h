@@ -18,4 +18,12 @@ int request_firmware_nowait(
 void release_firmware(const struct firmware *fw);
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+struct builtin_fw {
+	char *name;
+	void *data;
+	unsigned long size;
+};
+#endif
+
 #endif /* __BACKPORT_LINUX_FIRMWARE_H */

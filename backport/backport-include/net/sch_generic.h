@@ -22,6 +22,37 @@ static inline void qdisc_cb_private_validate(const struct sk_buff *skb, int sz)
 #endif
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0) */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+static inline struct net_device *qdisc_dev(const struct Qdisc *qdisc)
+{
+	return qdisc->dev;
+}
+
+/*
+ * Backports 378a2f09 and c27f339a
+ * This may need a bit more work.
+ */
+enum net_xmit_qdisc_t {
+	__NET_XMIT_STOLEN = 0x00010000,
+	__NET_XMIT_BYPASS = 0x00020000,
+};
+
+struct qdisc_skb_cb {
+	unsigned int            pkt_len;
+	char                    data[];
+};
+
+static inline struct qdisc_skb_cb *qdisc_skb_cb(struct sk_buff *skb)
+{
+	return (struct qdisc_skb_cb *)skb->cb;
+}
+
+static inline unsigned int qdisc_pkt_len(struct sk_buff *skb)
+{
+	return qdisc_skb_cb(skb)->pkt_len;
+}
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38)
 #if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30)
 static inline void bstats_update(struct gnet_stats_basic_packed *bstats,
@@ -88,6 +119,13 @@ static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
 static inline int qdisc_qlen(const struct Qdisc *q)
 {
 	return q->q.qlen;
+}
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+static inline bool qdisc_all_tx_empty(const struct net_device *dev)
+{
+	return skb_queue_empty(&dev->qdisc->q);
 }
 #endif
 

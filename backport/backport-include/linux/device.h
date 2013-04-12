@@ -129,4 +129,16 @@ static inline void dev_set_uevent_suppress(struct device *dev, int val)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+#define device_create(cls, parent, devt, drvdata, fmt, ...)		\
+({									\
+	struct device *_dev;						\
+	_dev = (device_create)(cls, parent, devt, fmt, __VA_ARGS__);	\
+	dev_set_drvdata(_dev, drvdata);					\
+	_dev;								\
+})
+
+#define dev_name(dev) dev_name((struct device *)dev)
+#endif
+
 #endif /* __BACKPORT_DEVICE_H */

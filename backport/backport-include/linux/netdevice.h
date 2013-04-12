@@ -6,6 +6,7 @@
 
 /* older kernels don't include this here, we need it */
 #include <linux/ethtool.h>
+#include <linux/rculist.h>
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
 #define dev_change_net_namespace(a, b, c) (-EOPNOTSUPP)
@@ -404,5 +405,34 @@ do {								\
 #ifndef NETDEV_PRE_UP
 #define NETDEV_PRE_UP		0x000D
 #endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+/*
+ * On older kernels we do not have net_device Multi Queue support, but
+ * since we no longer use MQ on mac80211 we can simply use the 0 queue.
+ * Note that if other fullmac drivers make use of this they then need
+ * to be backported somehow or deal with just 1 queue from MQ.
+ */
+static inline void netif_tx_wake_all_queues(struct net_device *dev)
+{
+	netif_wake_queue(dev);
+}
+static inline void netif_tx_start_all_queues(struct net_device *dev)
+{
+	netif_start_queue(dev);
+}
+static inline void netif_tx_stop_all_queues(struct net_device *dev)
+{
+	netif_stop_queue(dev);
+}
+
+/*
+ * The net_device has a spin_lock on newer kernels, on older kernels we're out of luck
+ */
+#define netif_addr_lock_bh(dev)
+#define netif_addr_unlock_bh(dev)
+
+#define netif_wake_subqueue netif_start_subqueue
+#endif /* < 2.6.27 */
 
 #endif /* __BACKPORT_NETDEVICE_H */

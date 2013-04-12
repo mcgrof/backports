@@ -173,4 +173,9 @@ void __iomem *pci_ioremap_bar(struct pci_dev *pdev, int bar);
 int pci_wake_from_d3(struct pci_dev *dev, bool enable);
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+#define pci_pme_capable LINUX_BACKPORT(pci_pme_capable)
+bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
+#endif
+
 #endif /* _BACKPORT_LINUX_PCI_H */

@@ -121,4 +121,8 @@
 #define  PCI_EXP_DEVCTL2_ARI	0x20    /* Alternative Routing-ID */
 #endif
 
+#ifndef PCI_PM_CAP_PME_SHIFT
+#define PCI_PM_CAP_PME_SHIFT	11
+#endif
+
 #endif /* __BACKPORT_UAPI_PCI_REGS_H */

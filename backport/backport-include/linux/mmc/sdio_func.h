@@ -31,4 +31,10 @@ extern int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags);
 #define dev_to_sdio_func(d)	container_of(d, struct sdio_func, dev)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27) && \
+    LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24)
+#define sdio_align_size LINUX_BACKPORT(sdio_align_size)
+extern unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz);
+#endif /* 2.6.24 - 2.6.26 */
+
 #endif /* __BACKPORT_MMC_SDIO_FUNC_H */

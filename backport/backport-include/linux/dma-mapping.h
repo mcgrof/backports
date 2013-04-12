@@ -46,4 +46,47 @@ static inline int dma_set_coherent_mask(struct device *dev, u64 mask)
 }
 #endif /* < 2.6.34 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+#include <backport/magic.h>
+/* These really belong to asm/dma-mapping.h but it doesn't really matter */
+/* On 2.6.27 a second argument was added, on older kernels we ignore it */
+static inline int dma_mapping_error1(dma_addr_t dma_addr)
+{
+	/* use an inline to grab the old definition */
+	return dma_mapping_error(dma_addr);
+}
+
+#define dma_mapping_error2(pdef, dma_addr) \
+	dma_mapping_error1(dma_addr)
+
+#undef dma_mapping_error
+#define dma_mapping_error(...) \
+	macro_dispatcher(dma_mapping_error, __VA_ARGS__)(__VA_ARGS__)
+
+/* This kinda belongs into asm/dma-mapping.h or so, but doesn't matter */
+#ifdef CONFIG_ARM
+
+/*
+ * The caller asks to handle a range between offset and offset + size,
+ * but we process a larger range from 0 to offset + size due to lack of
+ * offset support.
+ */
+
+static inline void dma_sync_single_range_for_cpu(struct device *dev,
+		dma_addr_t handle, unsigned long offset, size_t size,
+		enum dma_data_direction dir)
+{
+	dma_sync_single_for_cpu(dev, handle, offset + size, dir);
+}
+
+static inline void dma_sync_single_range_for_device(struct device *dev,
+		dma_addr_t handle, unsigned long offset, size_t size,
+		enum dma_data_direction dir)
+{
+	dma_sync_single_for_device(dev, handle, offset + size, dir);
+}
+
+#endif /* arm */
+#endif
+
 #endif /* __BACKPORT_LINUX_DMA_MAPPING_H */

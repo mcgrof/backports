@@ -202,4 +202,8 @@ int hex_to_bin(char ch);
 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
 #endif
 
+#ifndef lower_32_bits
+#define lower_32_bits(n) ((u32)(n))
+#endif
+
 #endif /* __BACKPORT_KERNEL_H */

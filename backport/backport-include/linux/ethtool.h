@@ -28,4 +28,17 @@ static inline u32 ethtool_rxfh_indir_default(u32 index, u32 n_rx_rings)
 #define ADVERTISED_10000baseR_FEC      (1 << 20)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+static inline void ethtool_cmd_speed_set(struct ethtool_cmd *ep,
+					 __u32 speed)
+{
+	ep->speed = (__u16)speed;
+}
+
+static inline __u32 ethtool_cmd_speed(const struct ethtool_cmd *ep)
+{
+	return ep->speed;
+}
+#endif
+
 #endif /* __BACKPORT_LINUX_ETHTOOL_H */

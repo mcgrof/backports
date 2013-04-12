@@ -71,6 +71,11 @@ static inline void backport_system_workqueue_destroy(void)
 }
 #endif /* < 2.6.36 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)
+/* I can't find a more suitable replacement... */
+#define flush_work(work) cancel_work_sync(work)
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
 static inline void flush_delayed_work(struct delayed_work *dwork)
 {

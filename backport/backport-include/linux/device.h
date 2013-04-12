@@ -122,4 +122,11 @@ static inline void device_unlock(struct device *dev)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)
+static inline void dev_set_uevent_suppress(struct device *dev, int val)
+{
+	dev->uevent_suppress = val;
+}
+#endif
+
 #endif /* __BACKPORT_DEVICE_H */

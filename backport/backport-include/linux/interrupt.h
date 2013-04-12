@@ -25,6 +25,10 @@ static inline int irq_set_affinity_hint(unsigned int irq,
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)
+#define IRQ_WAKE_THREAD	(2)
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 struct compat_threaded_irq {
 	unsigned int irq;

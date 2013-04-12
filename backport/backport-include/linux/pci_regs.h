@@ -95,4 +95,12 @@
 #define  PCI_MSIX_ENTRY_VECTOR_CTRL    12
 #endif
 
+#ifndef PCI_EXP_LNKCTL2
+#define PCI_EXP_LNKCTL2			48      /* Link Control 2 */
+#endif
+
+#ifndef PCI_EXP_SLTCTL2
+#define PCI_EXP_SLTCTL2			56      /* Slot Control 2 */
+#endif
+
 #endif /* __BACKPORT_UAPI_PCI_REGS_H */

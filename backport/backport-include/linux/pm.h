@@ -55,4 +55,13 @@ struct dev_pm_ops name = { \
 #endif /* >= 2.6.29 */
 #endif /* < 2.6.32 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)
+enum dpm_order {
+	DPM_ORDER_NONE,
+	DPM_ORDER_DEV_AFTER_PARENT,
+	DPM_ORDER_PARENT_BEFORE_DEV,
+	DPM_ORDER_DEV_LAST,
+};
+#endif
+
 #endif /* __BACKPORT_PM_H */

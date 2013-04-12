@@ -20,6 +20,8 @@ extern bool hid_ignore(struct hid_device *);
 #define HID_QUIRK_HIDDEV_FORCE                 0x00000010
 #endif
 
-
+#ifndef HID_QUIRK_IGNORE
+#define HID_QUIRK_IGNORE                       0x00000004
+#endif
 
 #endif /* __BACKPORT_HID_H */

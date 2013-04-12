@@ -39,6 +39,17 @@ do {                                                           \
 #define pr_warn pr_warning
 #endif
 
+#ifndef printk_once
+#define printk_once(x...) ({			\
+	static bool __print_once;		\
+						\
+	if (!__print_once) {			\
+		__print_once = true;		\
+		printk(x);			\
+	}					\
+})
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38)
 #define pr_emerg_once(fmt, ...)					\
 	printk_once(KERN_EMERG pr_fmt(fmt), ##__VA_ARGS__)

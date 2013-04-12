@@ -93,4 +93,30 @@ static inline s64 nla_get_s64(struct nlattr *nla)
 }
 #endif /* < 3.7.0 */
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0))
+/*
+ * This backports:
+ * commit 569a8fc38367dfafd87454f27ac646c8e6b54bca
+ * Author: David S. Miller <davem@davemloft.net>
+ * Date:   Thu Mar 29 23:18:53 2012 -0400
+ *
+ *     netlink: Add nla_put_be{16,32,64}() helpers.
+ */
+
+static inline int nla_put_be16(struct sk_buff *skb, int attrtype, __be16 value)
+{
+	return nla_put(skb, attrtype, sizeof(__be16), &value);
+}
+
+static inline int nla_put_be32(struct sk_buff *skb, int attrtype, __be32 value)
+{
+	return nla_put(skb, attrtype, sizeof(__be32), &value);
+}
+
+static inline int nla_put_be64(struct sk_buff *skb, int attrtype, __be64 value)
+{
+	return nla_put(skb, attrtype, sizeof(__be64), &value);
+}
+#endif /* < 3.5 */
+
 #endif /* __BACKPORT_NET_NETLINK_H */

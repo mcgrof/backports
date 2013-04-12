@@ -47,4 +47,11 @@ static inline void eth_zero_addr(u8 *addr)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0)
+static inline bool ether_addr_equal(const u8 *addr1, const u8 *addr2)
+{
+	return !compare_ether_addr(addr1, addr2);
+}
+#endif
+
 #endif /* _BACKPORT_LINUX_ETHERDEVICE_H */

@@ -92,4 +92,9 @@ static inline void usb_autopm_put_interface_no_suspend(struct usb_interface *int
 #endif /* CONFIG_USB_SUSPEND */
 #endif /* < 2.6.33 */
 
+#ifndef USB_SUBCLASS_VENDOR_SPEC
+/* this is defined in usb/ch9.h, but we only need it through here */
+#define USB_SUBCLASS_VENDOR_SPEC	0xff
+#endif
+
 #endif /* __BACKPORT_USB_H */

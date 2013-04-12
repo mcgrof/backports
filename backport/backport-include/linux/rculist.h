@@ -46,4 +46,9 @@
 	     pos = list_entry_rcu(pos->member.next, typeof(*pos), member))
 #endif
 
+#ifndef list_entry_rcu
+#define list_entry_rcu(ptr, type, member) \
+	container_of(rcu_dereference(ptr), type, member)
+#endif
+
 #endif /* __BACKPORT_RCULIST_H */

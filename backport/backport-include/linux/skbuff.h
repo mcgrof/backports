@@ -117,4 +117,9 @@ static inline struct sk_buff *netdev_alloc_skb_ip_align(struct net_device *dev,
 }
 #endif
 
+#ifndef skb_walk_frags
+#define skb_walk_frags(skb, iter)	\
+	for (iter = skb_shinfo(skb)->frag_list; iter; iter = iter->next)
+#endif
+
 #endif /* __BACKPORT_SKBUFF_H */

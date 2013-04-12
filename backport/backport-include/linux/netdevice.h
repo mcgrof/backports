@@ -291,4 +291,8 @@ do {								\
 #define NETDEV_POST_INIT 0xffff
 #endif
 
+#ifndef NETDEV_PRE_UP
+#define NETDEV_PRE_UP		0x000D
+#endif
+
 #endif /* __BACKPORT_NETDEVICE_H */

@@ -12,4 +12,8 @@ typedef u32 netdev_features_t;
 #include_next <linux/netdev_features.h>
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0) */
 
+#if !defined(NETIF_F_RXCSUM)
+#define NETIF_F_RXCSUM 0
+#endif
+
 #endif /* __BACKPORT_NETDEV_FEATURES_H */

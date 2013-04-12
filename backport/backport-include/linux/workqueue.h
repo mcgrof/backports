@@ -14,4 +14,8 @@ bool mod_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork,
 #define create_freezable_workqueue create_freezeable_workqueue
 #endif
 
+#ifndef alloc_ordered_workqueue
+#define alloc_ordered_workqueue(name, flags) create_singlethread_workqueue(name)
+#endif
+
 #endif /* __BACKPORT_LINUX_WORKQUEUE_H */

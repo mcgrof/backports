@@ -93,4 +93,22 @@ static inline int register_netdevice_name(struct net_device *dev)
 			max_t(unsigned int, txqs, rxqs))
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)
+#define netdev_refcnt_read(a) atomic_read(&a->refcnt)
+
+#define net_ns_type_operations LINUX_BACKPORT(net_ns_type_operations)
+extern struct kobj_ns_type_operations net_ns_type_operations;
+
+#ifdef CONFIG_RPS
+extern int netif_set_real_num_rx_queues(struct net_device *dev,
+					unsigned int rxq);
+#else
+static inline int netif_set_real_num_rx_queues(struct net_device *dev,
+					       unsigned int rxq)
+{
+	return 0;
+}
+#endif
+#endif /* < 2.6.37 */
+
 #endif /* __BACKPORT_NETDEVICE_H */

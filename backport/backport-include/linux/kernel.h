@@ -2,6 +2,11 @@
 #define __BACKPORT_KERNEL_H
 #include_next <linux/kernel.h>
 #include <linux/version.h>
+/*
+ * some older kernels don't have this and thus don't
+ * include it from kernel.h like new kernels
+ */
+#include <linux/printk.h>
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,25))
 /**

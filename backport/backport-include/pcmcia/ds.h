@@ -26,4 +26,8 @@
 			pcmcia_unregister_driver)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)
+#define pcmcia_enable_device(link)	pcmcia_request_configuration(link, &link->conf)
+#endif
+
 #endif /* __BACKPORT_PCMCIA_DS_H */

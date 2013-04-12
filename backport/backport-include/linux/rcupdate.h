@@ -21,4 +21,9 @@
 	} while (0)
 #endif
 
+#ifndef RCU_INIT_POINTER
+#define RCU_INIT_POINTER(p, v) \
+		p = (typeof(*v) __force __rcu *)(v)
+#endif
+
 #endif /* __BACKPORT_LINUX_RCUPDATE_H */

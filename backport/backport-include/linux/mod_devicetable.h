@@ -10,6 +10,20 @@
 #define HID_GROUP_ANY                          0x0000
 #endif
 
+#ifndef HID_ANY_ID
+#define HID_ANY_ID                             (~0)
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)
+struct hid_device_id {
+	__u16 bus;
+	__u32 vendor;
+	__u32 product;
+	kernel_ulong_t driver_data
+		__attribute__((aligned(sizeof(kernel_ulong_t))));
+};
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0)
 #ifndef BCMA_CORE
 /* Broadcom's specific AMBA core, see drivers/bcma/ */

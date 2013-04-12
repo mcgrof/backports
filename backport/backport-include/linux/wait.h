@@ -16,4 +16,9 @@ extern void compat_wake_up_locked(wait_queue_head_t *q, unsigned int mode, int n
 #define wake_up_all_locked(x)	compat_wake_up_locked((x), TASK_NORMAL, 0)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)
+#define wake_up_interruptible_poll(x, m)			\
+	__wake_up(x, TASK_INTERRUPTIBLE, 1, (void *) (m))
+#endif
+
 #endif /* __BACKPORT_LINUX_WAIT_H */

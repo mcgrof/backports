@@ -112,4 +112,14 @@ extern void usb_unpoison_anchored_urbs(struct usb_anchor *anchor);
 #endif /* CONFIG_USB */
 #endif /* 2.6.23 - 2.6.28 */
 
+/* USB anchors were added as of 2.6.23 */
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28) && \
+    LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23)
+#define usb_unpoison_urb LINUX_BACKPORT(usb_unpoison_urb)
+extern void usb_unpoison_urb(struct urb *urb);
+
+#define usb_anchor_empty LINUX_BACKPORT(usb_anchor_empty)
+extern int usb_anchor_empty(struct usb_anchor *anchor);
+#endif /* 2.6.23-2.6.27 */
+
 #endif /* __BACKPORT_USB_H */

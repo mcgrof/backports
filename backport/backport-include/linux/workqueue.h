@@ -18,6 +18,10 @@ bool mod_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork,
 #define alloc_ordered_workqueue(name, flags) create_singlethread_workqueue(name)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)
+#define alloc_workqueue(name, flags, max_active) __create_workqueue(name, flags, max_active)
+#endif
+
 #ifndef alloc_workqueue
 #define alloc_workqueue(name, flags, max_active) __create_workqueue(name, flags, max_active, 0)
 #endif

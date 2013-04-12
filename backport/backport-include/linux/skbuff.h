@@ -137,4 +137,84 @@ static inline struct sk_buff *skb_queue_prev(const struct sk_buff_head *list,
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)
+static inline bool skb_queue_is_last(const struct sk_buff_head *list,
+				     const struct sk_buff *skb)
+{
+	return (skb->next == (struct sk_buff *) list);
+}
+
+static inline struct sk_buff *skb_queue_next(const struct sk_buff_head *list,
+                                             const struct sk_buff *skb)
+{
+	/* This BUG_ON may seem severe, but if we just return then we
+	 * are going to dereference garbage.
+	 */
+	BUG_ON(skb_queue_is_last(list, skb));
+	return skb->next;
+}
+
+static inline void __skb_queue_head_init(struct sk_buff_head *list)
+{
+	list->prev = list->next = (struct sk_buff *)list;
+	list->qlen = 0;
+}
+
+static inline void __skb_queue_splice(const struct sk_buff_head *list,
+				      struct sk_buff *prev,
+				      struct sk_buff *next)
+{
+	struct sk_buff *first = list->next;
+	struct sk_buff *last = list->prev;
+
+	first->prev = prev;
+	prev->next = first;
+
+	last->next = next;
+	next->prev = last;
+}
+
+static inline void skb_queue_splice(const struct sk_buff_head *list,
+				    struct sk_buff_head *head)
+{
+	if (!skb_queue_empty(list)) {
+		__skb_queue_splice(list, (struct sk_buff *) head, head->next);
+		head->qlen += list->qlen;
+	}
+}
+
+static inline void skb_queue_splice_init(struct sk_buff_head *list,
+					 struct sk_buff_head *head)
+{
+	if (!skb_queue_empty(list)) {
+		__skb_queue_splice(list, (struct sk_buff *) head, head->next);
+		head->qlen += list->qlen;
+		__skb_queue_head_init(list);
+	}
+}
+
+static inline void skb_queue_splice_tail_init(struct sk_buff_head *list,
+					      struct sk_buff_head *head)
+{
+	if (!skb_queue_empty(list)) {
+		__skb_queue_splice(list, head->prev, (struct sk_buff *) head);
+		head->qlen += list->qlen;
+		__skb_queue_head_init(list);
+	}
+}
+
+static inline void skb_queue_splice_tail(const struct sk_buff_head *list,
+					 struct sk_buff_head *head)
+{
+	if (!skb_queue_empty(list)) {
+		__skb_queue_splice(list, head->prev, (struct sk_buff *) head);
+		head->qlen += list->qlen;
+	}
+}
+
+#define skb_queue_walk_from(queue, skb)						\
+		for (; skb != (struct sk_buff *)(queue);			\
+		     skb = skb->next)
+#endif /* < 2.6.28 */
+
 #endif /* __BACKPORT_SKBUFF_H */

@@ -33,6 +33,12 @@ static inline void tty_unlock(void) __releases(kernel_lock)
 #define tty_locked()           (kernel_locked())
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)
+#define n_tty_ioctl_helper LINUX_BACKPORT(n_tty_ioctl_helper)
+extern int n_tty_ioctl_helper(struct tty_struct *tty, struct file *file,
+		       unsigned int cmd, unsigned long arg);
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0)
 /* Backports tty_lock: Localise the lock */
 #define tty_lock(__tty) tty_lock()

@@ -111,4 +111,14 @@
 #define PCI_EXP_SLTSTA_PDS	0x0040  /* Presence Detect State */
 #endif
 
+#ifndef PCI_EXP_DEVCAP2
+#define PCI_EXP_DEVCAP2		36      /* Device Capabilities 2 */
+#define  PCI_EXP_DEVCAP2_ARI  	0x20    /* Alternative Routing-ID */
+#endif
+
+#ifndef PCI_EXP_DEVCTL2
+#define PCI_EXP_DEVCTL2		40      /* Device Control 2 */
+#define  PCI_EXP_DEVCTL2_ARI	0x20    /* Alternative Routing-ID */
+#endif
+
 #endif /* __BACKPORT_UAPI_PCI_REGS_H */

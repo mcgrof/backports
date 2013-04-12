@@ -24,4 +24,14 @@ extern bool hid_ignore(struct hid_device *);
 #define HID_QUIRK_IGNORE                       0x00000004
 #endif
 
+#ifndef HID_USB_DEVICE
+#define HID_USB_DEVICE(ven, prod)                              \
+	.bus = BUS_USB, .vendor = (ven), .product = (prod)
+#endif
+
+#ifndef HID_BLUETOOTH_DEVICE
+#define HID_BLUETOOTH_DEVICE(ven, prod)                                        \
+	.bus = BUS_BLUETOOTH, .vendor = (ven), .product = (prod)
+#endif
+
 #endif /* __BACKPORT_HID_H */

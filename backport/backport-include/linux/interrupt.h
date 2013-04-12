@@ -11,6 +11,7 @@ static inline int irq_set_irq_wake(unsigned int irq, unsigned int on)
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35)
+#include <linux/cpumask.h>
 /* mask irq_set_affinity_hint as RHEL6 backports this */
 #define irq_set_affinity_hint LINUX_BACKPORT(irq_set_affinity_hint)
 /*

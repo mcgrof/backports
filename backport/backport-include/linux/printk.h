@@ -9,6 +9,10 @@
 #include <linux/kernel.h>
 #endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,35)) */
 
+#ifndef pr_fmt
+#define pr_fmt(fmt) fmt
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
 /* backports 7a555613 */
 #if defined(CONFIG_DYNAMIC_DEBUG)

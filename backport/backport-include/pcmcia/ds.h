@@ -66,4 +66,22 @@ int pccard_loop_tuple(struct pcmcia_socket *s, unsigned int function,
 					 void *priv_data));
 #endif /* < 2.6.33 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)
+#ifdef pcmcia_parse_tuple
+#undef pcmcia_parse_tuple
+#define pcmcia_parse_tuple(tuple, parse) pccard_parse_tuple(tuple, parse)
+#endif
+
+/* From : include/pcmcia/ds.h */
+/* loop CIS entries for valid configuration */
+#define pcmcia_loop_config LINUX_BACKPORT(pcmcia_loop_config)
+int pcmcia_loop_config(struct pcmcia_device *p_dev,
+		       int	(*conf_check)	(struct pcmcia_device *p_dev,
+						 cistpl_cftable_entry_t *cfg,
+						 cistpl_cftable_entry_t *dflt,
+						 unsigned int vcc,
+						 void *priv_data),
+		       void *priv_data);
+#endif
+
 #endif /* __BACKPORT_PCMCIA_DS_H */

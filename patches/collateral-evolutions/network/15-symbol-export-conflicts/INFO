@@ -1,3 +1,0 @@
-In kernel < 2.6.32 libipw also exports ieee80211_rx.
-To avoid conflicts with the other export we rename our.
-

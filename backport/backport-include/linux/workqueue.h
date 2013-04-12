@@ -67,4 +67,24 @@ static inline void backport_system_workqueue_destroy(void)
 }
 #endif /* < 2.6.36 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
+static inline void flush_delayed_work(struct delayed_work *dwork)
+{
+	if (del_timer_sync(&dwork->timer)) {
+		/*
+		 * This is what would happen on 2.6.32 but since we don't have
+		 * access to the singlethread_cpu we can't really backport this,
+		 * so avoid really *flush*ing the work... Oh well. Any better ideas?
+
+		struct cpu_workqueue_struct *cwq;
+		cwq = wq_per_cpu(keventd_wq, get_cpu());
+		__queue_work(cwq, &dwork->work);
+		put_cpu();
+
+		*/
+	}
+	flush_work(&dwork->work);
+}
+#endif
+
 #endif /* __BACKPORT_LINUX_WORKQUEUE_H */

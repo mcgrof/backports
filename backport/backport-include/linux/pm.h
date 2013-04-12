@@ -23,4 +23,36 @@ const struct dev_pm_ops name = { \
 }
 #endif /* 2.6.32 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
+/*
+ * dev_pm_ops is only available on kernels >= 2.6.29, for
+ * older kernels we rely on reverting the work to old
+ * power management style stuff. On 2.6.29 the pci calls
+ * weren't included yet though, so include them here.
+ */
+#if LINUX_VERSION_CODE == KERNEL_VERSION(2,6,29)
+#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn)		\
+struct dev_pm_ops name = {					\
+	.suspend = suspend_fn ## _compat,			\
+	.resume = resume_fn ## _compat,				\
+	.freeze = suspend_fn ## _compat,			\
+	.thaw = resume_fn ## _compat,				\
+	.poweroff = suspend_fn ## _compat,			\
+	.restore = resume_fn ## _compat,			\
+}
+#elif LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
+#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+struct dev_pm_ops name = { \
+	.suspend = suspend_fn, \
+	.resume = resume_fn, \
+	.freeze = suspend_fn, \
+	.thaw = resume_fn, \
+	.poweroff = suspend_fn, \
+	.restore = resume_fn, \
+}
+#else
+#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn)
+#endif /* >= 2.6.29 */
+#endif /* < 2.6.32 */
+
 #endif /* __BACKPORT_PM_H */

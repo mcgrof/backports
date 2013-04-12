@@ -82,4 +82,20 @@ int genl_unregister_family(struct genl_family *family);
 #define genl_unregister_mc_group(_fam, _grp) genl_unregister_mc_group(&(_fam)->family, _grp)
 #endif /* < 2.6.37 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
+/*
+ * struct genl_multicast_group was made netns aware through
+ * patch "genetlink: make netns aware" by johannes, we just
+ * force this to always use the default init_net
+ */
+#define genl_info_net(x) &init_net
+/* Just use init_net for older kernels */
+#define get_net_ns_by_pid(x) &init_net
+
+/* net namespace is lost */
+#define genlmsg_multicast_netns(a, b, c, d, e)	genlmsg_multicast(b, c, d, e)
+#define genlmsg_multicast_allns(a, b, c, d)	genlmsg_multicast(a, b, c, d)
+#define genlmsg_unicast(net, skb, pid)	genlmsg_unicast(skb, pid)
+#endif
+
 #endif /* __BACKPORT_NET_GENETLINK_H */

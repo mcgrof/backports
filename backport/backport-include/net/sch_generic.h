@@ -80,4 +80,15 @@ static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
 #endif /* >= 2.6.27 */
 #endif /* < 2.6.35 */
 
+#ifndef TCQ_F_CAN_BYPASS
+#define TCQ_F_CAN_BYPASS        4
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
+static inline int qdisc_qlen(const struct Qdisc *q)
+{
+	return q->q.qlen;
+}
+#endif
+
 #endif /* __BACKPORT_NET_SCH_GENERIC_H */

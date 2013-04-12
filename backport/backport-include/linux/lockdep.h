@@ -24,4 +24,8 @@
 
 #endif /* < 2.6.38 */
 
+#ifndef lockdep_assert_held
+#define lockdep_assert_held(l)			do { } while (0)
+#endif
+
 #endif /* __BACKPORT_LINUX_LOCKDEP_H */

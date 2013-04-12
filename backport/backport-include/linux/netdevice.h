@@ -7,6 +7,14 @@
 /* older kernels don't include this here, we need it */
 #include <linux/ethtool.h>
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
+#define dev_change_net_namespace(a, b, c) (-EOPNOTSUPP)
+
+#define SET_NETDEV_DEVTYPE(netdev, type)
+
+typedef int netdev_tx_t;
+#endif
+
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0))
 #define netdev_set_default_ethtool_ops LINUX_BACKPORT(netdev_set_default_ethtool_ops)
 extern void netdev_set_default_ethtool_ops(struct net_device *dev,

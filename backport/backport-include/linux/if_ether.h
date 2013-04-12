@@ -18,6 +18,10 @@
 #define ETH_P_TDLS	0x890D          /* TDLS */
 #endif
 
+#ifndef ETH_P_LINK_CTL
+#define ETH_P_LINK_CTL	0x886c
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0)
 #define mac_pton LINUX_BACKPORT(mac_pton)
 int mac_pton(const char *s, u8 *mac);

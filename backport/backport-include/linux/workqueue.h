@@ -9,4 +9,9 @@ bool mod_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork,
 		      unsigned long delay);
 #endif
 
+#ifndef create_freezable_workqueue
+/* note freez_a_ble -> freez_ea_able */
+#define create_freezable_workqueue create_freezeable_workqueue
+#endif
+
 #endif /* __BACKPORT_LINUX_WORKQUEUE_H */

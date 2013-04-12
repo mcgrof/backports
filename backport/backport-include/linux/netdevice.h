@@ -87,4 +87,10 @@ static inline int register_netdevice_name(struct net_device *dev)
 #define register_netdevice(dev) register_netdevice_name(dev)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38)
+#define alloc_netdev_mqs(sizeof_priv, name, setup, txqs, rxqs) \
+	alloc_netdev_mq(sizeof_priv, name, setup, \
+			max_t(unsigned int, txqs, rxqs))
+#endif
+
 #endif /* __BACKPORT_NETDEVICE_H */

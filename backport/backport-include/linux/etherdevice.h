@@ -86,4 +86,21 @@ static inline bool ether_addr_equal(const u8 *addr1, const u8 *addr2)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38)
+#define alloc_etherdev_mqs(sizeof_priv, tx_q, rx_q) alloc_etherdev_mq(sizeof_priv, tx_q)
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38)
+/**
+ * is_unicast_ether_addr - Determine if the Ethernet address is unicast
+ * @addr: Pointer to a six-byte array containing the Ethernet address
+ *
+ * Return true if the address is a unicast address.
+ */
+static inline int is_unicast_ether_addr(const u8 *addr)
+{
+	return !is_multicast_ether_addr(addr);
+}
+#endif
+
 #endif /* _BACKPORT_LINUX_ETHERDEVICE_H */

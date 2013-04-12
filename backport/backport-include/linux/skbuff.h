@@ -68,4 +68,11 @@ static inline struct sk_buff *__netdev_alloc_skb_ip_align(struct net_device *dev
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38)
+static inline int skb_checksum_start_offset(const struct sk_buff *skb)
+{
+	return skb->csum_start - skb_headroom(skb);
+}
+#endif
+
 #endif /* __BACKPORT_SKBUFF_H */

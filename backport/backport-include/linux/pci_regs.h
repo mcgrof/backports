@@ -82,4 +82,17 @@
 #undef PCI_EXP_TYPE_RC_EC
 #define  PCI_EXP_TYPE_RC_EC    0xa     /* Root Complex Event Collector */
 
+#ifndef PCI_MSIX_ENTRY_CTRL_MASKBIT
+#define PCI_MSIX_ENTRY_CTRL_MASKBIT  1
+#endif
+
+/* MSI-X entry's format */
+#ifndef PCI_MSIX_ENTRY_SIZE
+#define PCI_MSIX_ENTRY_SIZE            16
+#define  PCI_MSIX_ENTRY_LOWER_ADDR     0
+#define  PCI_MSIX_ENTRY_UPPER_ADDR     4
+#define  PCI_MSIX_ENTRY_DATA           8
+#define  PCI_MSIX_ENTRY_VECTOR_CTRL    12
+#endif
+
 #endif /* __BACKPORT_UAPI_PCI_REGS_H */

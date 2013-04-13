@@ -29,6 +29,6 @@ extern struct ewma *ewma_add(struct ewma *avg, unsigned long val);
  */
 static inline unsigned long ewma_read(const struct ewma *avg)
 {
-	return DIV_ROUND_CLOSEST(avg->internal, avg->factor);
+	return avg->internal >> avg->factor;
 }
 #endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,37)) */

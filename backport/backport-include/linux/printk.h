@@ -9,9 +9,7 @@
 #include <linux/kernel.h>
 #endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,35)) */
 
-#ifndef pr_fmt
-#define pr_fmt(fmt) fmt
-#endif
+/* see pr_fmt at end of file */
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
 /* backports 7a555613 */
@@ -100,3 +98,8 @@ int no_printk(const char *s, ...) { return 0; }
 #endif
 
 #endif	/* _COMPAT_LINUX_PRINTK_H */
+
+/* This must be outside -- see also kernel.h */
+#ifndef pr_fmt
+#define pr_fmt(fmt) fmt
+#endif

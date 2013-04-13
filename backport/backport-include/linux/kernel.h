@@ -242,3 +242,14 @@ int hex_to_bin(char ch);
 #endif
 
 #endif /* __BACKPORT_KERNEL_H */
+
+/*
+ * We have to do this outside the include guard, because
+ * out own header (linux/export.h) has to include kernel.h
+ * indirectly (through module.h) and then undef's pr_fmt.
+ * Then, when the real kernel.h gets included again, it's
+ * not defined and we get problems ...
+ */
+#ifndef pr_fmt
+#define pr_fmt(msg) msg
+#endif

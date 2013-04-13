@@ -16,6 +16,7 @@
 #include <linux/i2c.h>
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
+#include <linux/dma-attrs.h>
 /*
  * Create scatter-list for the already allocated DMA buffer.
  */

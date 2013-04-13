@@ -9,6 +9,7 @@
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
 #include <linux/i2c.h>
+#include <linux/dma-attrs.h>
 /* Unlocked flavor */
 #define __i2c_transfer LINUX_BACKPORT(__i2c_transfer)
 extern int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs,

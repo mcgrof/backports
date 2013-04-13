@@ -24,7 +24,6 @@ compat-$(CPTCFG_BACKPORT_KERNEL_2_6_34) += compat-2.6.34.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_35) += compat-2.6.35.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_36) += compat-2.6.36.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_37) += compat-2.6.37.o
-compat-$(CPTCFG_BACKPORT_BUILD_AVERAGE) += average.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_39) += compat-2.6.39.o kstrtox.o
 compat-$(CPTCFG_BACKPORT_KERNEL_3_0) += compat-3.0.o
 compat-$(CPTCFG_BACKPORT_KERNEL_3_1) += compat-3.1.o

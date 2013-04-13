@@ -116,6 +116,8 @@ config BACKPORT_BUILD_AVERAGE
 	depends on !AVERAGE
 	default y if BACKPORT_USERSEL_BUILD_ALL
 	default y if BACKPORT_AVERAGE
+	#h-file linux/average.h
+	#c-file lib/average.c
 
 config BACKPORT_AVERAGE
 	bool

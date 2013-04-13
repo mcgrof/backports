@@ -502,7 +502,10 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     for sym in tuple(deplist.keys()):
         new = []
         for dep in deplist[sym]:
-            new.append('!BACKPORT_KERNEL_%s' % dep.replace('.', '_'))
+            if dep == "DISABLE":
+		    new.append('BACKPORT_DISABLED_KCONFIG_OPTION')
+            else:
+                    new.append('!BACKPORT_KERNEL_%s' % dep.replace('.', '_'))
         deplist[sym] = new
     configtree.add_dependencies(deplist)
     git_debug_snapshot(args, "add kernel version dependencies")

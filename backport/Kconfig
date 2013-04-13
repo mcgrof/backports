@@ -41,3 +41,5 @@ source net/nfc/Kconfig
 
 source drivers/regulator/Kconfig
 source drivers/media/Kconfig
+
+source drivers/platform/x86/Kconfig

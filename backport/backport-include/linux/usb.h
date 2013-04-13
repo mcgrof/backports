@@ -83,11 +83,19 @@ extern void usb_autopm_put_interface_no_suspend(struct usb_interface *intf);
 #else
 static inline void usb_autopm_get_interface_no_resume(struct usb_interface *intf)
 {
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
 	atomic_inc(&intf->pm_usage_cnt);
+#else
+	intf->pm_usage_cnt++;
+#endif
 }
 static inline void usb_autopm_put_interface_no_suspend(struct usb_interface *intf)
 {
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
 	atomic_dec(&intf->pm_usage_cnt);
+#else
+	intf->pm_usage_cnt--;
+#endif
 }
 #endif /* CONFIG_USB_SUSPEND */
 #endif /* < 2.6.33 */

@@ -17,6 +17,8 @@
 
 #define VM_DONTDUMP    VM_NODUMP
 
+#define IORESOURCE_REG	0x00000300	/* Register offsets */
+
 #ifdef CONFIG_USER_NS
 
 #if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,38))

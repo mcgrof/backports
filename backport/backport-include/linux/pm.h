@@ -51,7 +51,10 @@ struct dev_pm_ops name = { \
 	.restore = resume_fn, \
 }
 #else
-#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn)
+#define ___BACKPORT_PASTE(a, b) a##b
+#define __BACKPORT_PASTE(a, b) ___BACKPORT_PASTE(a,b)
+#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+	struct {} __maybe_unused __BACKPORT_PASTE(__backport_avoid_warning_, __LINE__)
 #endif /* >= 2.6.29 */
 #endif /* < 2.6.32 */
 

@@ -31,3 +31,4 @@ obj-$(CPTCFG_ETHERNET) += drivers/net/ethernet/
 obj-$(CPTCFG_DRM) += drivers/gpu/drm/
 obj-$(CPTCFG_NFC) += net/nfc/
 obj-$(CPTCFG_NFC) += drivers/nfc/
+obj-$(CPTCFG_REGULATOR) += drivers/regulator/

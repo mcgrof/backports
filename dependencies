@@ -46,6 +46,28 @@ HDMI 3.2
 DRM 3.2
 DRM_TTM 3.2
 
+# Regulator
+# Because of -EPROBE_DEFER see commit d1c3414c and note that
+# we can't backport the core regulator as its part of the core
+# vmlinux.
+REGULATOR 3.4
+# requires some work
+REGULATOR_ARIZONA DISABLE
+REGULATOR_MAX8973 DISABLE
+REGULATOR_MAX77686 DISABLE
+REGULATOR_MAX8997 DISABLE
+REGULATOR_RC5T583 DISABLE
+REGULATOR_TPS62360 DISABLE
+REGULATOR_TPS65910 DISABLE
+REGULATOR_TPS65090 DISABLE
+REGULATOR_TPS65217 DISABLE
+REGULATOR_TPS6586X DISABLE
+REGULATOR_WM831X DISABLE
+REGULATOR_WM8350 DISABLE
+REGULATOR_PALMAS DISABLE
+REGULATOR_DA9055 DISABLE
+REGULATOR_S5M8767 DISABLE
+
 # This requires proc_create(), and that doesn't exist before 2.6.24
 LIBIPW_DEBUG 2.6.25
 
@@ -71,6 +93,11 @@ BCMA_DRIVER_GPIO 3.0
 # (rfkill-regulator.h) that we don't backport
 # right now, so make it depend on 3.0
 RFKILL_REGULATOR 3.0
+# drivers/regulator/ab3100.c and drivers/mfd/ab3100-core.c
+# both depend on include/linux/mfd/ab3100.h and we should
+# only backport REGULATOR_AB3100 if the mfd driver is
+# backported as well.
+REGULATOR_AB3100 3.9
 
 # This is a fun one ... the implementation of this
 # uses subdir-ccflags-$(CONFIG_BRCMDBG) which was

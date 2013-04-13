@@ -135,3 +135,36 @@ drivers/nfc/
 drivers/nfc/microread/
 drivers/nfc/pn544/
 include/linux/platform_data/pn544.h
+
+# Regulator
+# we don't include the whole directory as we need
+# rely on your core regulator implementation given that
+# it relies on late_initcall() and core_initcall() and
+# these can't be backported, as such we need to rely
+# on your base kernel regulator implementatin and can
+# only extend it with further exports. Your core
+# regulator routines are defined via the header file
+# include/linux/regulator/consumer.h and dummy.h
+include/linux/regulator/ab8500.h
+include/linux/regulator/db8500-prcmu.h
+include/linux/regulator/driver.h
+include/linux/regulator/fan53555.h
+include/linux/regulator/fixed.h
+include/linux/regulator/gpio-regulator.h
+include/linux/regulator/lp3971.h
+include/linux/regulator/lp3972.h
+include/linux/regulator/lp872x.h
+include/linux/regulator/machine.h
+include/linux/regulator/max1586.h
+include/linux/regulator/max8649.h
+include/linux/regulator/max8660.h
+include/linux/regulator/max8952.h
+include/linux/regulator/max8973-regulator.h
+include/linux/regulator/of_regulator.h
+include/linux/regulator/tps51632-regulator.h
+include/linux/regulator/tps62360.h
+include/linux/regulator/tps6507x.h
+include/linux/regulator/userspace-consumer.h
+include/linux/platform_data/lp8755.h
+
+drivers/regulator/

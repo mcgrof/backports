@@ -40,3 +40,4 @@ source drivers/gpu/drm/Kconfig
 source net/nfc/Kconfig
 
 source drivers/regulator/Kconfig
+source drivers/media/Kconfig

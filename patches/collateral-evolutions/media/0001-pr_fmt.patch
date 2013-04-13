@@ -1,0 +1,493 @@
+We can't really get this udef'd in any easier way. If you figure it out..
+great.
+
+--- a/drivers/media/media-devnode.c
++++ b/drivers/media/media-devnode.c
+@@ -29,11 +29,12 @@
+  * character devices using a dynamic major number and proper reference
+  * counting.
+  */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include <linux/errno.h>
+ #include <linux/init.h>
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/kmod.h>
+--- a/drivers/media/common/saa7146/saa7146_i2c.c
++++ b/drivers/media/common/saa7146/saa7146_i2c.c
+@@ -1,5 +1,7 @@
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <media/saa7146_vv.h>
+ 
+ static u32 saa7146_i2c_func(struct i2c_adapter *adapter)
+--- a/drivers/media/common/saa7146/saa7146_fops.c
++++ b/drivers/media/common/saa7146/saa7146_fops.c
+@@ -1,5 +1,7 @@
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <media/saa7146_vv.h>
+ #include <linux/module.h>
+ 
+--- a/drivers/media/common/saa7146/saa7146_core.c
++++ b/drivers/media/common/saa7146/saa7146_core.c
+@@ -17,9 +17,10 @@
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <media/saa7146.h>
+ #include <linux/module.h>
+ 
+--- a/drivers/media/common/saa7146/saa7146_video.c
++++ b/drivers/media/common/saa7146/saa7146_video.c
+@@ -1,9 +1,11 @@
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include <media/saa7146_vv.h>
+ #include <media/v4l2-chip-ident.h>
+ #include <media/v4l2-event.h>
+ #include <media/v4l2-ctrls.h>
++#include <linux/printk.h>
+ #include <linux/module.h>
+ 
+ static int max_memory = 32;
+--- a/drivers/media/common/saa7146/saa7146_hlp.c
++++ b/drivers/media/common/saa7146/saa7146_hlp.c
+@@ -1,5 +1,7 @@
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/kernel.h>
+ #include <linux/export.h>
+ #include <media/saa7146_vv.h>
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -34,8 +34,10 @@
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/delay.h>
+--- a/drivers/media/pci/bt8xx/bttv-cards.c
++++ b/drivers/media/pci/bt8xx/bttv-cards.c
+@@ -24,9 +24,10 @@
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
+ */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/kmod.h>
+--- a/drivers/media/dvb-frontends/nxt200x.c
++++ b/drivers/media/dvb-frontends/nxt200x.c
+@@ -37,12 +37,14 @@
+  * /usr/lib/hotplug/firmware/ or /lib/firmware/
+  * (depending on configuration of firmware hotplug).
+  */
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #define NXT2002_DEFAULT_FIRMWARE "dvb-fe-nxt2002.fw"
+ #define NXT2004_DEFAULT_FIRMWARE "dvb-fe-nxt2004.fw"
+ #define CRC_CCIT_MASK 0x1021
+ 
++#include <linux/printk.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+--- a/drivers/media/dvb-frontends/or51211.c
++++ b/drivers/media/dvb-frontends/or51211.c
+@@ -21,7 +21,7 @@
+  *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  *
+ */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt)	KBUILD_MODNAME ": %s: " fmt, __func__
+ 
+ /*
+@@ -32,6 +32,7 @@
+  */
+ #define OR51211_DEFAULT_FIRMWARE "dvb-fe-or51211.fw"
+ 
++#include <linux/printk.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
+--- a/drivers/media/pci/bt8xx/bttv-risc.c
++++ b/drivers/media/pci/bt8xx/bttv-risc.c
+@@ -23,9 +23,10 @@
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
+ */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/slab.h>
+--- a/drivers/media/pci/bt8xx/bttv-vbi.c
++++ b/drivers/media/pci/bt8xx/bttv-vbi.c
+@@ -22,9 +22,10 @@
+     along with this program; if not, write to the Free Software
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/errno.h>
+ #include <linux/fs.h>
+--- a/drivers/media/pci/bt8xx/bttv-i2c.c
++++ b/drivers/media/pci/bt8xx/bttv-i2c.c
+@@ -26,9 +26,10 @@
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
+ */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/delay.h>
+--- a/drivers/media/pci/bt8xx/bttv-gpio.c
++++ b/drivers/media/pci/bt8xx/bttv-gpio.c
+@@ -25,9 +25,10 @@
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
+ */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/delay.h>
+--- a/drivers/media/pci/bt8xx/bttv-input.c
++++ b/drivers/media/pci/bt8xx/bttv-input.c
+@@ -17,9 +17,10 @@
+  * along with this program; if not, write to the Free Software
+  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  */
+-
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/delay.h>
+--- a/drivers/media/pci/bt8xx/dvb-bt8xx.c
++++ b/drivers/media/pci/bt8xx/dvb-bt8xx.c
+@@ -19,8 +19,10 @@
+  *
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) "dvb_bt8xx: " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/bitops.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+--- a/drivers/media/common/siano/smsdvb-debugfs.c
++++ b/drivers/media/common/siano/smsdvb-debugfs.c
+@@ -17,8 +17,10 @@
+  *
+  ***********************************************************************/
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/init.h>
+--- a/drivers/media/pci/cx25821/cx25821-alsa.c
++++ b/drivers/media/pci/cx25821/cx25821-alsa.c
+@@ -20,8 +20,10 @@
+  *
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/device.h>
+--- a/drivers/media/pci/cx25821/cx25821-audio-upstream.c
++++ b/drivers/media/pci/cx25821/cx25821-audio-upstream.c
+@@ -20,11 +20,13 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include "cx25821-video.h"
+ #include "cx25821-audio-upstream.h"
+ 
++#include <linux/printk.h>
+ #include <linux/fs.h>
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
+--- a/drivers/media/pci/cx25821/cx25821-cards.c
++++ b/drivers/media/pci/cx25821/cx25821-cards.c
+@@ -21,8 +21,10 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
+--- a/drivers/media/pci/cx25821/cx25821-core.c
++++ b/drivers/media/pci/cx25821/cx25821-core.c
+@@ -21,8 +21,10 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/i2c.h>
+ #include <linux/slab.h>
+ #include "cx25821.h"
+--- a/drivers/media/pci/cx25821/cx25821-i2c.c
++++ b/drivers/media/pci/cx25821/cx25821-i2c.c
+@@ -21,9 +21,11 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include "cx25821.h"
++#include <linux/printk.h>
+ #include <linux/i2c.h>
+ 
+ static unsigned int i2c_debug;
+--- a/drivers/media/pci/cx25821/cx25821-medusa-video.c
++++ b/drivers/media/pci/cx25821/cx25821-medusa-video.c
+@@ -20,12 +20,15 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include "cx25821.h"
+ #include "cx25821-medusa-video.h"
+ #include "cx25821-biffuncs.h"
+ 
++#include <linux/printk.h>
++
+ /*
+  * medusa_enable_bluefield_output()
+  *
+--- a/drivers/media/pci/cx25821/cx25821-video.c
++++ b/drivers/media/pci/cx25821/cx25821-video.c
+@@ -24,9 +24,11 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include "cx25821-video.h"
++#include <linux/printk.h>
+ 
+ MODULE_DESCRIPTION("v4l2 driver module for cx25821 based TV cards");
+ MODULE_AUTHOR("Hiep Huynh <hiep.huynh@conexant.com>");
+--- a/drivers/media/pci/cx25821/cx25821-video-upstream.c
++++ b/drivers/media/pci/cx25821/cx25821-video-upstream.c
+@@ -20,11 +20,13 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include "cx25821-video.h"
+ #include "cx25821-video-upstream.h"
+ 
++#include <linux/printk.h>
+ #include <linux/fs.h>
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
+--- a/drivers/media/pci/cx25821/cx25821-video-upstream-ch2.c
++++ b/drivers/media/pci/cx25821/cx25821-video-upstream-ch2.c
+@@ -20,11 +20,13 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include "cx25821-video.h"
+ #include "cx25821-video-upstream-ch2.h"
+ 
++#include <linux/printk.h>
+ #include <linux/fs.h>
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
+--- a/drivers/media/rc/imon.c
++++ b/drivers/media/rc/imon.c
+@@ -26,8 +26,10 @@
+  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ":%s: " fmt, __func__
+ 
++#include <linux/printk.h>
+ #include <linux/errno.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+--- a/drivers/media/rc/fintek-cir.c
++++ b/drivers/media/rc/fintek-cir.c
+@@ -23,8 +23,10 @@
+  * USA
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/pnp.h>
+--- a/drivers/media/rc/nuvoton-cir.c
++++ b/drivers/media/rc/nuvoton-cir.c
+@@ -25,8 +25,10 @@
+  * USA
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/pnp.h>
+--- a/drivers/media/rc/ene_ir.c
++++ b/drivers/media/rc/ene_ir.c
+@@ -30,8 +30,10 @@
+  *
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/pnp.h>
+--- a/drivers/media/rc/winbond-cir.c
++++ b/drivers/media/rc/winbond-cir.c
+@@ -40,8 +40,10 @@
+  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/pnp.h>
+ #include <linux/interrupt.h>
+--- a/drivers/media/pci/saa7146/hexium_orion.c
++++ b/drivers/media/pci/saa7146/hexium_orion.c
+@@ -21,11 +21,13 @@
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #define DEBUG_VARIABLE debug
+ 
+ #include <media/saa7146_vv.h>
++#include <linux/printk.h>
+ #include <linux/module.h>
+ 
+ static int debug;
+--- a/drivers/media/pci/saa7146/hexium_gemini.c
++++ b/drivers/media/pci/saa7146/hexium_gemini.c
+@@ -21,12 +21,14 @@
+     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #define DEBUG_VARIABLE debug
+ 
+ #include <media/saa7146_vv.h>
+ #include <linux/module.h>
++#include <linux/printk.h>
+ 
+ static int debug;
+ module_param(debug, int, 0);
+--- a/drivers/media/pci/ttpci/budget-av.c
++++ b/drivers/media/pci/ttpci/budget-av.c
+@@ -33,8 +33,10 @@
+  * the project's page is at http://www.linuxtv.org/ 
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include "budget.h"
+ #include "stv0299.h"
+ #include "stb0899_drv.h"
+--- a/drivers/media/pci/ttpci/av7110_v4l.c
++++ b/drivers/media/pci/ttpci/av7110_v4l.c
+@@ -25,8 +25,10 @@
+  * the project's page is at http://www.linuxtv.org/ 
+  */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/printk.h>
+ #include <linux/kernel.h>
+ #include <linux/types.h>
+ #include <linux/delay.h>

@@ -68,6 +68,50 @@ REGULATOR_PALMAS DISABLE
 REGULATOR_DA9055 DISABLE
 REGULATOR_S5M8767 DISABLE
 
+# Media
+MEDIA_SUPPORT 3.2
+# Some media drivers however depend on module deferral mechanism
+# Lets not enable those unless that's available.
+VIDEO_S3C_CAMIF 3.4
+VIDEO_SAMSUNG_S5P_FIMC 3.4
+IR_GPIO_CIR 3.4
+# Some media drivers depend on the CONFIG_REGULATOR which
+# we only support on >= 3.4 give that reguatory itself depends
+# on -EPROBE_DEFER.
+SOC_CAMERA 3.4
+SOC_CAMERA_IMX074 3.4
+SOC_CAMERA_MT9M001 3.4
+SOC_CAMERA_MT9M111 3.4
+SOC_CAMERA_MT9T031 3.4
+SOC_CAMERA_MT9T112 3.4
+SOC_CAMERA_MT9V022 3.4
+SOC_CAMERA_OV2640 3.4
+SOC_CAMERA_OV5642 3.4
+SOC_CAMERA_OV6650 3.4
+SOC_CAMERA_OV772X 3.4
+SOC_CAMERA_OV9640 3.4
+SOC_CAMERA_OV9740 3.4
+SOC_CAMERA_RJ54N1 3.4
+SOC_CAMERA_TW9910 3.4
+# There are some odd comile errors here I don't want
+# to bother with right now
+VIDEO_MEM2MEM_DEINTERLACE DISABLE
+# 49920bc6 and 1003cab8 and while it seems there is a
+# one to one map DMA_FROM_DEVICE to DMA_DEV_TO_MEM
+# I can't verify this fully yet.
+VIDEO_TIMBERDALE 3.4
+# Can't figure this out yet either
+DVB_DDBRIDGE DISABLE
+# I give up on these guys for now
+RADIO_MAXIRADIO DISABLE
+RADIO_SHARK DISABLE
+VIDEO_IVTV DISABLE
+VIDEO_MEYE DISABLE
+DVB_NGENE DISABLE
+DVB_USB_PCTV452E DISABLE
+USB_GSPCA DISABLE
+VIDEO_MXB DISABLE
+
 # This requires proc_create(), and that doesn't exist before 2.6.24
 LIBIPW_DEBUG 2.6.25
 

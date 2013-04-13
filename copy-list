@@ -168,3 +168,20 @@ include/linux/regulator/userspace-consumer.h
 include/linux/platform_data/lp8755.h
 
 drivers/regulator/
+
+# Media
+include/media/
+
+include/linux/videodev2.h
+include/linux/video_output.h
+
+include/uapi/linux/media.h
+include/uapi/linux/dvb/
+include/uapi/linux/v4l2-common.h
+include/uapi/linux/v4l2-controls.h
+include/uapi/linux/v4l2-dv-timings.h
+include/uapi/linux/v4l2-mediabus.h
+include/uapi/linux/v4l2-subdev.h
+include/uapi/linux/videodev2.h
+
+drivers/media/

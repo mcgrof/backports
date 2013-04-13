@@ -478,11 +478,13 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
             data = open(os.path.join(root, f), 'r').read()
             for r in regexes:
                 data = r.sub(r'CPTCFG_\1', data)
+            data = re.sub(r'\$\(srctree\)', '$(backport_srctree)', data)
+            data = re.sub(r'-Idrivers', '-I$(backport_srctree)/drivers', data)
             fo = open(os.path.join(root, f), 'w')
             fo.write(data)
             fo.close()
 
-    git_debug_snapshot(args, "rename config symbol usage")
+    git_debug_snapshot(args, "rename config symbol / srctree usage")
 
     # disable unbuildable Kconfig symbols and stuff Makefiles that doesn't exist
     maketree = make.MakeTree(os.path.join(args.outdir, 'Makefile.kernel'))

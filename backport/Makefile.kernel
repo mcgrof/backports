@@ -15,6 +15,8 @@ NOSTDINC_FLAGS := \
 	$(BACKPORTS_GIT_TRACKER_DEF) \
 	$(CFLAGS)
 
+export backport_srctree = $(M)
+
 obj-y += compat/
 
 obj-$(CPTCFG_CFG80211) += net/wireless/

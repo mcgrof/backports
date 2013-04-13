@@ -1,4 +1,0 @@
-When some other headers are included in some makefile it must be 
-relative to the current object file processed. When giving the full 
-path the make process will search in the kernel tree for the headers.
-

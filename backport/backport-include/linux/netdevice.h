@@ -7,6 +7,11 @@
 /* older kernels don't include this here, we need it */
 #include <linux/ethtool.h>
 #include <linux/rculist.h>
+/*
+ * new kernels include <net/netprio_cgroup.h> which
+ * has this ... and some drivers rely on it :-(
+ */
+#include <linux/hardirq.h>
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
 #define dev_change_net_namespace(a, b, c) (-EOPNOTSUPP)

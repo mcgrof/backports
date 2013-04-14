@@ -105,6 +105,10 @@ VIDEO_MEM2MEM_DEINTERLACE DISABLE
 VIDEO_TIMBERDALE 3.4
 # Can't figure this out yet either
 DVB_DDBRIDGE DISABLE
+# These require I2C_CLIENT_SCCB which can't be backported
+# since the core I2C code has to know about it
+VIDEO_OV7640 3.6
+VIDEO_EM28XX 3.6
 # I give up on these guys for now
 RADIO_MAXIRADIO DISABLE
 RADIO_SHARK DISABLE

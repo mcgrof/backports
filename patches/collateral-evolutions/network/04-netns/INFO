@@ -1,6 +1,0 @@
-The only other namespace change. Note that pach 01-netdev.patch
-also has some other namespace changes there, look at that file
-for the other changes. It'd be nice to figure out a way to
-bring thise here cleanly and seprately but they touch the same
-files...
-

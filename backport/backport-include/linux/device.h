@@ -5,6 +5,20 @@
 
 #include <linux/version.h>
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
+/* backport
+ * commit 9f3b795a626ee79574595e06d1437fe0c7d51d29
+ * Author: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+ * Date: Fri Feb 1 20:40:17 2013 +0100
+ *
+ * driver-core: constify data for class_find_device()
+ */
+typedef int (backport_device_find_function_t)(struct device *, void *);
+#define class_find_device(cls, start, idx, fun) \
+	class_find_device((cls), (start), (idx),\
+			  (backport_device_find_function_t *)(fun))
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,25)
 #define dev_emerg(dev, format, arg...)          \
 	dev_printk(KERN_EMERG , dev , format , ## arg)

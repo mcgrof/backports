@@ -134,7 +134,7 @@ static inline int pcie_capability_clear_dword(struct pci_dev *dev, int pos,
 }
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
 /*
  * DRM requires this, but we can't really backport it well
  */

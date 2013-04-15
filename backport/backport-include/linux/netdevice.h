@@ -4,6 +4,13 @@
 #include <linux/netdev_features.h>
 #include <linux/version.h>
 
+/*
+ * This is declared implicitly in newer kernels by netdevice.h using
+ * this pointer in struct net_device, but declare it here anyway so
+ * pointers to it are accepted as function arguments without warning.
+ */
+struct inet6_dev;
+
 /* older kernels don't include this here, we need it */
 #include <linux/ethtool.h>
 #include <linux/rculist.h>

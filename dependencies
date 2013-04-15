@@ -38,6 +38,8 @@ BRCMFMAC 2.6.29
 
 WL_TI 2.6.30
 WLCORE 2.6.30
+# requires irq_modify_status() which was only exported in 3.0
+WL1251 3.0
 
 MWIFIEX 2.6.27
 

@@ -1,6 +1,0 @@
-
-Every kernel release there are a few changes to headers
-made. Some code gets shifted around between headers or
-new headers are defined. This patch deals with such
-cases.
-

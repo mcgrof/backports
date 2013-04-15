@@ -88,8 +88,15 @@ do {									\
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
 #define device_rename(dev, new_name) device_rename(dev, (char *)new_name)
+#endif
 
-/* this belongs into pm_wakeup.h but that isn't included directly */
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)
+/*
+ * This belongs into pm_wakeup.h but that isn't included directly.
+ * Note that on 2.6.36, this was defined but not exported, so we
+ * need to override it.
+ */
+#define pm_wakeup_event LINUX_BACKPORT(pm_wakeup_event)
 static inline void pm_wakeup_event(struct device *dev, unsigned int msec) {}
 #endif
 

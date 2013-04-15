@@ -1,6 +1,6 @@
-#ifndef __BACKPORT_ASM_GENERIC_DMA_MAPPING_COMMON_H
-#define __BACKPORT_ASM_GENERIC_DMA_MAPPING_COMMON_H
-#include_next <asm-generic/dma-mapping-common.h>
+#ifndef __BACKPORT_ASM_DMA_MAPPING_H
+#define __BACKPORT_ASM_DMA_MAPPING_H
+#include_next <asm/dma-mapping.h>
 #include <linux/version.h>
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,6,0)
@@ -22,4 +22,4 @@ dma_get_sgtable_attrs(struct device *dev, struct sg_table *sgt, void *cpu_addr,
 #define dma_get_sgtable(d, t, v, h, s) dma_get_sgtable_attrs(d, t, v, h, s, NULL)
 #endif
 
-#endif /* __BACKPORT_ASM_GENERIC_DMA_MAPPING_COMMON_H */
+#endif /* __BACKPORT_ASM_DMA_MAPPING_H */

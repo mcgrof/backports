@@ -18,7 +18,7 @@ endif
 KLIB_BUILD ?= $(KLIB)/build/
 KERNEL_CONFIG := $(KLIB_BUILD)/.config
 KERNEL_MAKEFILE := $(KLIB_BUILD)/Makefile
-CONFIG_MD5 := $(shell md5sum $(KERNEL_CONFIG) | sed 's/\s.*//')
+CONFIG_MD5 := $(shell md5sum $(KERNEL_CONFIG) 2>/dev/null | sed 's/\s.*//')
 
 export KLIB KLIB_BUILD BACKPORT_PWD KMODDIR KMODPATH_ARG
 
@@ -30,6 +30,17 @@ default:
 	@$(MAKE) modules
 
 .DEFAULT:
+	@set -e ; test -f $(KERNEL_CONFIG) || (						\
+	echo "/--------------"								;\
+	echo "| Your kernel headers are incomplete/not installed."			;\
+	echo "| Please install kernel headers, including a .config"			;\
+	echo "| file or use the KLIB/KLIB_BUILD make variables to"			;\
+	echo "| set the kernel to build against, e.g."					;\
+	echo "|   make KLIB=/lib/modules/3.1.7/"					;\
+	echo "| to compile/install for the installed kernel 3.1.7"			;\
+	echo "| (that isn't currently running.)"					;\
+	echo "\\--"									;\
+	false)
 	@set -e ; if [ "$$(cat .kernel_config_md5 2>/dev/null)" != "$(CONFIG_MD5)" ]	;\
 	then 										\
 		echo -n "Generating local configuration database from kernel ..."	;\

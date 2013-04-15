@@ -12,15 +12,6 @@
 #include <linux/export.h>
 #include <linux/pci.h>
 #include <linux/pci_regs.h>
-#include <linux/netdevice.h>
-
-void netdev_set_default_ethtool_ops(struct net_device *dev,
-				    const struct ethtool_ops *ops)
-{
-	if (!dev->ethtool_ops)
-		dev->ethtool_ops = ops;
-}
-EXPORT_SYMBOL_GPL(netdev_set_default_ethtool_ops);
 
 bool mod_delayed_work(struct workqueue_struct *wq, struct delayed_work *dwork,
 		      unsigned long delay)

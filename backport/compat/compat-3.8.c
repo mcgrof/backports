@@ -18,6 +18,16 @@
 #include "hid-ids.h"
 #include <linux/netdevice.h>
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,7,8))
+void netdev_set_default_ethtool_ops(struct net_device *dev,
+				    const struct ethtool_ops *ops)
+{
+	if (!dev->ethtool_ops)
+		dev->ethtool_ops = ops;
+}
+EXPORT_SYMBOL_GPL(netdev_set_default_ethtool_ops);
+#endif
+
 /* a list of devices that shouldn't be handled by HID core at all */
 static const struct hid_device_id hid_ignore_list[] = {
 	{ HID_USB_DEVICE(USB_VENDOR_ID_ACECAD, USB_DEVICE_ID_ACECAD_FLAIR) },

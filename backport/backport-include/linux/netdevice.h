@@ -99,7 +99,7 @@ extern int init_dummy_netdev(struct net_device *dev);
 #define napi_gro_receive(napi, skb) netif_receive_skb(skb)
 #endif /* < 2.6.29 */
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0))
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,8)
 #define netdev_set_default_ethtool_ops LINUX_BACKPORT(netdev_set_default_ethtool_ops)
 extern void netdev_set_default_ethtool_ops(struct net_device *dev,
 					   const struct ethtool_ops *ops);

@@ -31,6 +31,7 @@ source net/bluetooth/Kconfig
 source net/rfkill/Kconfig
 source drivers/net/wireless/Kconfig
 source drivers/net/ethernet/Kconfig
+source drivers/net/usb/Kconfig
 
 source drivers/ssb/Kconfig
 source drivers/bcma/Kconfig

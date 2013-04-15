@@ -37,7 +37,7 @@ defconfig-%::
 	@./kconfig/conf --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
 
 .config:
-	@test -f defconfig && (yes '' | $(MAKE) usedefconfig) || (	\
+	@test -f defconfig && $(MAKE) usedefconfig || (			\
 	echo "/--------------"						;\
 	echo "| Your backport package isn't configured, please configure it" ;\
 	echo "| using one of the following options:"			;\

@@ -70,6 +70,9 @@ REGULATOR_S5M8767 DISABLE
 
 # Media
 MEDIA_SUPPORT 3.2
+# There's something wrong with backporting this/dma-buf to 3.2,
+# so disable it for now until Luis figures it out
+MEDIA_SUPPORT 3.3
 # Some media drivers however depend on module deferral mechanism
 # Lets not enable those unless that's available.
 VIDEO_S3C_CAMIF 3.4

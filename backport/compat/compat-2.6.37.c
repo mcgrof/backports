@@ -336,6 +336,7 @@ void compat_led_classdev_unregister(struct led_classdev *led_cdev)
 	led_classdev_unregister(led_cdev);
 }
 EXPORT_SYMBOL_GPL(compat_led_classdev_unregister);
+#endif
 
 /**
  *	vzalloc - allocate virtually contiguous memory with zero fill
@@ -356,5 +357,3 @@ void *vzalloc(unsigned long size)
 	return buf;
 }
 EXPORT_SYMBOL_GPL(vzalloc);
-
-#endif

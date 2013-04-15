@@ -2,6 +2,11 @@
 #define _BACKPORT_LINUX_ETHERDEVICE_H
 #include_next <linux/etherdevice.h>
 #include <linux/version.h>
+/*
+ * newer kernels include this already and some
+ * users rely on getting this indirectly
+ */
+#include <asm/unaligned.h>
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,12)
 #define eth_hw_addr_random LINUX_BACKPORT(eth_hw_addr_random)

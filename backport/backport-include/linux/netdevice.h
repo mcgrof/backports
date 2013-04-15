@@ -16,7 +16,10 @@
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
 #define dev_change_net_namespace(a, b, c) (-EOPNOTSUPP)
 
-#define SET_NETDEV_DEVTYPE(netdev, type)
+static inline void SET_NETDEV_DEVTYPE(struct net_device *dev, void *type)
+{
+	/* nothing */
+}
 
 typedef int netdev_tx_t;
 #endif

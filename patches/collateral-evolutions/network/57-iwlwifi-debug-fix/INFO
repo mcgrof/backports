@@ -1,5 +1,0 @@
-Due to compat including linux/device.h before we do,
-we don't get a chance to #define DEBUG to get our
-debugging prints. This patch replaces dev_dbg with
-dev_printk to make them show up again.
-

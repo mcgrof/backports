@@ -68,6 +68,8 @@ def get_status_name(status):
 		return 'TERM'
 	elif (status == 1234):
 		return 'INIT'
+	elif (status == 1235):
+		return 'LINK'
 	elif (status == -2):
 		return 'TERM'
 	else:
@@ -79,6 +81,8 @@ def get_stat_pos(status):
 	elif (status == 130):
 		return 33
 	elif (status == 1234):
+		return 33
+	elif (status == 1235):
 		return 33
 	elif (status == -2):
 		return 33
@@ -175,9 +179,17 @@ def process_kernel(num, kset, cmdline_args):
 			p.wait()
 
 		log_file.close()
+		status = p.returncode
+		if status == 0 and cmdline_args.check_exports:
+			warn = re.compile('^WARNING:.*undefined.*')
+			log_file = open(log_file_name, 'r')
+			for l in log_file:
+				if warn.match(l):
+					status = 1235
+					break
 		null_file.close()
 
-		kset.update_status(rel, p.returncode)
+		kset.update_status(rel, status)
 		kset.queue.task_done()
 		kset.completed(rel)
 
@@ -401,6 +413,8 @@ if __name__ == "__main__":
 			    help='Build allyesconfig rather than only backport code.')
 	parser.add_argument('--defconfig', metavar='<name>', type=str,
 			    help='Build this defconfig rather than only backport code.')
+	parser.add_argument('--check-exports', const=True, default=False, action="store_const",
+			    help='Check for linker warnings indicating exported symbols are missing.')
 	args = parser.parse_args()
 
 	if not os.path.exists(modules):

@@ -626,6 +626,7 @@ class PatchSet(object):
         
         return None
     """
+    for i,p in enumerate(self.items):
       p.source = xnormpath(p.source)
       p.target = xnormpath(p.target)
 

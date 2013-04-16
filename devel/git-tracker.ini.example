@@ -11,8 +11,8 @@
 # to set it. If it is set, it doesn't have to exist and
 # it also doesn't have to be persistent, but if it is
 # persistent then the git objects from the input kernel
-# tree can be stored, leading to faster execution and
-# less consumed network bandwidth.
+# and output repositories can be cached, leading to
+# faster execution and less consumed network bandwidth.
 #
 cachedir = /tmp/work
 
@@ -22,8 +22,10 @@ cachedir = /tmp/work
 # tree you want to handle.
 #
 # Each section must contain:
-#  * input	the kernel tree to use as input
-#  * output	the output git tree
+#  * input	the kernel repository to use as input
+#  * output	the output git *repository*
+#		(this must be a repository, not a checked-out working
+#		 directory, so that the script can push commits into it)
 #
 # Optional parameters in each section are:
 #  * branches	comma separated list of branches, default "master"

@@ -626,21 +626,6 @@ class PatchSet(object):
         
         return None
     """
-    for i,p in enumerate(self.items):
-      if p.type in (HG, GIT):
-        # TODO: figure out how to deal with /dev/null entries
-        debug("stripping a/ and b/ prefixes")
-        if p.source != '/dev/null':
-          if not p.source.startswith("a/"):
-            warning("invalid source filename")
-          else:
-            p.source = p.source[2:]
-        if p.target != '/dev/null':
-          if not p.target.startswith("b/"):
-            warning("invalid target filename")
-          else:
-            p.target = p.target[2:]
-
       p.source = xnormpath(p.source)
       p.target = xnormpath(p.target)
 

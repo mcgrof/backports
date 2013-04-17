@@ -277,6 +277,7 @@ static bool hid_match_one_id(struct hid_device *hdev,
 		(id->product == HID_ANY_ID || id->product == hdev->product);
 }
 
+#define hid_match_id LINUX_BACKPORT(hid_match_id)
 static const struct hid_device_id *
 hid_match_id(struct hid_device *hdev, const struct hid_device_id *id)
 {

@@ -51,12 +51,12 @@ case $LSB_RED_ID in
 	fi
 	;;
 *)
-	echo "Warning:"
+	echo "Note:"
 	echo "You may or may not need to update your initramfs, you should if"
 	echo "any of the modules installed are part of your initramfs. To add"
 	echo "support for your distribution to do this automatically send a"
-	echo "patch against $0. If your distribution does not require this"
-	echo "send a patch against the '/usr/bin/lsb_release -i -s': $LSB_RED_ID"
-	echo "tag for your distribution to avoid this warning."
+	echo "patch against \"$(basename $0)\". If your distribution does not"
+	echo "require this send a patch with the '/usr/bin/lsb_release -i -s'"
+	echo "($LSB_RED_ID) tag for your distribution to avoid this warning."
         ;;
 esac

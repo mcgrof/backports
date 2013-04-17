@@ -14,7 +14,8 @@ function mod_filename()
 	echo $(basename "$mod_path")
 }
 
-test "$(mod_filename mac80211)" = "mac80211.ko.gz" &&
+if test "$(mod_filename mac80211)" = "mac80211.ko.gz" ; then
 	for driver in $(find "$1" -type f -name *.ko); do
 		gzip -9 $driver
 	done
+fi

@@ -103,7 +103,7 @@ void __iomem *devm_ioremap_resource(struct device *dev, struct resource *res)
 
 	dest_ptr = devm_ioremap_resource(dev, res);
 	if (!dest_ptr)
-		return ERR_PTR(-ENOMEM);
+		return (void __iomem *)ERR_PTR(-ENOMEM);
 	return dest_ptr;
 }
 EXPORT_SYMBOL_GPL(devm_ioremap_resource);

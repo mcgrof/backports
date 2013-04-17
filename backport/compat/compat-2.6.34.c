@@ -10,6 +10,7 @@
 
 #include <linux/mmc/sdio_func.h>
 #include <linux/seq_file.h>
+#include "compat-2.6.34.h"
 
 static mmc_pm_flag_t backport_mmc_pm_flags;
 
@@ -35,7 +36,8 @@ int sdio_set_host_pm_flags(struct sdio_func *func, mmc_pm_flag_t flags)
  *
  * Called at seq_file->op->start().
  */
-struct hlist_node *seq_hlist_start(struct hlist_head *head, loff_t pos)
+static struct hlist_node *
+seq_hlist_start(struct hlist_head *head, loff_t pos)
 {
 	struct hlist_node *node;
 

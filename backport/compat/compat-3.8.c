@@ -13,7 +13,6 @@
  */
 
 #include <linux/hid.h>
-#include <linux/hid.h>
 #include <linux/module.h>
 #include "hid-ids.h"
 #include <linux/netdevice.h>
@@ -278,8 +277,8 @@ static bool hid_match_one_id(struct hid_device *hdev,
 		(id->product == HID_ANY_ID || id->product == hdev->product);
 }
 
-const struct hid_device_id *hid_match_id(struct hid_device *hdev,
-		const struct hid_device_id *id)
+static const struct hid_device_id *
+hid_match_id(struct hid_device *hdev, const struct hid_device_id *id)
 {
 	for (; id->bus; id++)
 		if (hid_match_one_id(hdev, id))

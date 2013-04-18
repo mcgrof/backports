@@ -214,7 +214,7 @@ if __name__ == '__main__':
                         print "too many commits (%d)!" % len(commits)
                         sys.exit(10)
                     prev_commits = {}
-                    p = None
+                    p = prev
                     for commit in commits:
                         prev_commits[commit] = p
                         p = commit

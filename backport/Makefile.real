@@ -97,3 +97,7 @@ install: modules
 	@echo Your backported driver modules should be installed now.
 	@echo Reboot.
 	@echo
+
+.PHONY: clean
+clean:
+	@$(MAKE) -f Makefile.build clean

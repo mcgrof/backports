@@ -520,12 +520,12 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     # groups -- 50 seemed safer and is still fast)
     regexes = []
     for some_symbols in [disable_makefile[i:i + 50] for i in range(0, len(disable_makefile), 50)]:
-        r = '((CPTCFG|CONFIG)_(' + '|'.join([s for s in some_symbols]) + '))'
+        r = '^([^#].*((CPTCFG|CONFIG)_(' + '|'.join([s for s in some_symbols]) + ')))'
         regexes.append(re.compile(r, re.MULTILINE))
     for f in maketree.get_makefiles():
         data = open(f, 'r').read()
         for r in regexes:
-            data = r.sub(r'IMPOSSIBLE_\3', data)
+            data = r.sub(r'#\1', data)
         fo = open(f, 'w')
         fo.write(data)
         fo.close()

@@ -29,6 +29,13 @@ export KLIB KLIB_BUILD BACKPORT_PWD KMODDIR KMODPATH_ARG
 default:
 	@$(MAKE) modules
 
+.PHONY: mrproper
+mrproper:
+	@test -f .config && $(MAKE) clean || true
+	@rm -f .config
+	@rm -f .kernel_config_md5 Kconfig.versions Kconfig.kernel
+	@rm -f backport-include/backport/autoconf.h
+
 .DEFAULT:
 	@set -e ; test -f $(KERNEL_CONFIG) || (						\
 	echo "/--------------"								;\

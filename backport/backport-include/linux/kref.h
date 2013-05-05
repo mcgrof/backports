@@ -5,6 +5,10 @@
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0)
 #include <linux/atomic.h>
+
+/* This was backported to some kernels (e.g. 3.2.44 and 3.4.41), mask it */
+#define kref_get_unless_zero LINUX_BACKPORT(kref_get_unless_zero)
+
 /* This backports:
  *
  * commit 4b20db3de8dab005b07c74161cb041db8c5ff3a7

@@ -16,9 +16,82 @@
 #include <linux/regmap.h>
 #include <linux/i2c.h>
 #include <linux/spi/spi.h>
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0))
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0))
+#if defined(CPTCFG_VIDEO_DEV_MODULE)
+#include <media/soc_camera.h>
+#include <media/v4l2-common.h>
+#include <media/v4l2-ioctl.h>
+#include <media/v4l2-dev.h>
+#include <media/videobuf-core.h>
+#include <media/videobuf2-core.h>
+#include <media/soc_mediabus.h>
+#include <linux/regulator/consumer.h>
+#endif /* defined(CPTCFG_VIDEO_DEV_MODULE) */
+#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0)) */
+#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0)) */
 #endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0)) */
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
+
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0))
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0))
+
+#if defined(CPTCFG_VIDEO_V4L2_MODULE)
+int soc_camera_power_on(struct device *dev,
+			struct soc_camera_subdev_desc *ssdd)
+{
+	int ret = regulator_bulk_enable(ssdd->num_regulators,
+					ssdd->regulators);
+	if (ret < 0) {
+		dev_err(dev, "Cannot enable regulators\n");
+		return ret;
+	}
+
+	if (ssdd->power) {
+		ret = ssdd->power(dev, 1);
+		if (ret < 0) {
+			dev_err(dev,
+				"Platform failed to power-on the camera.\n");
+			regulator_bulk_disable(ssdd->num_regulators,
+					       ssdd->regulators);
+		}
+	}
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(soc_camera_power_on);
+
+int soc_camera_power_off(struct device *dev,
+			 struct soc_camera_subdev_desc *ssdd)
+{
+	int ret = 0;
+	int err;
+
+	if (ssdd->power) {
+		err = ssdd->power(dev, 0);
+		if (err < 0) {
+			dev_err(dev,
+			        "Platform failed to power-off the camera.\n");
+			ret = err;
+		}
+	}
+
+	err = regulator_bulk_disable(ssdd->num_regulators,
+				     ssdd->regulators);
+	if (err < 0) {
+		dev_err(dev, "Cannot disable regulators\n");
+		ret = ret ? : err;
+	}
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(soc_camera_power_off);
+#endif /* defined(CPTCFG_VIDEO_V4L2_MODULE) */
+
+#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0)) */
+#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0)) */
+
 #if defined(CONFIG_REGMAP)
 static void devm_regmap_release(struct device *dev, void *res)
 {

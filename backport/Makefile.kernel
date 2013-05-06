@@ -5,6 +5,7 @@ backport-cc-disable-warning = $(call try-run,\
 
 NOSTDINC_FLAGS := \
 	-I$(M)/backport-include/ \
+	-I$(M)/backport-include/uapi \
 	-I$(M)/include/ \
 	-I$(M)/include/uapi \
 	-I$(M)/include/drm \

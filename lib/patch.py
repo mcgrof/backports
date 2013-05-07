@@ -9,12 +9,12 @@
     Project home: http://code.google.com/p/python-patch/
 
 
-    $Id: patch.py 181 2012-11-23 16:03:05Z techtonik $
-    $HeadURL: https://python-patch.googlecode.com/svn/trunk/patch.py $
+    $Id$
+    $HeadURL$
 """
 
 __author__ = "anatoly techtonik <techtonik@gmail.com>"
-__version__ = "1.12.11"
+__version__ = "1.12.12dev"
 
 import copy
 import logging
@@ -163,6 +163,7 @@ class Hunk(object):
     self.starttgt=None
     self.linestgt=None
     self.invalid=False
+    self.desc=''
     self.text=[]
 
 #  def apply(self, estream):
@@ -273,7 +274,7 @@ class PatchSet(object):
     hunkparsed = False # state after successfully parsed hunk
 
     # regexp to match start of hunk, used groups - 1,3,4,6
-    re_hunk_start = re.compile("^@@ -(\d+)(,(\d+))? \+(\d+)(,(\d+))?")
+    re_hunk_start = re.compile("^@@ -(\d+)(,(\d+))? \+(\d+)(,(\d+))? @@")
     
     self.errors = 0
     # temp buffers for header and filenames info
@@ -478,7 +479,7 @@ class PatchSet(object):
               continue
 
       if hunkhead:
-        match = re.match("^@@ -(\d+)(,(\d+))? \+(\d+)(,(\d+))?", line)
+        match = re.match("^@@ -(\d+)(,(\d+))? \+(\d+)(,(\d+))? @@(.*)", line)
         if not match:
           if not p.hunks:
             warning("skipping invalid patch with no hunks for file %s" % p.source)
@@ -502,6 +503,7 @@ class PatchSet(object):
           hunk.linestgt = 1
           if match.group(6): hunk.linestgt = int(match.group(6))
           hunk.invalid = False
+          hunk.desc = match.group(7)[1:].rstrip()
           hunk.text = []
 
           hunkactual["linessrc"] = hunkactual["linestgt"] = 0
@@ -712,10 +714,14 @@ class PatchSet(object):
     return output
 
 
-  def apply(self, strip=0):
-    """ apply parsed patch
+  def apply(self, strip=0, root=None):
+    """ Apply parsed patch, optionally stripping leading components
+        from file paths. `root` parameter specifies working dir.
         return True on success
     """
+    if root:
+      prevdir = os.getcwd()
+      os.chdir(root)
 
     total = len(self.items)
     errors = 0
@@ -742,7 +748,7 @@ class PatchSet(object):
           debug("stripping %s leading component from '%s'" % (strip, f2patch))
           f2patch = pathstrip(f2patch, strip)
         if not exists(f2patch):
-          warning("source/target file does not exist\n--- %s\n+++ %s" % (p.source, f2patch))
+          warning("source/target file does not exist:\n  --- %s\n  +++ %s" % (p.source, f2patch))
           errors += 1
           continue
       if not isfile(f2patch):
@@ -838,6 +844,9 @@ class PatchSet(object):
             warning("invalid version is saved to %s" % filename+".invalid")
             # todo: proper rejects
             shutil.move(backupname, filename)
+
+    if root:
+      os.chdir(prevdir)
 
     # todo: check for premature eof
     return (errors == 0)
@@ -989,6 +998,8 @@ if __name__ == "__main__":
   opt.add_option("--debug", action="store_true", dest="debugmode", help="debug mode")
   opt.add_option("--diffstat", action="store_true", dest="diffstat",
                                            help="print diffstat and exit")
+  opt.add_option("-d", "--directory", metavar='DIR',
+                                           help="specify root directory for applying patch")
   opt.add_option("-p", "--strip", type="int", metavar='N', default=0,
                                            help="strip N path components from filenames")
   (options, args) = opt.parse_args()
@@ -1031,7 +1042,7 @@ if __name__ == "__main__":
     sys.exit(0)
 
   #pprint(patch)
-  patch.apply(options.strip) or sys.exit(-1)
+  patch.apply(options.strip, root=options.directory) or sys.exit(-1)
 
   # todo: document and test line ends handling logic - patch.py detects proper line-endings
   #       for inserted hunks and issues a warning if patched file has incosistent line ends

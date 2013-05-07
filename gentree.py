@@ -401,7 +401,9 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
             return 2
 
         if args.refresh:
-            pfilef = open(pfile + '.tmp', 'w')
+            pfilef = open(pfile + '.tmp', 'a')
+            pfilef.write(p.top_header)
+            pfilef.flush()
             for patchitem in p.items:
                 patched_file = '/'.join(patchitem.source.split('/')[1:])
                 fullfn = os.path.join(args.outdir, patched_file)

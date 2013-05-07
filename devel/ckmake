@@ -220,7 +220,7 @@ def sig_handler(signal, frame):
 	clean()
 	sys.exit(-2)
 
-def get_rel_spec(rel):
+def get_rel_spec_ubuntu(rel):
 	if ("rc" in rel):
 		m = re.match(r"v*(?P<VERSION>\d+)\.+" \
 			     "(?P<PATCHLEVEL>\d+)[.]+" \
@@ -325,7 +325,7 @@ class kernel_set():
 		for dirname, dirnames, filenames in os.walk(modules):
 			dirnames.sort()
 			for subdirname in dirnames:
-				specifics = get_rel_spec(subdirname)
+				specifics = get_rel_spec_ubuntu(subdirname)
 				if (not specifics):
 					continue
 				rc = False

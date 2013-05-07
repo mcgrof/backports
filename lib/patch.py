@@ -201,6 +201,7 @@ class PatchSet(object):
 
     # list of Patch objects
     self.items = []
+    self.top_header = ""
 
     self.errors = 0    # fatal parsing errors
     self.warnings = 0  # non-critical warnings
@@ -303,6 +304,7 @@ class PatchSet(object):
       if headscan:
         while not fe.is_empty and not fe.line.startswith("--- "):
             header.append(fe.line)
+            self.top_header += fe.line
             fe.next()
         if fe.is_empty:
             if p == None:

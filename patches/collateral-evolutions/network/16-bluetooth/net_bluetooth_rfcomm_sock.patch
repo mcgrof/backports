@@ -14,7 +14,7 @@
  {
  	struct sock *sk;
  
-@@ -660,7 +665,11 @@ static int rfcomm_sock_setsockopt_old(st
+@@ -661,7 +666,11 @@ static int rfcomm_sock_setsockopt_old(st
  	return err;
  }
  

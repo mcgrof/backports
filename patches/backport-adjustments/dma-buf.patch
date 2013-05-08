@@ -11,7 +11,7 @@
  
  static inline int is_dma_buf_file(struct file *);
  
-@@ -126,6 +129,27 @@ struct dma_buf *dma_buf_export(void *pri
+@@ -126,6 +130,27 @@ struct dma_buf *dma_buf_export(void *pri
  }
  EXPORT_SYMBOL_GPL(dma_buf_export);
  
@@ -39,7 +39,7 @@
  
  /**
   * dma_buf_fd - returns a file descriptor for the given dma_buf
-@@ -141,9 +165,10 @@ int dma_buf_fd(struct dma_buf *dmabuf, i
+@@ -141,9 +166,10 @@ int dma_buf_fd(struct dma_buf *dmabuf, i
  	if (!dmabuf || !dmabuf->file)
  		return -EINVAL;
  

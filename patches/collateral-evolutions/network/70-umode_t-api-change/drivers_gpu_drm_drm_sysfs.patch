@@ -1,6 +1,6 @@
 --- a/drivers/gpu/drm/drm_sysfs.c
 +++ b/drivers/gpu/drm/drm_sysfs.c
-@@ -72,7 +72,11 @@
+@@ -72,7 +72,11 @@ static int drm_class_resume(struct devic
  	return 0;
  }
  

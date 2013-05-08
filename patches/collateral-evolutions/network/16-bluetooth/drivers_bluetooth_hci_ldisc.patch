@@ -14,7 +14,7 @@
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -524,7 +529,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -527,7 +532,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:

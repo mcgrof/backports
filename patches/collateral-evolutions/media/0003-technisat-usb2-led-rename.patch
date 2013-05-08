@@ -3,7 +3,7 @@ also send this upstream eventually.
 
 --- a/drivers/media/usb/dvb-usb/technisat-usb2.c
 +++ b/drivers/media/usb/dvb-usb/technisat-usb2.c
-@@ -214,10 +214,10 @@ static void technisat_usb2_frontend_reset(struct usb_device *udev)
+@@ -214,10 +214,10 @@ static void technisat_usb2_frontend_rese
  
  /* LED control */
  enum technisat_usb2_led_state {
@@ -18,7 +18,7 @@ also send this upstream eventually.
  };
  
  static int technisat_usb2_set_led(struct dvb_usb_device *d, int red, enum technisat_usb2_led_state state)
-@@ -229,14 +229,14 @@ static int technisat_usb2_set_led(struct dvb_usb_device *d, int red, enum techni
+@@ -229,14 +229,14 @@ static int technisat_usb2_set_led(struct
  		0
  	};
  
@@ -36,7 +36,7 @@ also send this upstream eventually.
  		led[1] = 0x82;
  		if (red) {
  			led[2] = 0x02;
-@@ -251,7 +251,7 @@ static int technisat_usb2_set_led(struct dvb_usb_device *d, int red, enum techni
+@@ -251,7 +251,7 @@ static int technisat_usb2_set_led(struct
  		break;
  
  	default:
@@ -45,7 +45,7 @@ also send this upstream eventually.
  		led[1] = 0x80;
  		break;
  	}
-@@ -310,11 +310,11 @@ static void technisat_usb2_green_led_control(struct work_struct *work)
+@@ -310,11 +310,11 @@ static void technisat_usb2_green_led_con
  				goto schedule;
  
  			if (ber > 1000)
@@ -60,7 +60,7 @@ also send this upstream eventually.
  	}
  
  schedule:
-@@ -365,9 +365,9 @@ static int technisat_usb2_power_ctrl(struct dvb_usb_device *d, int level)
+@@ -365,9 +365,9 @@ static int technisat_usb2_power_ctrl(str
  		return 0;
  
  	/* green led is turned off in any case - will be turned on when tuning */
@@ -72,7 +72,7 @@ also send this upstream eventually.
  	return 0;
  }
  
-@@ -667,7 +667,7 @@ static int technisat_usb2_rc_query(struct dvb_usb_device *d)
+@@ -667,7 +667,7 @@ static int technisat_usb2_rc_query(struc
  		return 0;
  
  	if (!disable_led_control)

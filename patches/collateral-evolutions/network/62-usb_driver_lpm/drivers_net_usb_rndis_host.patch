@@ -1,6 +1,6 @@
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
-@@ -642,7 +642,9 @@
+@@ -637,7 +637,9 @@ static struct usb_driver rndis_driver =
  	.disconnect =	usbnet_disconnect,
  	.suspend =	usbnet_suspend,
  	.resume =	usbnet_resume,

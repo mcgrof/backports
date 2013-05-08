@@ -81,10 +81,16 @@ def ls_tree(rev, files, tree=None):
     return ret
 
 def get_blob(blob, outf, tree=None):
-    process = subprocess.Popen(['git', 'show', blob],
-                               stdout=outf, close_fds=True, cwd=tree)
-    process.wait()
-    _check(process)
+    try:
+        import git, gitdb
+        r = git.Repo(path=tree)
+        b = r.rev_parse(blob + '^{blob}')
+        b.stream_data(outf)
+    except ImportError:
+        process = subprocess.Popen(['git', 'show', blob],
+                                   stdout=outf, close_fds=True, cwd=tree)
+        process.wait()
+        _check(process)
 
 def clone(gittree, outputdir, options=[]):
     process = subprocess.Popen(['git', 'clone'] + options + [gittree, outputdir])

@@ -20,7 +20,8 @@ source_dir = os.path.dirname(source_dir)
 # add parent directory to path to get to lib/
 sys.path.append(source_dir)
 # import libraries we need
-from lib import git, tempdir
+from lib import tempdir
+from lib import bpgit as git
 import gentree
 
 # you can increase this if you really want ...

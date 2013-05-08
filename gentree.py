@@ -9,8 +9,8 @@ import argparse, sys, os, errno, shutil, re, subprocess
 source_dir = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(source_dir)
 # and import libraries we have
-from lib import kconfig, git, patch, make
-
+from lib import kconfig, patch, make
+from lib import bpgit as git
 
 def read_copy_list(copyfile):
     """

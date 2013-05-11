@@ -47,6 +47,12 @@ MWIFIEX 2.6.27
 HDMI 3.2
 DRM 3.2
 DRM_TTM 3.2
+# See e2bdb933, this was added on v3.3, in order to
+# support DRM_QXL on 3.2 you'd have to backport 78c1d7848
+# to 3.2 on BACKPORT_BUILD_RADIX_HELPERS and that requires
+# taking into consideration the radix_tree_node rcu change
+# on e2bdb933.
+DRM_QXL 3.3
 
 # Regulator
 # Because of -EPROBE_DEFER see commit d1c3414c and note that

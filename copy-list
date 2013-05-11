@@ -27,6 +27,7 @@ include/linux/bcm47xx_wdt.h
 include/linux/usb/usbnet.h
 include/linux/usb/rndis_host.h
 include/linux/spi/libertas_spi.h
+include/linux/platform_data/brcmfmac-sdio.h
 
 include/uapi/linux/nl80211.h
 include/linux/rfkill.h -> include/linux/rfkill_backport.h

@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -3009,7 +3009,7 @@ static int atl1_probe(struct pci_dev *pd
+@@ -3004,7 +3004,7 @@ static int atl1_probe(struct pci_dev *pd
  	adapter->mii.phy_id_mask = 0x1f;
  	adapter->mii.reg_num_mask = 0x1f;
  

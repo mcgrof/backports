@@ -24,7 +24,7 @@
  		put_device(dev);
  	}
  
-@@ -379,7 +387,11 @@ static struct attribute_group bt_host_gr
+@@ -378,7 +386,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/mwl8k.c
 +++ b/drivers/net/wireless/mwl8k.c
-@@ -2656,15 +2656,21 @@ struct mwl8k_cmd_mac_multicast_adr {
+@@ -2654,15 +2654,21 @@ struct mwl8k_cmd_mac_multicast_adr {
  
  static struct mwl8k_cmd_pkt *
  __mwl8k_cmd_mac_multicast_adr(struct ieee80211_hw *hw, int allmulti,
@@ -22,7 +22,7 @@
  
  	if (allmulti || mc_count > priv->num_mcaddrs) {
  		allmulti = 1;
-@@ -2685,13 +2691,27 @@ __mwl8k_cmd_mac_multicast_adr(struct iee
+@@ -2683,13 +2689,27 @@ __mwl8k_cmd_mac_multicast_adr(struct iee
  	if (allmulti) {
  		cmd->action |= cpu_to_le16(MWL8K_ENABLE_RX_ALL_MULTICAST);
  	} else if (mc_count) {
@@ -50,7 +50,7 @@
  		}
  	}
  
-@@ -5026,7 +5046,11 @@ mwl8k_bss_info_changed(struct ieee80211_
+@@ -5024,7 +5044,11 @@ mwl8k_bss_info_changed(struct ieee80211_
  }
  
  static u64 mwl8k_prepare_multicast(struct ieee80211_hw *hw,
@@ -62,7 +62,7 @@
  {
  	struct mwl8k_cmd_pkt *cmd;
  
-@@ -5037,7 +5061,11 @@ static u64 mwl8k_prepare_multicast(struc
+@@ -5035,7 +5059,11 @@ static u64 mwl8k_prepare_multicast(struc
  	 * we'll end up throwing this packet away and creating a new
  	 * one in mwl8k_configure_filter().
  	 */
@@ -74,7 +74,7 @@
  
  	return (unsigned long)cmd;
  }
-@@ -5159,7 +5187,11 @@ static void mwl8k_configure_filter(struc
+@@ -5157,7 +5185,11 @@ static void mwl8k_configure_filter(struc
  	 */
  	if (*total_flags & FIF_ALLMULTI) {
  		kfree(cmd);

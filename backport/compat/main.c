@@ -2,6 +2,7 @@
 #include <linux/pm_qos.h>
 #include <linux/workqueue.h>
 #include "compat-2.6.34.h"
+#include "backports.h"
 
 MODULE_AUTHOR("Luis R. Rodriguez");
 MODULE_DESCRIPTION("Kernel backport module");
@@ -55,6 +56,7 @@ static int __init backport_init(void)
 	backport_pm_qos_power_init();
 	backport_system_workqueue_create();
 	backport_init_mmc_pm_flags();
+	dma_buf_init();
 
 	printk(KERN_INFO "Loading modules backported from " BACKPORTED_KERNEL_NAME
 #ifndef BACKPORTS_GIT_TRACKED

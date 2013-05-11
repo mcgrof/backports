@@ -47,18 +47,18 @@
  	.ndo_do_ioctl		= atl1c_ioctl,
  	.ndo_tx_timeout		= atl1c_tx_timeout,
  	.ndo_get_stats		= atl1c_get_stats,
-@@ -2479,6 +2494,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2478,6 +2493,7 @@ static int atl1c_init_netdev(struct net_
+ 	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1c_set_ethtool_ops(netdev);
  
- 	/* TODO: add when ready */
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
- 	netdev->hw_features =	NETIF_F_SG	   |
- 				NETIF_F_HW_CSUM	   |
- 				NETIF_F_HW_VLAN_RX |
+ 	/* TODO: add when ready */
+ 	netdev->hw_features =	NETIF_F_SG		|
+ 				NETIF_F_HW_CSUM		|
 @@ -2486,6 +2502,14 @@ static int atl1c_init_netdev(struct net_
  				NETIF_F_TSO6;
- 	netdev->features =	netdev->hw_features |
- 				NETIF_F_HW_VLAN_TX;
+ 	netdev->features =	netdev->hw_features	|
+ 				NETIF_F_HW_VLAN_CTAG_TX;
 +#else
 +	netdev->features =	NETIF_F_SG	   |
 +				NETIF_F_HW_CSUM	   |

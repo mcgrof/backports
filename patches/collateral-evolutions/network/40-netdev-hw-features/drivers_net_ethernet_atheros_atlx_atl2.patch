@@ -1,14 +1,31 @@
 --- a/drivers/net/ethernet/atheros/atlx/atl2.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl2.c
-@@ -396,6 +396,7 @@ static void atl2_restore_vlan(struct atl
+@@ -365,6 +365,7 @@ static inline void atl2_irq_disable(stru
+     synchronize_irq(adapter->pdev->irq);
+ }
+ 
++#if defined(NETIF_F_HW_VLAN_TX) || (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
+ static void __atl2_vlan_mode(netdev_features_t features, u32 *ctrl)
+ {
+ 	if (features & NETIF_F_HW_VLAN_CTAG_RX) {
+@@ -390,12 +391,16 @@ static void atl2_vlan_mode(struct net_de
+ 
+ 	atl2_irq_enable(adapter);
+ }
++#endif
+ 
+ static void atl2_restore_vlan(struct atl2_adapter *adapter)
+ {
++#if defined(NETIF_F_HW_VLAN_TX) || (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
  	atl2_vlan_mode(adapter->netdev, adapter->netdev->features);
++#endif
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
  static netdev_features_t atl2_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -421,6 +422,7 @@ static int atl2_set_features(struct net_
+@@ -421,6 +426,7 @@ static int atl2_set_features(struct net_
  
  	return 0;
  }
@@ -16,7 +33,17 @@
  
  static void atl2_intr_rx(struct atl2_adapter *adapter)
  {
-@@ -1319,8 +1321,10 @@ static const struct net_device_ops atl2_
+@@ -1154,7 +1160,9 @@ static void atl2_setup_mac_ctrl(struct a
+ 		MAC_CTRL_PRMLEN_SHIFT);
+ 
+ 	/* vlan */
++#if defined(NETIF_F_HW_VLAN_TX) || (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
+ 	__atl2_vlan_mode(netdev->features, &value);
++#endif
+ 
+ 	/* filter mode */
+ 	value |= MAC_CTRL_BC_EN;
+@@ -1319,8 +1327,10 @@ static const struct net_device_ops atl2_
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl2_set_mac,
  	.ndo_change_mtu		= atl2_change_mtu,
@@ -27,20 +54,20 @@
  	.ndo_do_ioctl		= atl2_ioctl,
  	.ndo_tx_timeout		= atl2_tx_timeout,
  #ifdef CONFIG_NET_POLL_CONTROLLER
-@@ -1417,8 +1421,12 @@ static int atl2_probe(struct pci_dev *pd
+@@ -1417,8 +1427,12 @@ static int atl2_probe(struct pci_dev *pd
  
  	err = -EIO;
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
- 	netdev->hw_features = NETIF_F_SG | NETIF_F_HW_VLAN_RX;
+ 	netdev->hw_features = NETIF_F_SG | NETIF_F_HW_VLAN_CTAG_RX;
 +#endif
 +#if defined(NETIF_F_HW_VLAN_TX) || (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
- 	netdev->features |= (NETIF_F_HW_VLAN_TX | NETIF_F_HW_VLAN_RX);
+ 	netdev->features |= (NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX);
 +#endif
  
  	/* Init PHY as early as possible due to power saving issue  */
  	atl2_phy_init(&adapter->hw);
-@@ -1838,6 +1846,13 @@ static int atl2_set_settings(struct net_
+@@ -2092,6 +2106,13 @@ static int atl2_nway_reset(struct net_de
  	return 0;
  }
  
@@ -51,10 +78,10 @@
 +}
 +#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39)) */
 +
- static u32 atl2_get_msglevel(struct net_device *netdev)
- {
- 	return 0;
-@@ -2107,6 +2122,14 @@ static const struct ethtool_ops atl2_eth
+ static const struct ethtool_ops atl2_ethtool_ops = {
+ 	.get_settings		= atl2_get_settings,
+ 	.set_settings		= atl2_set_settings,
+@@ -2107,6 +2128,14 @@ static const struct ethtool_ops atl2_eth
  	.get_eeprom_len		= atl2_get_eeprom_len,
  	.get_eeprom		= atl2_get_eeprom,
  	.set_eeprom		= atl2_set_eeprom,

@@ -50,7 +50,7 @@
  		}
  	}
  
-@@ -5022,7 +5042,11 @@ mwl8k_bss_info_changed(struct ieee80211_
+@@ -5026,7 +5046,11 @@ mwl8k_bss_info_changed(struct ieee80211_
  }
  
  static u64 mwl8k_prepare_multicast(struct ieee80211_hw *hw,
@@ -62,7 +62,7 @@
  {
  	struct mwl8k_cmd_pkt *cmd;
  
-@@ -5033,7 +5057,11 @@ static u64 mwl8k_prepare_multicast(struc
+@@ -5037,7 +5061,11 @@ static u64 mwl8k_prepare_multicast(struc
  	 * we'll end up throwing this packet away and creating a new
  	 * one in mwl8k_configure_filter().
  	 */
@@ -74,7 +74,7 @@
  
  	return (unsigned long)cmd;
  }
-@@ -5155,7 +5183,11 @@ static void mwl8k_configure_filter(struc
+@@ -5159,7 +5187,11 @@ static void mwl8k_configure_filter(struc
  	 */
  	if (*total_flags & FIF_ALLMULTI) {
  		kfree(cmd);

@@ -51,7 +51,7 @@
  
  	fd_install(fd, dmabuf->file);
  
-@@ -696,17 +722,15 @@ static inline void dma_buf_uninit_debugf
+@@ -695,17 +721,15 @@ static inline void dma_buf_uninit_debugf
  }
  #endif
  

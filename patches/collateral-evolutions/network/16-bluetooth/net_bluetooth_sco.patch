@@ -13,7 +13,7 @@
  {
  	struct sock *sk;
  
-@@ -676,7 +680,11 @@ static int sco_sock_recvmsg(struct kiocb
+@@ -675,7 +679,11 @@ static int sco_sock_recvmsg(struct kiocb
  	return bt_sock_recvmsg(iocb, sock, msg, len, flags);
  }
  

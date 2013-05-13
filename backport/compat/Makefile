@@ -34,6 +34,7 @@ compat-$(CPTCFG_BACKPORT_KERNEL_3_6) += compat-3.6.o
 compat-$(CPTCFG_BACKPORT_KERNEL_3_7) += compat-3.7.o
 compat-$(CPTCFG_BACKPORT_KERNEL_3_8) += compat-3.8.o
 compat-$(CPTCFG_BACKPORT_KERNEL_3_9) += compat-3.9.o
+compat-$(CPTCFG_BACKPORT_KERNEL_3_10) += backport-3.10.o
 
 compat-$(CPTCFG_BACKPORT_BUILD_KFIFO) += kfifo.o
 compat-$(CPTCFG_BACKPORT_BUILD_GENERIC_ATOMIC64) += compat_atomic.o

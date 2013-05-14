@@ -98,6 +98,9 @@ install: modules
 	@echo Reboot.
 	@echo
 
+.PHONY: modules_install
+modules_install: install
+
 .PHONY: clean
 clean:
 	@$(MAKE) -f Makefile.build clean

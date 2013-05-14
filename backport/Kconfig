@@ -27,8 +27,6 @@ source compat/Kconfig
 source net/wireless/Kconfig
 source net/mac80211/Kconfig
 source net/bluetooth/Kconfig
-# must be after ... otherwise BT moves into rfkill?!
-source net/rfkill/Kconfig
 source drivers/net/wireless/Kconfig
 source drivers/net/ethernet/Kconfig
 source drivers/net/usb/Kconfig

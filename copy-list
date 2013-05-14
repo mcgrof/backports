@@ -30,8 +30,6 @@ include/linux/spi/libertas_spi.h
 include/linux/platform_data/brcmfmac-sdio.h
 
 include/uapi/linux/nl80211.h
-include/linux/rfkill.h -> include/linux/rfkill_backport.h
-include/uapi/linux/rfkill.h -> include/uapi/linux/rfkill_backport.h
 
 include/net/cfg80211.h
 include/net/cfg80211-wext.h
@@ -44,7 +42,6 @@ net/Makefile
 net/Kconfig
 net/wireless/
 net/mac80211/
-net/rfkill/
 
 drivers/net/wireless/ath/
 drivers/ssb/

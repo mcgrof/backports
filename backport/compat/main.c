@@ -1,4 +1,5 @@
 #include <linux/module.h>
+#include <linux/init.h>
 #include <linux/pm_qos.h>
 #include <linux/workqueue.h>
 #include "compat-2.6.34.h"
@@ -71,7 +72,7 @@ static int __init backport_init(void)
 
         return 0;
 }
-module_init(backport_init);
+subsys_initcall(backport_init);
 
 static void __exit backport_exit(void)
 {

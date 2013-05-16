@@ -67,7 +67,8 @@ backport_rfkill_alloc(const char *name,
 #ifdef HAVE_OLD_RFKILL
 	if ((unsigned int)type >= (unsigned int)OLD_NUM_RFKILL_TYPES)
 		return ERR_PTR(-ENODEV);
-	return rfkill_alloc(name, parent, type, ops, ops_data);
+	return rfkill_alloc(name, parent, (enum old_rfkill_type)type,
+			    ops, ops_data);
 #else
 	return ERR_PTR(-ENODEV);
 #endif

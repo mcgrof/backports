@@ -8,14 +8,17 @@
  * published by the Free Software Foundation.
  */
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 #include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/err.h>
+#include <linux/proc_fs.h>
+
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 #include <linux/init.h>
 #include <linux/debugfs.h>
 #include <linux/device.h>
 #include <linux/slab.h>
 #include <linux/async.h>
-#include <linux/err.h>
 #include <linux/mutex.h>
 #include <linux/suspend.h>
 #include <linux/delay.h>
@@ -26,8 +29,9 @@
 #include <linux/regulator/consumer.h>
 #include <linux/regulator/driver.h>
 #include <linux/regulator/machine.h>
-#include <linux/module.h>
+#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)) */
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 /**
  * regulator_map_voltage_ascend - map_voltage() for ascendant voltage list
  *
@@ -60,3 +64,16 @@ int regulator_map_voltage_ascend(struct regulator_dev *rdev,
 EXPORT_SYMBOL_GPL(regulator_map_voltage_ascend);
 
 #endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)) */
+
+void proc_set_size(struct proc_dir_entry *de, loff_t size)
+{
+	de->size = size;
+}
+EXPORT_SYMBOL_GPL(proc_set_size);
+
+void proc_set_user(struct proc_dir_entry *de, kuid_t uid, kgid_t gid)
+{
+	de->uid = uid;
+	de->gid = gid;
+}
+EXPORT_SYMBOL_GPL(proc_set_user);

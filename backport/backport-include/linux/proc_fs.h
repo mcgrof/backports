@@ -4,6 +4,7 @@
 #include <linux/version.h>
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
+#ifdef CONFIG_PROC_FS
 /*
  * backport of:
  * procfs: new helper - PDE_DATA(inode)
@@ -12,6 +13,8 @@ static inline void *PDE_DATA(const struct inode *inode)
 {
 	return PROC_I(inode)->pde->data;
 }
+#else
+static inline void *PDE_DATA(const struct inode *inode) {BUG(); return NULL;}
 #endif
 
 #endif /* __BACKPORT_PROC_FS_H */

@@ -81,23 +81,8 @@ drivers/net/usb/usbnet.c
 
 
 # Bluetooth
-include/net/bluetooth/hci_core.h
-include/net/bluetooth/l2cap.h
-include/net/bluetooth/bluetooth.h
-include/net/bluetooth/rfcomm.h
-include/net/bluetooth/hci.h
-include/net/bluetooth/hci_mon.h
-include/net/bluetooth/mgmt.h
-include/net/bluetooth/sco.h
-include/net/bluetooth/smp.h
-include/net/bluetooth/a2mp.h
-include/net/bluetooth/amp.h
-
+include/net/bluetooth/
 net/bluetooth/
-net/bluetooth/bnep/
-net/bluetooth/cmtp/
-net/bluetooth/rfcomm/
-net/bluetooth/hidp/
 drivers/bluetooth/
 
 
@@ -108,11 +93,7 @@ drivers/net/mdio.c
 include/linux/mdio.h
 include/uapi/linux/mdio.h
 
-drivers/net/ethernet/atheros/Kconfig
-drivers/net/ethernet/atheros/Makefile
-drivers/net/ethernet/atheros/atl1c/
-drivers/net/ethernet/atheros/atl1e/
-drivers/net/ethernet/atheros/atlx/
+drivers/net/ethernet/atheros/
 
 drivers/net/ethernet/broadcom/Kconfig
 drivers/net/ethernet/broadcom/Makefile
@@ -123,20 +104,15 @@ drivers/net/ethernet/broadcom/b44.h
 include/drm/
 include/uapi/drm/
 drivers/platform/x86/intel_ips.h
-
 drivers/gpu/drm/
 
 # NFC core
 net/nfc/
-net/nfc/hci/
-net/nfc/nci/
 include/net/nfc/
 include/uapi/linux/nfc.h
 
 # NFC drivers
 drivers/nfc/
-drivers/nfc/microread/
-drivers/nfc/pn544/
 include/linux/platform_data/pn544.h
 
 # Regulator

@@ -364,6 +364,9 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         # complain if it's not a patch
         if not p:
             raise Exception('No patch content found in %s' % print_name)
+        # leading / seems to be stripped?
+        if 'dev/null' in p.items[0].source:
+            raise Exception('Patches creating files are not supported (in %s)' % print_name)
         # check if the first file the patch touches exists, if so
         # assume the patch needs to be applied -- otherwise continue
         patched_file = '/'.join(p.items[0].source.split('/')[1:])

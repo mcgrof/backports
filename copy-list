@@ -129,7 +129,6 @@ drivers/gpu/drm/
 # NFC core
 net/nfc/
 net/nfc/hci/
-net/nfc/llcp/
 net/nfc/nci/
 include/net/nfc/
 include/uapi/linux/nfc.h

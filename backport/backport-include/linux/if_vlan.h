@@ -2,6 +2,7 @@
 #define __BACKPORT_LINUX_IF_VLAN_H_
 #include_next <linux/if_vlan.h>
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
 #define vlan_insert_tag(__skb, __vlan_proto, __vlan_tci)	vlan_insert_tag(__skb, __vlan_tci)
 #define __vlan_put_tag(__skb, __vlan_proto, __vlan_tci)		__vlan_put_tag(__skb, __vlan_tci)
 #define vlan_put_tag(__skb, __vlan_proto, __vlan_tci)		vlan_put_tag(__skb, __vlan_tci)
@@ -14,5 +15,6 @@ static inline bool vlan_hw_offload_capable(netdev_features_t features,
 		return true;
 	return false;
 }
+#endif 
 
 #endif /* __BACKPORT_LINUX_IF_VLAN_H_ */

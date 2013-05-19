@@ -6,6 +6,6 @@
  {
 -	dev->netdev_ops = &mwifiex_netdev_ops;
 +	netdev_attach_ops(dev, &mwifiex_netdev_ops);
+ 	dev->destructor = free_netdev;
  	/* Initialize private structure */
  	priv->current_key_index = 0;
- 	priv->media_connected = false;

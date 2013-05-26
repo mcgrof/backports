@@ -22,4 +22,4 @@
 +#endif
  };
  
- /**
+ module_pci_driver(atl1c_driver);

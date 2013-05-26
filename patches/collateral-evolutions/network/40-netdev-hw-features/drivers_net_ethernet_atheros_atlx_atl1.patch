@@ -25,7 +25,7 @@
  
  	/*
  	 * patch for some L1 of old version,
-@@ -3640,6 +3644,14 @@ static int atl1_set_pauseparam(struct ne
+@@ -3615,6 +3619,14 @@ static int atl1_set_pauseparam(struct ne
  	return 0;
  }
  
@@ -40,7 +40,7 @@
  static void atl1_get_strings(struct net_device *netdev, u32 stringset,
  	u8 *data)
  {
-@@ -3712,4 +3724,10 @@ static const struct ethtool_ops atl1_eth
+@@ -3687,6 +3699,12 @@ static const struct ethtool_ops atl1_eth
  	.nway_reset		= atl1_nway_reset,
  	.get_ethtool_stats	= atl1_get_ethtool_stats,
  	.get_sset_count		= atl1_get_sset_count,
@@ -51,3 +51,5 @@
 +	.set_tso		= ethtool_op_set_tso,
 +#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39)) */
  };
+ 
+ module_pci_driver(atl1_driver);

@@ -8,5 +8,5 @@
  	func->card->quirks |= MMC_QUIRK_BLKSZ_FOR_BYTE_MODE;
 +#endif
  
- 	sdio_claim_host(func);
- 	ret = sdio_enable_func(func);
+ 	if (id->driver_data) {
+ 		struct mwifiex_sdio_device *data = (void *)id->driver_data;

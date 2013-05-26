@@ -175,6 +175,9 @@ BT 2.6.29
 # this is easier.
 BCMA_DRIVER_GPIO 3.0
 
+BCMA_DRIVER_MIPS 3.3
+SSB_DRIVER_MIPS 3.3
+
 # rfkill-regulator uses a kernel header file
 # (rfkill-regulator.h) that we don't backport
 # right now, so make it depend on 3.0

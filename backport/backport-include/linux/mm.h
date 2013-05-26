@@ -20,4 +20,9 @@
 #define VM_DONTDUMP    VM_NODUMP
 #endif
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0))
+#define vm_iomap_memory LINUX_BACKPORT(vm_iomap_memory)
+int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
+#endif
+
 #endif /* __BACKPORT_MM_H */

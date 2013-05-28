@@ -14,7 +14,7 @@ export CONFIG_=CPTCFG_
 .PHONY: menuconfig
 menuconfig:
 	@$(MAKE) -C kconfig mconf
-	@./kconf/mconf Kconfig
+	@./kconfig/mconf Kconfig
 
 .PHONY: listnewconfig oldaskconfig oldconfig \
 	silentoldconfig olddefconfig oldnoconfig \
@@ -25,16 +25,16 @@ silentoldconfig olddefconfig oldnoconfig \
 allnoconfig allyesconfig allmodconfig \
 alldefconfig randconfig:
 	@$(MAKE) -C kconfig conf
-	@./kconf/conf --$@ Kconfig
+	@./kconfig/conf --$@ Kconfig
 
 .PHONY: usedefconfig
 usedefconfig:
 	@$(MAKE) -C kconfig conf
-	@./kconf/conf --defconfig=defconfig Kconfig
+	@./kconfig/conf --defconfig=defconfig Kconfig
 
 defconfig-%::
 	@$(MAKE) -C kconfig conf
-	@./kconf/conf --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
+	@./kconfig/conf --defconfig=defconfigs/$(@:defconfig-%=%) Kconfig
 
 .config:
 	@test -f defconfig && $(MAKE) usedefconfig || (			\

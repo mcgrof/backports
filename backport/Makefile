@@ -37,6 +37,18 @@ mrproper:
 	@rm -f backport-include/backport/autoconf.h
 
 .DEFAULT:
+	@set -e ; test -f .local-symbols || (						\
+	echo "/--------------"								;\
+	echo "| You shouldn't run make in the backports tree, but only in"		;\
+	echo "| the generated output. This here is only the skeleton code"		;\
+	echo "| copied into the output directory. To use the backport system"		;\
+	echo "| from scratch, go into the top-level directory and run"			;\
+	echo "|	./gentree.py /path/to/linux-next/ /tmp/output"				;\
+	echo "| and then make menuconfig/... in the output directory. See"		;\
+	echo "|	./gentree.py --help"							;\
+	echo "| for more options."							;\
+	echo "\\--"									;\
+	false)
 	@set -e ; test -f $(KERNEL_CONFIG) || (						\
 	echo "/--------------"								;\
 	echo "| Your kernel headers are incomplete/not installed."			;\

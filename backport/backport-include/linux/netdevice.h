@@ -467,4 +467,8 @@ struct net *dev_net(const struct net_device *dev)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0)
+#define netdev_notifier_info_to_dev(ndev) ndev
+#endif
+
 #endif /* __BACKPORT_NETDEVICE_H */

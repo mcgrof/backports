@@ -7,6 +7,12 @@
         rcu_dereference_protected(p, lockdep_rtnl_is_held())
 #endif
 
+#ifndef rcu_dereference_rtnl
+#define rcu_dereference_rtnl(p)					\
+	rcu_dereference_check(p, rcu_read_lock_held() ||	\
+				 lockdep_rtnl_is_held())
+#endif
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,34)
 #ifdef CONFIG_PROVE_LOCKING
 /*

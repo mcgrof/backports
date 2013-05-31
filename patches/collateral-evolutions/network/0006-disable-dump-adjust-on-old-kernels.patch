@@ -28,7 +28,7 @@ Date:   Fri Mar 1 14:03:49 2013 +0100
 
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1611,6 +1611,7 @@ static int nl80211_dump_wiphy(struct sk_
+@@ -1572,6 +1572,7 @@ static int nl80211_dump_wiphy(struct sk_
  						 &cb->args[2],
  						 &cb->args[3]);
  			if (ret < 0) {
@@ -36,8 +36,8 @@ Date:   Fri Mar 1 14:03:49 2013 +0100
  				/*
  				 * If sending the wiphy data didn't fit (ENOBUFS
  				 * or EMSGSIZE returned), this SKB is still
-@@ -1631,6 +1632,7 @@ static int nl80211_dump_wiphy(struct sk_
- 					mutex_unlock(&cfg80211_mutex);
+@@ -1591,6 +1592,7 @@ static int nl80211_dump_wiphy(struct sk_
+ 					cb->min_dump_alloc = 4096;
  					return 1;
  				}
 +#endif

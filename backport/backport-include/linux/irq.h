@@ -16,10 +16,12 @@ static inline int irq_set_chip_data(unsigned int irq, void *data)
 {
 	return set_irq_chip_data(irq, data);
 }
+#ifndef irq_set_irq_type
 static inline int irq_set_irq_type(unsigned int irq, unsigned int type)
 {
 	return set_irq_type(irq, type);
 }
+#endif
 static inline int irq_set_msi_desc(unsigned int irq, struct msi_desc *entry)
 {
 	return set_irq_msi(irq, entry);

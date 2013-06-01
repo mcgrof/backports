@@ -1,6 +1,10 @@
 #include <linux/version.h>
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+#ifndef CPTCFG_BACKPORT_BUILD_KFIFO
+#if (RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(6,4))
 #include_next <linux/kfifo.h>
+#else
+#include <linux/kfifo-new.h>
+#endif
 #else
 /*
  * A generic kernel FIFO implementation

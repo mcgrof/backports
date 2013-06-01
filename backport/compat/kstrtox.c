@@ -26,6 +26,7 @@
 #include <linux/module.h>
 #include <linux/types.h>
 
+#define _tolower LINUX_BACKPORT(_tolower)
 static inline char _tolower(const char c)
 {
 	return c | 0x20;

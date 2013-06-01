@@ -18,6 +18,7 @@
  *
  */
 
+#define fault_in_multipages_writeable LINUX_BACKPORT(fault_in_multipages_writeable)
 static inline int fault_in_multipages_writeable(char __user *uaddr, int size)
 {
         int ret = 0;
@@ -45,6 +46,7 @@ static inline int fault_in_multipages_writeable(char __user *uaddr, int size)
         return ret;
 }
 
+#define fault_in_multipages_readable LINUX_BACKPORT(fault_in_multipages_readable)
 static inline int fault_in_multipages_readable(const char __user *uaddr,
                                                int size)
 {

@@ -64,6 +64,7 @@ static inline void eth_broadcast_addr(u8 *addr)
  * Generate a random Ethernet address (MAC) that is not multicast
  * and has the local assigned bit set.
  */
+#define eth_random_addr LINUX_BACKPORT(eth_random_addr)
 static inline void eth_random_addr(u8 *addr)
 {
 	get_random_bytes(addr, ETH_ALEN);
@@ -89,6 +90,7 @@ static inline void eth_zero_addr(u8 *addr)
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0)
+#define ether_addr_equal LINUX_BACKPORT(ether_addr_equal)
 static inline bool ether_addr_equal(const u8 *addr1, const u8 *addr2)
 {
 	return !compare_ether_addr(addr1, addr2);

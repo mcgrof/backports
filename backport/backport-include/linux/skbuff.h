@@ -20,6 +20,7 @@ extern void v2_6_28_skb_add_rx_frag(struct sk_buff *skb, int i,
 extern struct sk_buff *__pskb_copy(struct sk_buff *skb,
 				   int headroom, gfp_t gfp_mask);
 
+#define skb_complete_wifi_ack LINUX_BACKPORT(skb_complete_wifi_ack)
 static inline void skb_complete_wifi_ack(struct sk_buff *skb, bool acked)
 {
 	WARN_ON(1);
@@ -69,6 +70,7 @@ static inline struct sk_buff *__netdev_alloc_skb_ip_align(struct net_device *dev
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38)
+#define skb_checksum_start_offset LINUX_BACKPORT(skb_checksum_start_offset)
 static inline int skb_checksum_start_offset(const struct sk_buff *skb)
 {
 	return skb->csum_start - skb_headroom(skb);

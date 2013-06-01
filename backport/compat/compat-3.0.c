@@ -12,11 +12,13 @@
 #include <linux/compat.h>
 #include <linux/if_ether.h>
 
+#if (RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(6,4))
 /* This pulls-in a lot of non-exported symbol backports
  * on kernels older than 2.6.32. There's no harm for not
  * making this available on kernels < 2.6.32. */
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
 #include <linux/pagemap.h>
+#include <linux/shmem_fs.h>
 
 /* This backports:
  *
@@ -33,6 +35,7 @@ struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
        return read_cache_page_gfp(mapping, index, gfp);
 }
 EXPORT_SYMBOL_GPL(shmem_read_mapping_page_gfp);
+#endif
 #endif
 
 int mac_pton(const char *s, u8 *mac)

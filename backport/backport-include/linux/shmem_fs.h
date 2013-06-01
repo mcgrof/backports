@@ -3,6 +3,7 @@
 #include_next <linux/shmem_fs.h>
 
 
+#if (RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(6,4))
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0)
 /* This pulls-in a lot of non-exported symbol backports
  * on kernels older than 2.6.32. There's no harm for not
@@ -31,6 +32,7 @@ static inline struct page *shmem_read_mapping_page(
        return shmem_read_mapping_page_gfp(mapping, index,
                                        mapping_gfp_mask(mapping));
 }
+#endif
 #endif
 #endif
 

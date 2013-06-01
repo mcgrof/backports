@@ -27,7 +27,9 @@
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)
-#define pcmcia_enable_device(link)	pcmcia_request_configuration(link, &link->conf)
+#ifndef pcmcia_enable_device
+#define pcmcia_enable_device(link)	pcmcia_request_configuration(link, &(link)->conf)
+#endif
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)

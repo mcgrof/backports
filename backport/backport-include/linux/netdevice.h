@@ -233,6 +233,7 @@ static inline int register_netdevice_name(struct net_device *dev)
 #define net_ns_type_operations LINUX_BACKPORT(net_ns_type_operations)
 extern struct kobj_ns_type_operations net_ns_type_operations;
 
+#if (RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(6,4))
 #ifdef CONFIG_RPS
 extern int netif_set_real_num_rx_queues(struct net_device *dev,
 					unsigned int rxq);
@@ -242,6 +243,7 @@ static inline int netif_set_real_num_rx_queues(struct net_device *dev,
 {
 	return 0;
 }
+#endif
 #endif
 #endif /* < 2.6.37 */
 

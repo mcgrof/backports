@@ -10,7 +10,7 @@ extern void v2_6_28_skb_add_rx_frag(struct sk_buff *skb, int i,
 
 #define skb_add_rx_frag(skb, i, page, off, size, truesize) \
 	v2_6_28_skb_add_rx_frag(skb, i, page, off, size)
-#elif (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0))
+#elif (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0)) && (RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(6,4))
 #define skb_add_rx_frag(skb, i, page, off, size, truesize) \
 	skb_add_rx_frag(skb, i, page, off, size)
 #endif

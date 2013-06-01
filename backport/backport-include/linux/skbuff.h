@@ -99,9 +99,11 @@ static inline bool skb_defer_rx_timestamp(struct sk_buff *skb)
 	return false;
 }
 
+#if (RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(6,4))
 static inline void skb_tx_timestamp(struct sk_buff *skb)
 {
 }
+#endif
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,33)

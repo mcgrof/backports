@@ -23,6 +23,6 @@ class tempdir(object):
 
     def __exit__(self, type, value, traceback):
         if self.nodelete:
-            print 'not deleting directory %s!' % self._name
+            print('not deleting directory %s!' % self._name)
         else:
             shutil.rmtree(self._name)

@@ -19,13 +19,40 @@ __version__ = "1.12.12dev"
 import copy
 import logging
 import re
-# cStringIO doesn't support unicode in 2.5
-from StringIO import StringIO
-import urllib2
+import sys
+
+try:
+  # cStringIO doesn't support unicode in 2.5
+  from StringIO import StringIO
+except ImportError:
+  # StringIO has been renamed to 'io' in 3.x
+  from io import StringIO
+
+try:
+    import urllib2
+except ImportError:
+    import urllib.request as urllib2
 
 from os.path import exists, isfile, abspath
 import os
 import shutil
+
+
+_open = open
+
+if sys.version_info >= (3,):
+    # Open files with universal newline support but no newline translation (3.x)
+    def open(filename, mode='r'):
+        return _open(filename, mode, newline='')
+else:
+    # Open files with universal newline support but no newline translation (2.x)
+    def open(filename, mode='r'):
+        return _open(filename, mode + 'b')
+
+    # Python 3.x has changed iter.next() to be next(iter) instead, so for
+    # backwards compatibility, we'll just define a next() function under 2.x
+    def next(iter):
+        return iter.next()
 
 
 #------------------------------------------------
@@ -114,7 +141,7 @@ def fromfile(filename):
   """
   patchset = PatchSet()
   debug("reading %s" % filename)
-  fp = open(filename, "rb")
+  fp = open(filename, "r")
   res = patchset.parse(fp)
   fp.close()
   if res == True:
@@ -226,17 +253,16 @@ class PatchSet(object):
     hunkactual = dict(linessrc=None, linestgt=None)
 
 
-    class wrapumerate(enumerate):
+    class wrapumerate(object):
       """Enumerate wrapper that uses boolean end of stream status instead of
       StopIteration exception, and properties to access line information.
       """
 
-      def __init__(self, *args, **kwargs):
-        # we don't call parent, it is magically created by __new__ method
-
+      def __init__(self, stream):
         self._exhausted = False
         self._lineno = False     # after end of stream equal to the num of lines
         self._line = False       # will be reset to False after end of stream
+        self._iter = enumerate(stream)
 
       def next(self):
         """Try to read the next line and return True if it is available,
@@ -245,12 +271,14 @@ class PatchSet(object):
           return False
 
         try:
-          self._lineno, self._line = super(wrapumerate, self).next()
+          self._lineno, self._line = next(self._iter)
         except StopIteration:
           self._exhausted = True
           self._line = False
           return False
         return True
+      # python 3 uses __next__ consistent with next(iter)
+      __next__ = next
 
       @property
       def is_empty(self):
@@ -286,7 +314,7 @@ class PatchSet(object):
     # start of main cycle
     # each parsing block already has line available in fe.line
     fe = wrapumerate(stream)
-    while fe.next():
+    while next(fe):
 
       # -- deciders: these only switch state to decide who should process
       # --           line fetched at the start of this cycle
@@ -305,7 +333,7 @@ class PatchSet(object):
         while not fe.is_empty and not fe.line.startswith("--- "):
             header.append(fe.line)
             self.top_header += fe.line
-            fe.next()
+            next(fe)
         if fe.is_empty:
             if p == None:
               debug("no patch data found")  # error is shown later
@@ -516,7 +544,7 @@ class PatchSet(object):
           nexthunkno += 1
           continue
 
-    # /while fe.next()
+    # /while next(fe)
 
     if p:
       self.items.append(p)
@@ -969,8 +997,8 @@ class PatchSet(object):
 
 
   def write_hunks(self, srcname, tgtname, hunks):
-    src = open(srcname, "rb")
-    tgt = open(tgtname, "wb")
+    src = open(srcname, "r")
+    tgt = open(tgtname, "w")
 
     debug("processing target file %s" % tgtname)
 
@@ -1040,7 +1068,7 @@ if __name__ == "__main__":
       patch = fromfile(patchfile)
 
   if options.diffstat:
-    print patch.diffstat()
+    print(patch.diffstat())
     sys.exit(0)
 
   #pprint(patch)

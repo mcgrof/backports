@@ -69,7 +69,7 @@ def check_output_dir(d, clean):
         shutil.rmtree(d, ignore_errors=True)
     try:
         os.rmdir(d)
-    except OSError, e:
+    except OSError as e:
         if e.errno != errno.ENOENT:
             raise
 
@@ -146,7 +146,7 @@ def copy_files(srcpath, copy_list, outdir):
         else:
             try:
                 os.makedirs(os.path.join(outdir, os.path.dirname(tgtitem)))
-            except OSError, e:
+            except OSError as e:
                 # ignore dirs we might have created just now
                 if e.errno != errno.EEXIST:
                     raise
@@ -180,7 +180,7 @@ def add_automatic_backports(args):
     bpi = kconfig.get_backport_info(os.path.join(args.outdir, 'compat', 'Kconfig'))
     configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))
     all_selects = configtree.all_selects()
-    for sym, vals in bpi.iteritems():
+    for sym, vals in bpi.items():
         if sym.startswith('BACKPORT_BUILD_'):
             if not sym[15:] in all_selects:
                 continue
@@ -508,7 +508,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         new = []
         for dep in deplist[sym]:
             if dep == "DISABLE":
-		    new.append('BACKPORT_DISABLED_KCONFIG_OPTION')
+                    new.append('BACKPORT_DISABLED_KCONFIG_OPTION')
             else:
                     new.append('!BACKPORT_KERNEL_%s' % dep.replace('.', '_'))
         deplist[sym] = new

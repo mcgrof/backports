@@ -12,7 +12,11 @@ problem to occur (although this is less useful since lots of commits
 need to be squashed in the output tree.)
 """
 
-import sys, re, os, argparse, ConfigParser, shutil
+import sys, re, os, argparse, shutil
+try:
+    import configparser as ConfigParser
+except:
+    import ConfigParser
 
 # find self
 source_dir = os.path.abspath(os.path.dirname(__file__))
@@ -67,7 +71,7 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
             })
             msg = 'Failed to create backport\n\n%s%s: %s' % (PREFIX, FAIL, failure)
             for l in log:
-                print l
+                print(l)
             newline=''
             if prev_kernel_rev:
                 msg += '\n%s%s-last-success: %s' % (PREFIX, tree, prev_kernel_rev)
@@ -120,14 +124,14 @@ if __name__ == '__main__':
     # check required parameters
     trees = config.sections()
     if not trees:
-        print "No trees are defined, see git-tracker.ini.example!"
+        print("No trees are defined, see git-tracker.ini.example!")
         sys.exit(3)
     for tree in trees:
         if not config.has_option(tree, 'input'):
-            print "No input defined in section %s" % tree
+            print("No input defined in section %s" % tree)
             sys.exit(3)
         if not config.has_option(tree, 'output'):
-            print "No output defined in section %s" % tree
+            print("No output defined in section %s" % tree)
             sys.exit(3)
 
     with tempdir.tempdir() as kernel_tmpdir:
@@ -212,7 +216,7 @@ if __name__ == '__main__':
                         catch_up_from_failure = False
                     commits = git.log_commits(prev, kernel_head, tree=kernelobjdir)
                     if len(commits) > MAX_COMMITS:
-                        print "too many commits (%d)!" % len(commits)
+                        print("too many commits (%d)!" % len(commits))
                         sys.exit(10)
                     prev_commits = {}
                     p = prev
@@ -220,7 +224,7 @@ if __name__ == '__main__':
                         prev_commits[commit] = p
                         p = commit
                     for commit in commits:
-                        print 'updating to commit', commit
+                        print('updating to commit %s' % commit)
                         env = git.commit_env_vars(commit, tree=kernelobjdir)
                         if prev_commits[commit] == prev:
                             # committing multiple commits
@@ -230,7 +234,7 @@ if __name__ == '__main__':
                                 shortlog = git.shortlog(prev, '%s^2' % commit,
                                                         tree=kernelobjdir)
                                 msg += "\nCommits in this merge:\n\n" + shortlog
-                            except git.ExecutionError, e:
+                            except git.ExecutionError as e:
                                 # will fail if it wasn't a merge commit
                                 pass
                         else:

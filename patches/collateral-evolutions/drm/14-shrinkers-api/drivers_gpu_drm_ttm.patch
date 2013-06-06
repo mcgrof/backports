@@ -1,0 +1,128 @@
+diff --git a/drivers/gpu/drm/ttm/ttm_page_alloc.c b/drivers/gpu/drm/ttm/ttm_page_alloc.c
+index 83058a2..5f5bafe 100644
+diff --git a/drivers/gpu/drm/ttm/ttm_page_alloc_dma.c b/drivers/gpu/drm/ttm/ttm_page_alloc_dma.c
+index b3b4f99..96e1efb 100644
+--- a/drivers/gpu/drm/ttm/ttm_page_alloc.c
++++ b/drivers/gpu/drm/ttm/ttm_page_alloc.c
+@@ -377,6 +377,11 @@ out:
+ 	return nr_free;
+ }
+ 
++static long
++ttm_pool_shrink_count(
++	struct shrinker		*shrink,
++	struct shrink_control	*sc);
++
+ /**
+  * Callback for mm to request pool to reduce number of page held.
+  *
+@@ -388,10 +393,15 @@ out:
+  *
+  * This code is crying out for a shrinker per pool....
+  */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
+ static long
+ ttm_pool_shrink_scan(
+ 	struct shrinker		*shrink,
+ 	struct shrink_control	*sc)
++#else
++static int ttm_pool_mm_shrink(struct shrinker *shrink,
++			      struct shrink_control *sc)
++#endif
+ {
+ 	static atomic_t start_pool = ATOMIC_INIT(0);
+ 	unsigned i;
+@@ -410,7 +420,12 @@ ttm_pool_shrink_scan(
+ 		shrink_pages = ttm_page_pool_free(pool, nr_free);
+ 		freed += nr_free - shrink_pages;
+ 	}
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
+ 	return freed;
++#else
++	/* return estimated number of unused pages in pool */
++	return ttm_pool_shrink_count(shrink, sc);
++#endif
+ }
+ 
+ 
+@@ -430,8 +445,12 @@ ttm_pool_shrink_count(
+ 
+ static void ttm_pool_mm_shrink_init(struct ttm_pool_manager *manager)
+ {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
+ 	manager->mm_shrink.count_objects = &ttm_pool_shrink_count;
+ 	manager->mm_shrink.scan_objects = &ttm_pool_shrink_scan;
++#else
++	manager->mm_shrink.shrink = &ttm_pool_mm_shrink;
++#endif
+ 	manager->mm_shrink.seeks = 1;
+ 	register_shrinker(&manager->mm_shrink);
+ }
+--- a/drivers/gpu/drm/ttm/ttm_page_alloc_dma.c
++++ b/drivers/gpu/drm/ttm/ttm_page_alloc_dma.c
+@@ -987,6 +987,11 @@ void ttm_dma_unpopulate(struct ttm_dma_t
+ }
+ EXPORT_SYMBOL_GPL(ttm_dma_unpopulate);
+ 
++static long
++ttm_dma_pool_shrink_count(
++	struct shrinker		*shrink,
++	struct shrink_control	*sc);
++
+ /**
+  * Callback for mm to request pool to reduce number of page held.
+  *
+@@ -1000,10 +1005,15 @@ EXPORT_SYMBOL_GPL(ttm_dma_unpopulate);
+  * I'm getting sadder as I hear more pathetical whimpers about needing per-pool
+  * shrinkers
+  */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
+ static long
+ ttm_dma_pool_shrink_scan(
+ 	struct shrinker		*shrink,
+ 	struct shrink_control	*sc)
++#else
++static int ttm_dma_pool_mm_shrink(struct shrinker *shrink,
++				  struct shrink_control *sc)
++#endif
+ {
+ 	static atomic_t start_pool = ATOMIC_INIT(0);
+ 	unsigned idx = 0;
+@@ -1013,7 +1023,11 @@ ttm_dma_pool_shrink_scan(
+ 	long freed = 0;
+ 
+ 	if (list_empty(&_manager->pools))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
+ 		return -1;
++#else
++		return 0;
++#endif
+ 
+ 	mutex_lock(&_manager->lock);
+ 	pool_offset = pool_offset % _manager->npools;
+@@ -1036,7 +1050,12 @@ ttm_dma_pool_shrink_scan(
+ 			 nr_free, shrink_pages);
+ 	}
+ 	mutex_unlock(&_manager->lock);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
+ 	return freed;
++#else
++	/* return estimated number of unused pages in pool */
++	return ttm_dma_pool_shrink_count(shrink, sc);
++#endif
+ }
+ 
+ static long
+@@ -1056,8 +1075,12 @@ ttm_dma_pool_shrink_count(
+ 
+ static void ttm_dma_pool_mm_shrink_init(struct ttm_pool_manager *manager)
+ {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
+ 	manager->mm_shrink.count_objects = &ttm_dma_pool_shrink_count;
+ 	manager->mm_shrink.scan_objects = &ttm_dma_pool_shrink_scan;
++#else
++	manager->mm_shrink.shrink = &ttm_dma_pool_mm_shrink;
++#endif
+ 	manager->mm_shrink.seeks = 1;
+ 	register_shrinker(&manager->mm_shrink);
+ }

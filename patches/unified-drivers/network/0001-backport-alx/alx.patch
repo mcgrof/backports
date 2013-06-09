@@ -84,17 +84,17 @@
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
  	netdev->hw_features = NETIF_F_SG	 |
  			      NETIF_F_HW_CSUM	 |
- 			      NETIF_F_HW_VLAN_RX |
+ 			      NETIF_F_HW_VLAN_CTAG_RX |
  			      NETIF_F_TSO        |
  			      NETIF_F_TSO6;
- 	netdev->features = netdev->hw_features | NETIF_F_HW_VLAN_TX;
+ 	netdev->features = netdev->hw_features | NETIF_F_HW_VLAN_CTAG_TX;
 +#else
 +	netdev->features = NETIF_F_SG            |
 +			   NETIF_F_HW_CSUM       |
-+			   NETIF_F_HW_VLAN_RX    |
++			   NETIF_F_HW_VLAN_CTAG_RX    |
 +			   NETIF_F_TSO           |
 +			   NETIF_F_TSO6          |
-+			   NETIF_F_HW_VLAN_TX;
++			   NETIF_F_HW_VLAN_CTAG_TX;
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)) */
  
  	/* read permanent mac addr from register or eFuse */
@@ -120,4 +120,4 @@
 +#endif
  };
  
- 
+ module_pci_driver(alx_driver);

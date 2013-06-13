@@ -5,7 +5,7 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
- * Compatibility file for Linux wireless for kernels 2.6.33.
+ * Backport functionality introduced in Linux 2.6.33.
  */
 
 #include <linux/compat.h>

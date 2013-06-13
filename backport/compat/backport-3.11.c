@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2013  Hauke Mehrtens <hauke@hauke-m.de>
  *
- * Compatibility file for Linux wireless for kernels 3.11.
+ * Backport functionality introduced in Linux 3.11.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

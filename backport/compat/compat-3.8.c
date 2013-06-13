@@ -5,7 +5,7 @@
  * Copyright (c) 2006-2012 Jiri Kosina
  * Copyright (c) 2012  Luis R. Rodriguez <mcgrof@do-not-panic.com>
  *
- * Compatibility file for Linux wireless for kernels 3.8.
+ * Backport functionality introduced in Linux 3.8.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

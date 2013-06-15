@@ -15,7 +15,7 @@
  */
 typedef int (backport_device_find_function_t)(struct device *, void *);
 #define class_find_device(cls, start, idx, fun) \
-	class_find_device((cls), (start), (idx),\
+	class_find_device((cls), (start), (void *)(idx),\
 			  (backport_device_find_function_t *)(fun))
 #endif
 

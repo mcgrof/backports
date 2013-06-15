@@ -17,6 +17,8 @@ source Kconfig.versions
 # some hacks ...
 config WIRELESS
 	def_bool y
+config NET_CORE
+	def_bool y
 config EXPERT
 	def_bool y
 

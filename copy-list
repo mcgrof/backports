@@ -171,3 +171,14 @@ drivers/platform/x86/Makefile
 drivers/platform/x86/intel_ips.c
 drivers/platform/x86/intel_ips.h
 include/asm-generic/io-64-nonatomic-lo-hi.h
+
+include/net/nl802154.h
+include/net/mac802154.h
+include/net/ieee802154.h
+include/linux/nl802154.h
+include/net/ieee802154_netdev.h
+include/net/wpan-phy.h
+include/linux/spi/at86rf230.h
+net/ieee802154/
+net/mac802154/
+drivers/net/ieee802154/

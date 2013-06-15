@@ -1,0 +1,40 @@
+--- a/net/ieee802154/nl-mac.c
++++ b/net/ieee802154/nl-mac.c
+@@ -549,7 +549,7 @@ static int ieee802154_list_iface(struct
+ 	if (!msg)
+ 		goto out_dev;
+ 
+-	rc = ieee802154_nl_fill_iface(msg, info->snd_portid, info->snd_seq,
++	rc = ieee802154_nl_fill_iface(msg, genl_info_snd_portid(info), info->snd_seq,
+ 			0, dev);
+ 	if (rc < 0)
+ 		goto out_free;
+@@ -580,7 +580,7 @@ static int ieee802154_dump_iface(struct
+ 		if (idx < s_idx || (dev->type != ARPHRD_IEEE802154))
+ 			goto cont;
+ 
+-		if (ieee802154_nl_fill_iface(skb, NETLINK_CB(cb->skb).portid,
++		if (ieee802154_nl_fill_iface(skb, NETLINK_CB_PORTID(cb->skb),
+ 			cb->nlh->nlmsg_seq, NLM_F_MULTI, dev) < 0)
+ 			break;
+ cont:
+--- a/net/ieee802154/nl-phy.c
++++ b/net/ieee802154/nl-phy.c
+@@ -105,7 +105,7 @@ static int ieee802154_list_phy(struct sk
+ 	if (!msg)
+ 		goto out_dev;
+ 
+-	rc = ieee802154_nl_fill_phy(msg, info->snd_portid, info->snd_seq,
++	rc = ieee802154_nl_fill_phy(msg, genl_info_snd_portid(info), info->snd_seq,
+ 			0, phy);
+ 	if (rc < 0)
+ 		goto out_free;
+@@ -138,7 +138,7 @@ static int ieee802154_dump_phy_iter(stru
+ 		return 0;
+ 
+ 	rc = ieee802154_nl_fill_phy(data->skb,
+-			NETLINK_CB(data->cb->skb).portid,
++			NETLINK_CB_PORTID(data->cb->skb),
+ 			data->cb->nlh->nlmsg_seq,
+ 			NLM_F_MULTI,
+ 			phy);

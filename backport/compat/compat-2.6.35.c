@@ -17,21 +17,6 @@
 #include <linux/uaccess.h>
 #include <net/sch_generic.h>
 
-#if (RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(6,4))
-#ifdef CONFIG_RPS
-int netif_set_real_num_rx_queues(struct net_device *dev, unsigned int rxq)
-{
-	int rc;
-
-	/* we can't update the sysfs object for older kernels */
-	if (dev->reg_state == NETREG_REGISTERED)
-		return -EINVAL;
-	dev->num_rx_queues = rxq;
-	return 0;
-}
-#endif
-#endif
-
 /*
  * Routine to help set real_num_tx_queues. To avoid skbs mapped to queues
  * greater then real_num_tx_queues stale skbs on the qdisc must be flushed.

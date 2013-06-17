@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/orinoco/orinoco_usb.c
 +++ b/drivers/net/wireless/orinoco/orinoco_usb.c
-@@ -1553,7 +1553,7 @@ static const struct hermes_ops ezusb_ops
+@@ -1554,7 +1554,7 @@ static const struct hermes_ops ezusb_ops
  	.read_ltv = ezusb_read_ltv,
  	.write_ltv = ezusb_write_ltv,
  	.bap_pread = ezusb_bap_pread,

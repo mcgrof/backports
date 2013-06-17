@@ -38,6 +38,22 @@
        .bInterfaceProtocol = (pr)
 #endif
 
+#ifndef USB_DEVICE_INTERFACE_NUMBER
+/**
+ * USB_DEVICE_INTERFACE_NUMBER - describe a usb device with a specific interface number
+ * @vend: the 16 bit USB Vendor ID
+ * @prod: the 16 bit USB Product ID
+ * @num: bInterfaceNumber value
+ *
+ * This macro is used to create a struct usb_device_id that matches a
+ * specific interface number of devices.
+ */
+#define USB_DEVICE_INTERFACE_NUMBER(vend, prod, num) \
+	.match_flags = USB_DEVICE_ID_MATCH_DEVICE, \
+	.idVendor = (vend), \
+	.idProduct = (prod)
+#endif /* USB_DEVICE_INTERFACE_NUMBER */
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
 #ifdef CPTCFG_BACKPORT_OPTION_USB_URB_THREAD_FIX
 #define usb_scuttle_anchored_urbs LINUX_BACKPORT(usb_scuttle_anchored_urbs)

@@ -18,7 +18,7 @@
 		       usb_deregister)
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,6,0)
+#ifndef USB_VENDOR_AND_INTERFACE_INFO
 /**
  * Backports
  *
@@ -28,7 +28,6 @@
  *
  * 	USB: add USB_VENDOR_AND_INTERFACE_INFO() macro
  */
-#include <linux/usb.h>
 #define USB_VENDOR_AND_INTERFACE_INFO(vend, cl, sc, pr) \
        .match_flags = USB_DEVICE_ID_MATCH_INT_INFO \
                | USB_DEVICE_ID_MATCH_VENDOR, \
@@ -36,7 +35,7 @@
        .bInterfaceClass = (cl), \
        .bInterfaceSubClass = (sc), \
        .bInterfaceProtocol = (pr)
-#endif
+#endif /* USB_VENDOR_AND_INTERFACE_INFO */
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
 #ifdef CPTCFG_BACKPORT_OPTION_USB_URB_THREAD_FIX

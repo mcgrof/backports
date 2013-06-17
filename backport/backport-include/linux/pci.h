@@ -178,4 +178,20 @@ int pci_wake_from_d3(struct pci_dev *dev, bool enable);
 bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
 #endif
 
+#ifndef PCI_DEVICE_SUB
+/**
+ * PCI_DEVICE_SUB - macro used to describe a specific pci device with subsystem
+ * @vend: the 16 bit PCI Vendor ID
+ * @dev: the 16 bit PCI Device ID
+ * @subvend: the 16 bit PCI Subvendor ID
+ * @subdev: the 16 bit PCI Subdevice ID
+ *
+ * This macro is used to create a struct pci_device_id that matches a
+ * specific device with subsystem information.
+ */
+#define PCI_DEVICE_SUB(vend, dev, subvend, subdev) \
+	.vendor = (vend), .device = (dev), \
+	.subvendor = (subvend), .subdevice = (subdev)
+#endif /* PCI_DEVICE_SUB */
+
 #endif /* _BACKPORT_LINUX_PCI_H */

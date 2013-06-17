@@ -271,6 +271,15 @@ int hex_to_bin(char ch);
 	__val > __max ? __max: __val; })
 #endif
 
+#ifndef rounddown
+#define rounddown(x, y) (				\
+{							\
+	typeof(x) __x = (x);				\
+	__x - (__x % (y));				\
+}							\
+)
+#endif /* rounddown */
+
 #endif /* __BACKPORT_KERNEL_H */
 
 /*

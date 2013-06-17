@@ -145,6 +145,8 @@ DVB_DDBRIDGE DISABLE
 # since the core I2C code has to know about it
 VIDEO_OV7640 3.6
 VIDEO_EM28XX 3.6
+# someone has to backport "firewire: introduce fw_driver.probe and .remove methods"
+DVB_FIREDTV 3.11
 # I give up on these guys for now
 RADIO_MAXIRADIO DISABLE
 RADIO_SHARK DISABLE

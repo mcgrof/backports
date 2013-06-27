@@ -1,0 +1,14 @@
+--- a/drivers/net/ethernet/atheros/alx/main.c
++++ b/drivers/net/ethernet/atheros/alx/main.c
+@@ -466,7 +466,11 @@ static void __alx_set_rx_mode(struct net
+ 
+ 	if (!(netdev->flags & IFF_ALLMULTI)) {
+ 		netdev_for_each_mc_addr(ha, netdev)
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 			alx_add_mc_addr(hw, ha->addr, mc_hash);
++#else
++			alx_add_mc_addr(hw, ha->dmi_addr, mc_hash);
++#endif
+ 
+ 		alx_write_mem32(hw, ALX_HASH_TBL0, mc_hash[0]);
+ 		alx_write_mem32(hw, ALX_HASH_TBL1, mc_hash[1]);

@@ -1,0 +1,28 @@
+The struct pci_dev dev_flags member was added as of
+v2.6.24 via ba698ad4. This collateral evolution can be
+enhanced and backported atomically through these series
+of patches. The end goal is to optimize this in SmPL form.
+
+mcgrof@frijol ~/linux-stable (git::master)$ git describe --contains ba698ad4
+v2.6.24-rc2~28^2~6
+
+commit ba698ad4b7e466cbb4a8bde6b9da8080ab06808d
+Author: David Miller <davem@davemloft.net>
+Date:   Thu Oct 25 01:16:30 2007 -0700
+
+    PCI: Add quirk for devices which disable MSI when INTX_DISABLE is set.
+    
+    A reasonably common problem with some devices is that they will
+    disable MSI generation when the INTX_DISABLE bit is set in the
+    PCI_COMMAND register.
+    
+    Quirk this explicitly, guarding the pci_intx() calls in msi.c with
+    this quirk indication.
+    
+    The first entries for this quirk are for 5714 and 5780 Tigon3 chips,
+    and thus we can remove the workaround code from the tg3.c driver.
+    
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+    Acked-by: Michael Chan <mchan@broadcom.com>
+    Acked-by: Jeff Garzik <jgarzik@redhat.com>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>

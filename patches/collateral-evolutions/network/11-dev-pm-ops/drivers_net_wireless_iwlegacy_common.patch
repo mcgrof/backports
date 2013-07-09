@@ -23,7 +23,7 @@
 @@ -1833,7 +1833,14 @@ __le32 il_add_beacon_time(struct il_priv
  			  u32 beacon_interval);
  
- #ifdef CONFIG_PM
+ #ifdef CONFIG_PM_SLEEP
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
 +int il_pci_suspend_compat(struct pci_dev *pdev, pm_message_t state);
 +int il_pci_resume_compat(struct pci_dev *pdev);

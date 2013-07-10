@@ -1,0 +1,32 @@
+diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
+index 0022afd..2616dae 100644
+--- a/drivers/gpu/drm/i915/i915_gem.c
++++ b/drivers/gpu/drm/i915/i915_gem.c
+@@ -1808,6 +1808,7 @@ i915_gem_object_get_pages_gtt(struct drm
+ 			gfp |= __GFP_NORETRY | __GFP_NOWARN | __GFP_NO_KSWAPD;
+ 			gfp &= ~(__GFP_IO | __GFP_WAIT);
+ 		}
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0))
+ #ifdef CONFIG_SWIOTLB
+ 		if (swiotlb_nr_tbl()) {
+ 			st->nents++;
+@@ -1816,6 +1817,7 @@ i915_gem_object_get_pages_gtt(struct drm
+ 			continue;
+ 		}
+ #endif
++#endif
+ 		if (!i || page_to_pfn(page) != last_pfn + 1) {
+ 			if (i)
+ 				sg = sg_next(sg);
+@@ -1826,9 +1828,11 @@ i915_gem_object_get_pages_gtt(struct drm
+ 		}
+ 		last_pfn = page_to_pfn(page);
+ 	}
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0))
+ #ifdef CONFIG_SWIOTLB
+ 	if (!swiotlb_nr_tbl())
+ #endif
++#endif
+ 		sg_mark_end(sg);
+ 	obj->pages = st;
+ 

@@ -1,12 +1,15 @@
-# Linux driver backports package
+# Linux kernel backports package
 
 This package provides backport support for drivers from newer kernels
-down to older kernels. It currently backports 4 subsystems:
+down to older kernels. It currently backports the following subsystems:
 
   * Ethernet
   * Wireless
   * Bluetooth
+  * NFC
   * GPU
+  * Media
+  * Regulator
 
 This package provides the latest Linux kernel subsystem enhancements
 for kernels 2.6.24 and above. It is technically possible to support

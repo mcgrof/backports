@@ -1,5 +1,0 @@
-
-swiotlb_nr_tbl() was available since 3.2 but was exported since 3.3.
-Since it uses an internal global state variable, it is impossible
-to backport it to compat.git. So revert the changes.
-

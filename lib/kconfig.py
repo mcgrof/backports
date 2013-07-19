@@ -4,7 +4,7 @@
 
 import os, re
 
-src_line = re.compile(r'^source\s+"?(?P<src>[^\s"]*)"?\s*$')
+src_line = re.compile(r'^[\s]*source\s+"?(?P<src>[^\s"]*)"?\s*$')
 tri_line = re.compile(r'^(?P<spc>\s+)tristate')
 bool_line = re.compile(r'^(?P<spc>\s+)bool')
 cfg_line = re.compile(r'^(config|menuconfig)\s+(?P<sym>[^\s]*)')

@@ -139,6 +139,7 @@ include/linux/regulator/max8649.h
 include/linux/regulator/max8660.h
 include/linux/regulator/max8952.h
 include/linux/regulator/max8973-regulator.h
+include/linux/mfd/max77693.h
 include/linux/mfd/max77693-private.h
 include/linux/regulator/of_regulator.h
 include/linux/regulator/tps51632-regulator.h

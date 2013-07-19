@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/brcm80211/brcmfmac/bcmsdh_sdmmc.c
 +++ b/drivers/net/wireless/brcm80211/brcmfmac/bcmsdh_sdmmc.c
-@@ -70,7 +70,7 @@ static bool
+@@ -70,7 +70,7 @@ bool
  brcmf_pm_resume_error(struct brcmf_sdio_dev *sdiodev)
  {
  	bool is_err = false;
@@ -10,7 +10,7 @@
  #endif
  	return is_err;
 @@ -79,7 +79,7 @@ brcmf_pm_resume_error(struct brcmf_sdio_
- static void
+ void
  brcmf_pm_resume_wait(struct brcmf_sdio_dev *sdiodev, wait_queue_head_t *wq)
  {
 -#ifdef CONFIG_PM_SLEEP
@@ -18,7 +18,7 @@
  	int retry = 0;
  	while (atomic_read(&sdiodev->suspend) && retry++ != 30)
  		wait_event_timeout(*wq, false, HZ/100);
-@@ -516,7 +516,7 @@ static void brcmf_ops_sdio_remove(struct
+@@ -406,7 +406,7 @@ static void brcmf_ops_sdio_remove(struct
  	brcmf_dbg(SDIO, "Exit\n");
  }
  
@@ -27,7 +27,7 @@
  static int brcmf_sdio_suspend(struct device *dev)
  {
  	mmc_pm_flag_t sdio_flags;
-@@ -566,7 +566,7 @@ static struct sdio_driver brcmf_sdmmc_dr
+@@ -456,7 +456,7 @@ static struct sdio_driver brcmf_sdmmc_dr
  	.remove = brcmf_ops_sdio_remove,
  	.name = BRCMFMAC_SDIO_PDATA_NAME,
  	.id_table = brcmf_sdmmc_ids,

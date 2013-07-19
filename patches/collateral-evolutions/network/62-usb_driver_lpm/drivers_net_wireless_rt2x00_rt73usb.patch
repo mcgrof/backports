@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/rt2x00/rt73usb.c
 +++ b/drivers/net/wireless/rt2x00/rt73usb.c
-@@ -2547,7 +2547,9 @@ static struct usb_driver rt73usb_driver
+@@ -2548,7 +2548,9 @@ static struct usb_driver rt73usb_driver
  	.suspend	= rt2x00usb_suspend,
  	.resume		= rt2x00usb_resume,
  	.reset_resume	= rt2x00usb_resume,

@@ -1,4 +1,0 @@
-Old kernel versions do not support WQ_HIGHPRI and WQ_MEM_RECLAIM so we
-should use create_singlethread_workqueue() which was used at this
-position before.
-

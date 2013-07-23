@@ -174,7 +174,7 @@ out:
 EXPORT_SYMBOL_GPL(__pskb_copy);
 
 static DEFINE_SPINLOCK(wq_name_lock);
-static struct list_head wq_name_list;
+static LIST_HEAD(wq_name_list);
 
 struct wq_name {
 	struct list_head list;
@@ -204,7 +204,7 @@ backport_alloc_workqueue(const char *fmt, unsigned int flags,
 				    0,
 #endif
 				    key, lock_name);
-#else	                        
+#else
 	wq = __alloc_workqueue_key(n->name, flags, max_active, key, lock_name);
 #endif
 	if (!wq) {

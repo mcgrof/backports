@@ -176,6 +176,7 @@ def automatic_backport_mangle_c_file(name):
 
 
 def add_automatic_backports(args):
+    disable_list = []
     export = re.compile(r'^EXPORT_SYMBOL(_GPL)?\((?P<sym>[^\)]*)\)')
     bpi = kconfig.get_backport_info(os.path.join(args.outdir, 'compat', 'Kconfig'))
     configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))
@@ -183,6 +184,7 @@ def add_automatic_backports(args):
     for sym, vals in bpi.items():
         if sym.startswith('BACKPORT_BUILD_'):
             if not sym[15:] in all_selects:
+                disable_list.append(sym)
                 continue
         symtype, module_name, c_files, h_files = vals
 
@@ -229,6 +231,7 @@ def add_automatic_backports(args):
                 outf.write('#define %s LINUX_BACKPORT(%s)\n' % (s, s))
             outf.write('#include <%s>\n' % (os.path.dirname(f) + '/backport-' + os.path.basename(f), ))
             outf.write('#endif /* CPTCFG_%s */\n' % sym)
+    return disable_list
 
 def git_debug_init(args):
     """
@@ -346,7 +349,10 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
 
     git_debug_snapshot(args, 'Add driver sources')
 
-    add_automatic_backports(args)
+    disable_list = add_automatic_backports(args)
+    if disable_list:
+        bpcfg = kconfig.ConfigTree(os.path.join(args.outdir, 'compat', 'Kconfig'))
+        bpcfg.disable_symbols(disable_list)
     git_debug_snapshot(args, 'Add automatic backports')
 
     logwrite('Apply patches ...')

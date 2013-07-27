@@ -48,6 +48,12 @@ MWIFIEX 2.6.27
 # DRM stuff
 HDMI 3.2
 DRM 3.2
+# As of 3.11 DRM depends on the new ww_mutex which is
+# backported via BACKPORT_BUILD_WW_MUTEX. This backported
+# feature however has does not yet have support for
+# DEBUG_MUTEXES and DEBUG_LOCK_ALLOC.
+DRM kconfig: !BACKPORT_KERNEL_3_11 || !DEBUG_MUTEXES
+DRM kconfig: !BACKPORT_KERNEL_3_11 || !DEBUG_LOCK_ALLOC
 DRM_TTM 3.2
 # See e2bdb933, this was added on v3.3, in order to
 # support DRM_QXL on 3.2 you'd have to backport 78c1d7848

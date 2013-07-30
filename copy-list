@@ -143,6 +143,7 @@ include/linux/mfd/max77693.h
 include/linux/mfd/max77693-private.h
 include/linux/mfd/max8998.h
 include/linux/mfd/max8998-private.h
+include/linux/mfd/samsung/s2mps11.h
 include/linux/regulator/of_regulator.h
 include/linux/regulator/tps51632-regulator.h
 include/linux/regulator/tps62360.h

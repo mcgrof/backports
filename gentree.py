@@ -41,20 +41,35 @@ def read_dependencies(depfilename):
     """
     Read a (the) dependency file and return the list of
     dependencies as a dictionary, mapping a Kconfig symbol
-    to a list of kernel version dependencies. While reading
-    ignore blank/commented lines.
+    to a list of kernel version dependencies.
+    
+    If a backported feature that an upstream backported driver
+    depends on had kconfig limitations (ie, debugging feature not
+    available) a built constaint restriction can be expressed
+    by using a kconfig expression. The kconfig expressions can
+    be specified by using the "kconfig: " prefix.
+    
+    While reading ignore blank or commented lines.
     """
     ret = {}
     depfile = open(depfilename, 'r')
     for item in depfile:
+        kconfig_exp = ""
         item = item.strip()
         if not item or item[0] == '#':
             continue
-        sym, dep = item.split()
-        if not sym in ret:
-            ret[sym] = [dep, ]
+        if "kconfig:" in item:
+            sym, kconfig_exp = item.split(" ", 1)
+            if not sym in ret:
+                ret[sym] = [kconfig_exp, ]
+            else:
+                ret[sym].append(kconfig_exp)
         else:
-            ret[sym].append(dep)
+            sym, dep = item.split()
+            if not sym in ret:
+                ret[sym] = [dep, ]
+            else:
+                ret[sym].append(dep)
     return ret
 
 
@@ -513,7 +528,10 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     for sym in tuple(deplist.keys()):
         new = []
         for dep in deplist[sym]:
-            if dep == "DISABLE":
+            if "kconfig:" in dep:
+                    kconfig_expr = dep.replace('kconfig: ', '')
+                    new.append(kconfig_expr)
+            elif (dep == "DISABLE"):
                     new.append('BACKPORT_DISABLED_KCONFIG_OPTION')
             else:
                     new.append('!BACKPORT_KERNEL_%s' % dep.replace('.', '_'))

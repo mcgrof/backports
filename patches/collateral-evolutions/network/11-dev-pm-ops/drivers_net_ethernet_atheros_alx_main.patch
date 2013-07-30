@@ -1,17 +1,18 @@
 --- a/drivers/net/ethernet/atheros/alx/main.c
 +++ b/drivers/net/ethernet/atheros/alx/main.c
-@@ -1593,6 +1593,8 @@ static const struct pci_error_handlers a
- };
+@@ -1404,6 +1404,9 @@ static int alx_resume(struct device *dev
+ 	return __alx_open(alx, true);
+ }
  
- #ifdef CONFIG_PM_SLEEP
 +compat_pci_suspend(alx_suspend);
 +compat_pci_resume(alx_resume);
++
  static SIMPLE_DEV_PM_OPS(alx_pm_ops, alx_suspend, alx_resume);
  #define ALX_PM_OPS      (&alx_pm_ops)
  #else
-@@ -1618,7 +1620,12 @@ static struct pci_driver alx_driver = {
+@@ -1506,7 +1509,12 @@ static struct pci_driver alx_driver = {
+ 	.probe       = alx_probe,
  	.remove      = alx_remove,
- 	.shutdown    = alx_shutdown,
  	.err_handler = &alx_err_handlers,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm   = ALX_PM_OPS,

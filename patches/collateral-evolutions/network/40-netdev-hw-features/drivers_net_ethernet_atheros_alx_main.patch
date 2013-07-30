@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/alx/main.c
 +++ b/drivers/net/ethernet/atheros/alx/main.c
-@@ -738,6 +738,7 @@ static int alx_init_sw(struct alx_priv *
+@@ -737,6 +737,7 @@ static int alx_init_sw(struct alx_priv *
  }
  
  
@@ -8,7 +8,7 @@
  static netdev_features_t alx_fix_features(struct net_device *netdev,
  					  netdev_features_t features)
  {
-@@ -746,6 +747,7 @@ static netdev_features_t alx_fix_feature
+@@ -745,6 +746,7 @@ static netdev_features_t alx_fix_feature
  
  	return features;
  }
@@ -16,7 +16,7 @@
  
  static void alx_netif_stop(struct alx_priv *alx)
  {
-@@ -822,7 +824,17 @@ static int alx_change_mtu(struct net_dev
+@@ -821,7 +823,17 @@ static int alx_change_mtu(struct net_dev
  	alx->hw.mtu = mtu;
  	alx->rxbuf_size = mtu > ALX_DEF_RXBUF_SIZE ?
  			   ALIGN(max_frame, 8) : ALX_DEF_RXBUF_SIZE;
@@ -34,7 +34,7 @@
  	if (netif_running(netdev))
  		alx_reinit(alx);
  	return 0;
-@@ -1241,7 +1253,9 @@ static const struct net_device_ops alx_n
+@@ -1180,7 +1192,9 @@ static const struct net_device_ops alx_n
  	.ndo_change_mtu         = alx_change_mtu,
  	.ndo_do_ioctl           = alx_ioctl,
  	.ndo_tx_timeout         = alx_tx_timeout,
@@ -44,7 +44,7 @@
  #ifdef CONFIG_NET_POLL_CONTROLLER
  	.ndo_poll_controller    = alx_poll_controller,
  #endif
-@@ -1364,7 +1378,11 @@ static int alx_probe(struct pci_dev *pde
+@@ -1303,7 +1317,11 @@ static int alx_probe(struct pci_dev *pde
  		}
  	}
  

@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/alx/main.c
 +++ b/drivers/net/ethernet/atheros/alx/main.c
-@@ -1325,8 +1325,10 @@ static int alx_probe(struct pci_dev *pde
+@@ -1264,8 +1264,10 @@ static int alx_probe(struct pci_dev *pde
  	netdev->irq = pdev->irq;
  	netdev->watchdog_timeo = ALX_WATCHDOG_TIME;
  

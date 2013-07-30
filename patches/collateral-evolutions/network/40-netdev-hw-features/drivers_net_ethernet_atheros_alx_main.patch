@@ -44,7 +44,7 @@
  #ifdef CONFIG_NET_POLL_CONTROLLER
  	.ndo_poll_controller    = alx_poll_controller,
  #endif
-@@ -1361,7 +1375,11 @@ static int alx_probe(struct pci_dev *pde
+@@ -1363,7 +1377,11 @@ static int alx_probe(struct pci_dev *pde
  		}
  	}
  

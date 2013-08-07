@@ -4,7 +4,7 @@
  	return 0;
  
  out_gem_unload:
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  	if (dev_priv->mm.inactive_shrinker.scan_objects)
 +#else
 +	if (dev_priv->mm.inactive_shrinker.shrink)
@@ -16,7 +16,7 @@
  
  	i915_teardown_sysfs(dev);
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  	if (dev_priv->mm.inactive_shrinker.scan_objects)
 +#else
 +	if (dev_priv->mm.inactive_shrinker.shrink)
@@ -30,7 +30,7 @@
  					 struct drm_i915_fence_reg *fence,
  					 bool enable);
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  static unsigned long i915_gem_inactive_count(struct shrinker *shrinker,
  					     struct shrink_control *sc);
  static unsigned long i915_gem_inactive_scan(struct shrinker *shrinker,
@@ -46,7 +46,7 @@
  
  	dev_priv->mm.interruptible = true;
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  	dev_priv->mm.inactive_shrinker.scan_objects = i915_gem_inactive_scan;
  	dev_priv->mm.inactive_shrinker.count_objects = i915_gem_inactive_count;
 +#else
@@ -59,7 +59,7 @@
  #endif
  }
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  static unsigned long
  i915_gem_inactive_count(struct shrinker *shrinker, struct shrink_control *sc)
 +#else
@@ -74,7 +74,7 @@
  	struct drm_device *dev = dev_priv->dev;
  	struct drm_i915_gem_object *obj;
  	bool unlock = true;
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  	unsigned long count;
 +#else
 +	int nr_to_scan = sc->nr_to_scan;
@@ -87,7 +87,7 @@
  		unlock = false;
  	}
  
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,12,0))
 +	if (nr_to_scan) {
 +		nr_to_scan -= i915_gem_purge(dev_priv, nr_to_scan);
 +		if (nr_to_scan > 0)
@@ -105,7 +105,7 @@
  	return count;
  }
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  static unsigned long
  i915_gem_inactive_scan(struct shrinker *shrinker, struct shrink_control *sc)
  {

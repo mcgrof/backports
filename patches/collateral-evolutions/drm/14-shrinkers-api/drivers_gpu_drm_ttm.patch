@@ -14,7 +14,7 @@
   *
   * This code is crying out for a shrinker per pool....
   */
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  static unsigned long
  ttm_pool_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
 +#else
@@ -28,7 +28,7 @@
  		shrink_pages = ttm_page_pool_free(pool, nr_free);
  		freed += nr_free - shrink_pages;
  	}
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  	return freed;
 +#else
 +	/* return estimated number of unused pages in pool */
@@ -41,7 +41,7 @@
  
  static void ttm_pool_mm_shrink_init(struct ttm_pool_manager *manager)
  {
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  	manager->mm_shrink.count_objects = ttm_pool_shrink_count;
  	manager->mm_shrink.scan_objects = ttm_pool_shrink_scan;
 +#else
@@ -66,7 +66,7 @@
   * I'm getting sadder as I hear more pathetical whimpers about needing per-pool
   * shrinkers
   */
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  static unsigned long
  ttm_dma_pool_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
 +#else
@@ -81,7 +81,7 @@
  			 nr_free, shrink_pages);
  	}
  	mutex_unlock(&_manager->lock);
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  	return freed;
 +#else
 +	/* return estimated number of unused pages in pool */
@@ -94,7 +94,7 @@
  
  static void ttm_dma_pool_mm_shrink_init(struct ttm_pool_manager *manager)
  {
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  	manager->mm_shrink.count_objects = ttm_dma_pool_shrink_count;
  	manager->mm_shrink.scan_objects = &ttm_dma_pool_shrink_scan;
 +#else

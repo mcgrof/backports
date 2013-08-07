@@ -1,6 +1,6 @@
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1657,7 +1657,11 @@ int i915_driver_load(struct drm_device *
+@@ -1665,7 +1665,11 @@ int i915_driver_load(struct drm_device *
  	return 0;
  
  out_gem_unload:
@@ -12,7 +12,7 @@
  		unregister_shrinker(&dev_priv->mm.inactive_shrinker);
  
  	if (dev->pdev->msi_enabled)
-@@ -1691,7 +1695,11 @@ int i915_driver_unload(struct drm_device
+@@ -1699,7 +1703,11 @@ int i915_driver_unload(struct drm_device
  
  	i915_teardown_sysfs(dev);
  
@@ -42,7 +42,7 @@
  static long i915_gem_purge(struct drm_i915_private *dev_priv, long target);
  static long i915_gem_shrink_all(struct drm_i915_private *dev_priv);
  static void i915_gem_object_truncate(struct drm_i915_gem_object *obj);
-@@ -4360,8 +4365,12 @@ i915_gem_load(struct drm_device *dev)
+@@ -4411,8 +4416,12 @@ i915_gem_load(struct drm_device *dev)
  
  	dev_priv->mm.interruptible = true;
  
@@ -55,7 +55,7 @@
  	dev_priv->mm.inactive_shrinker.seeks = DEFAULT_SEEKS;
  	register_shrinker(&dev_priv->mm.inactive_shrinker);
  }
-@@ -4584,8 +4593,14 @@ static bool mutex_is_locked_by(struct mu
+@@ -4635,8 +4644,14 @@ static bool mutex_is_locked_by(struct mu
  #endif
  }
  
@@ -70,8 +70,8 @@
  {
  	struct drm_i915_private *dev_priv =
  		container_of(shrinker,
-@@ -4594,7 +4609,12 @@ i915_gem_inactive_count(struct shrinker
- 	struct drm_device *dev = dev_priv->dev;
+@@ -4646,7 +4661,12 @@ i915_gem_inactive_count(struct shrinker
+ 	struct i915_address_space *vm = &dev_priv->gtt.base;
  	struct drm_i915_gem_object *obj;
  	bool unlock = true;
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
@@ -83,7 +83,7 @@
  
  	if (!mutex_trylock(&dev->struct_mutex)) {
  		if (!mutex_is_locked_by(&dev->struct_mutex, current))
-@@ -4606,6 +4626,17 @@ i915_gem_inactive_count(struct shrinker
+@@ -4658,6 +4678,17 @@ i915_gem_inactive_count(struct shrinker
  		unlock = false;
  	}
  
@@ -101,7 +101,7 @@
  	count = 0;
  	list_for_each_entry(obj, &dev_priv->mm.unbound_list, global_list)
  		if (obj->pages_pin_count == 0)
-@@ -4619,6 +4650,7 @@ i915_gem_inactive_count(struct shrinker
+@@ -4671,6 +4702,7 @@ i915_gem_inactive_count(struct shrinker
  	return count;
  }
  
@@ -109,7 +109,7 @@
  static unsigned long
  i915_gem_inactive_scan(struct shrinker *shrinker, struct shrink_control *sc)
  {
-@@ -4652,3 +4684,4 @@ i915_gem_inactive_scan(struct shrinker *
+@@ -4704,3 +4736,4 @@ i915_gem_inactive_scan(struct shrinker *
  		mutex_unlock(&dev->struct_mutex);
  	return freed;
  }

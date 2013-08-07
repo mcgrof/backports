@@ -19,7 +19,7 @@
 +#endif
  
  	mfilt[0] = 0;
- 	mfilt[1] = 1;
+ 	mfilt[1] = 0;
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
  	netdev_hw_addr_list_for_each(ha, mc_list) {

@@ -1,0 +1,11 @@
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -331,7 +331,7 @@
+ 		dev->net->dev_addr[0] |= 0x02;	/* set local assignment bit */
+ 		dev->net->dev_addr[0] &= 0xbf;	/* clear "IP" bit */
+ 	}
+-	dev->net->netdev_ops = &qmi_wwan_netdev_ops;
++	netdev_attach_ops(dev->net, &qmi_wwan_netdev_ops);
+ err:
+ 	return status;
+ }

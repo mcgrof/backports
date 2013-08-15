@@ -100,6 +100,20 @@ drivers/net/ethernet/broadcom/Makefile
 drivers/net/ethernet/broadcom/b44.c
 drivers/net/ethernet/broadcom/b44.h
 
+# wwan drivers
+include/uapi/linux/usb/cdc.h
+include/uapi/linux/usb/cdc-wdm.h
+include/linux/usb/cdc_ncm.h
+include/linux/usb/cdc-wdm.h
+
+drivers/usb/class/Makefile
+drivers/usb/class/Kconfig
+drivers/usb/class/cdc-wdm.c
+drivers/net/usb/cdc_mbim.c
+drivers/net/usb/cdc_ncm.c
+drivers/net/usb/sierra_net.c
+drivers/net/usb/qmi_wwan.c
+
 # DRM
 include/drm/
 include/uapi/drm/

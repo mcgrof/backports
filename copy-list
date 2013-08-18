@@ -151,6 +151,7 @@ include/linux/regulator/max8649.h
 include/linux/regulator/max8660.h
 include/linux/regulator/max8952.h
 include/linux/regulator/max8973-regulator.h
+include/linux/regulator/pfuze100.h
 include/linux/regulator/tps51632-regulator.h
 include/linux/regulator/tps62360.h
 include/linux/regulator/tps6507x.h

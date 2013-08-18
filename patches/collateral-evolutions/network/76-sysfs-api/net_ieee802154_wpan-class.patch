@@ -1,0 +1,30 @@
+--- a/net/ieee802154/wpan-class.c
++++ b/net/ieee802154/wpan-class.c
+@@ -77,6 +77,7 @@ static struct attribute *pmib_attrs[] =
+ 	&dev_attr_cca_mode.attr,
+ 	NULL,
+ };
++#define BP_ATTR_GRP_STRUCT device_attribute
+ ATTRIBUTE_GROUPS(pmib);
+ 
+ static void wpan_phy_release(struct device *d)
+@@ -88,7 +89,11 @@ static void wpan_phy_release(struct devi
+ static struct class wpan_phy_class = {
+ 	.name = "ieee802154",
+ 	.dev_release = wpan_phy_release,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0)
+ 	.dev_groups = pmib_groups,
++#else
++	.dev_attrs = pmib_dev_attrs,
++#endif
+ };
+ 
+ static DEFINE_MUTEX(wpan_phy_mutex);
+@@ -199,6 +204,7 @@ EXPORT_SYMBOL(wpan_phy_free);
+ static int __init wpan_phy_class_init(void)
+ {
+ 	int rc;
++	init_pmib_attrs();
+ 	rc = class_register(&wpan_phy_class);
+ 	if (rc)
+ 		goto err;

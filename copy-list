@@ -141,25 +141,16 @@ include/linux/platform_data/pn544.h
 # include/linux/regulator/consumer.h and dummy.h
 include/linux/regulator/ab8500.h
 include/linux/regulator/db8500-prcmu.h
-include/linux/regulator/driver.h
 include/linux/regulator/fan53555.h
-include/linux/regulator/fixed.h
 include/linux/regulator/gpio-regulator.h
 include/linux/regulator/lp3971.h
 include/linux/regulator/lp3972.h
 include/linux/regulator/lp872x.h
-include/linux/regulator/machine.h
 include/linux/regulator/max1586.h
 include/linux/regulator/max8649.h
 include/linux/regulator/max8660.h
 include/linux/regulator/max8952.h
 include/linux/regulator/max8973-regulator.h
-include/linux/mfd/max77693.h
-include/linux/mfd/max77693-private.h
-include/linux/mfd/max8998.h
-include/linux/mfd/max8998-private.h
-include/linux/mfd/samsung/s2mps11.h
-include/linux/regulator/of_regulator.h
 include/linux/regulator/tps51632-regulator.h
 include/linux/regulator/tps62360.h
 include/linux/regulator/tps6507x.h

@@ -7,5 +7,5 @@
 -	ndev->netdev_ops = &wil_netdev_ops;
 +	netdev_attach_ops(ndev, &wil_netdev_ops);
  	ndev->ieee80211_ptr = wdev;
- 	SET_NETDEV_DEV(ndev, wiphy_dev(wdev->wiphy));
- 	wdev->netdev = ndev;
+ 	ndev->hw_features = NETIF_F_HW_CSUM | NETIF_F_RXCSUM;
+ 	ndev->features |= NETIF_F_HW_CSUM | NETIF_F_RXCSUM;

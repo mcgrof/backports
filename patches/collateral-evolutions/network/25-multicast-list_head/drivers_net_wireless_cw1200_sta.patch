@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/cw1200/sta.c
 +++ b/drivers/net/wireless/cw1200/sta.c
-@@ -530,8 +530,13 @@ void cw1200_set_beacon_wakeup_period_work(struct work_struct *work)
+@@ -530,8 +530,13 @@ void cw1200_set_beacon_wakeup_period_wor
  				     priv->join_dtim_period, 0);
  }
  
@@ -14,7 +14,7 @@
  {
  	static u8 broadcast_ipv6[ETH_ALEN] = {
  		0x33, 0x33, 0x00, 0x00, 0x00, 0x01
-@@ -540,13 +545,16 @@ u64 cw1200_prepare_multicast(struct ieee80211_hw *hw,
+@@ -540,13 +545,16 @@ u64 cw1200_prepare_multicast(struct ieee
  		0x01, 0x00, 0x5e, 0x00, 0x00, 0x01
  	};
  	struct cw1200_common *priv = hw->priv;
@@ -31,7 +31,7 @@
  	if (netdev_hw_addr_list_count(mc_list) > WSM_MAX_GRP_ADDRTABLE_ENTRIES)
  		return 0;
  
-@@ -560,13 +568,26 @@ u64 cw1200_prepare_multicast(struct ieee80211_hw *hw,
+@@ -560,13 +568,26 @@ u64 cw1200_prepare_multicast(struct ieee
  			priv->has_multicast_subscription = true;
  		count++;
  	}
@@ -61,7 +61,7 @@
  void cw1200_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/cw1200/sta.h
 +++ b/drivers/net/wireless/cw1200/sta.h
-@@ -42,8 +42,13 @@ int cw1200_set_rts_threshold(struct ieee80211_hw *hw, u32 value);
+@@ -42,8 +42,13 @@ int cw1200_set_rts_threshold(struct ieee
  
  void cw1200_flush(struct ieee80211_hw *hw, u32 queues, bool drop);
  

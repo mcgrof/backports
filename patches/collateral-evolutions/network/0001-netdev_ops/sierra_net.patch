@@ -1,6 +1,6 @@
 --- a/drivers/net/usb/sierra_net.c
 +++ b/drivers/net/usb/sierra_net.c
-@@ -695,7 +695,7 @@
+@@ -695,7 +695,7 @@ static int sierra_net_bind(struct usbnet
  
  	priv->usbnet = dev;
  	priv->ifnum = ifacenum;

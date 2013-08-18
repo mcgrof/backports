@@ -1,6 +1,6 @@
 --- a/drivers/net/usb/sierra_net.c
 +++ b/drivers/net/usb/sierra_net.c
-@@ -959,7 +959,9 @@
+@@ -959,7 +959,9 @@ static struct usb_driver sierra_net_driv
  	.suspend = usbnet_suspend,
  	.resume = usbnet_resume,
  	.no_dynamic_id = 1,

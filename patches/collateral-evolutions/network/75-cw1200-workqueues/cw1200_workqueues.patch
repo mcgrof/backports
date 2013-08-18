@@ -1,5 +1,3 @@
-diff --git a/drivers/net/wireless/cw1200/bh.c b/drivers/net/wireless/cw1200/bh.c
-index c1ec2a4..5dcbb4e 100644
 --- a/drivers/net/wireless/cw1200/bh.c
 +++ b/drivers/net/wireless/cw1200/bh.c
 @@ -48,16 +48,22 @@ enum cw1200_bh_pm_state {
@@ -25,7 +23,7 @@ index c1ec2a4..5dcbb4e 100644
  	/* Realtime workqueue */
  	priv->bh_workqueue = alloc_workqueue("cw1200_bh",
  				WQ_MEM_RECLAIM | WQ_HIGHPRI
-@@ -67,6 +73,7 @@ int cw1200_register_bh(struct cw1200_common *priv)
+@@ -67,6 +73,7 @@ int cw1200_register_bh(struct cw1200_com
  		return -ENOMEM;
  
  	INIT_WORK(&priv->bh_work, cw1200_bh_work);
@@ -33,7 +31,7 @@ index c1ec2a4..5dcbb4e 100644
  
  	pr_debug("[BH] register.\n");
  
-@@ -81,20 +88,44 @@ int cw1200_register_bh(struct cw1200_common *priv)
+@@ -81,20 +88,44 @@ int cw1200_register_bh(struct cw1200_com
  	init_waitqueue_head(&priv->bh_wq);
  	init_waitqueue_head(&priv->bh_evt_wq);
  
@@ -95,8 +93,6 @@ index c1ec2a4..5dcbb4e 100644
  	}
  	return 0;
  }
-diff --git a/drivers/net/wireless/cw1200/cw1200.h b/drivers/net/wireless/cw1200/cw1200.h
-index 1ad7d36..300dbbb 100644
 --- a/drivers/net/wireless/cw1200/cw1200.h
 +++ b/drivers/net/wireless/cw1200/cw1200.h
 @@ -23,12 +23,18 @@

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/cw1200/cw1200_sdio.c
 +++ b/drivers/net/wireless/cw1200/cw1200_sdio.c
-@@ -253,6 +253,12 @@ static size_t cw1200_sdio_align_size(struct hwbus_priv *self, size_t size)
+@@ -253,6 +253,12 @@ static size_t cw1200_sdio_align_size(str
  	else
  		size = sdio_align_size(self->func, size);
  

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/mwifiex/init.c
 +++ b/drivers/net/wireless/mwifiex/init.c
-@@ -288,8 +288,10 @@ void mwifiex_set_trans_start(struct net_
+@@ -289,8 +289,10 @@ void mwifiex_set_trans_start(struct net_
  {
  	int i;
  

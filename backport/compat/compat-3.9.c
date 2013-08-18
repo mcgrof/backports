@@ -15,6 +15,7 @@
 #include <linux/netdevice.h>
 #include <linux/if.h>
 #include <linux/if_ether.h>
+#include <linux/etherdevice.h>
 
 #ifdef __sg_page_iter_next
 

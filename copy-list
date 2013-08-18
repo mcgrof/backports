@@ -116,7 +116,36 @@ drivers/net/usb/sierra_net.c
 drivers/net/usb/qmi_wwan.c
 
 # DRM
-include/drm/
+include/drm/drm_buffer.h
+include/drm/drm_cache.h
+include/drm/drm_core.h
+include/drm/drm_crtc.h
+include/drm/drm_crtc_helper.h
+include/drm/drm_dp_helper.h
+include/drm/drm_edid.h
+include/drm/drm_encoder_slave.h
+include/drm/drm_fb_cma_helper.h
+include/drm/drm_fb_helper.h
+include/drm/drm_fixed.h
+include/drm/drm_gem_cma_helper.h
+include/drm/drm_global.h
+include/drm/drm_hashtab.h
+include/drm/drm_memory.h
+include/drm/drm_mem_util.h
+include/drm/drm_mm.h
+include/drm/drm_os_linux.h
+include/drm/drm_pciids.h
+include/drm/drmP.h
+include/drm/drm_rect.h
+include/drm/drm_sysfs.h
+include/drm/drm_usb.h
+include/drm/drm_vma_manager.h
+include/drm/exynos_drm.h
+include/drm/gma_drm.h
+include/drm/i915_drm.h
+include/drm/i915_powerwell.h
+include/drm/i2c/
+include/drm/ttm/
 include/uapi/drm/
 drivers/platform/x86/intel_ips.h
 drivers/gpu/drm/

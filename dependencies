@@ -62,6 +62,7 @@ DRM_TTM 3.2
 # taking into consideration the radix_tree_node rcu change
 # on e2bdb933.
 DRM_QXL 3.3
+DRM_I915 3.7
 
 # Regulator
 # Because of -EPROBE_DEFER see commit d1c3414c and note that

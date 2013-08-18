@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/mwifiex/sdio.c
 +++ b/drivers/net/wireless/mwifiex/sdio.c
-@@ -76,7 +76,9 @@ mwifiex_sdio_probe(struct sdio_func *fun
+@@ -73,7 +73,9 @@ mwifiex_sdio_probe(struct sdio_func *fun
  
  	card->func = func;
  

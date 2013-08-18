@@ -1,0 +1,27 @@
+--- a/drivers/net/wireless/mwifiex/pcie.c
++++ b/drivers/net/wireless/mwifiex/pcie.c
+@@ -260,6 +260,9 @@ static DEFINE_PCI_DEVICE_TABLE(mwifiex_i
+ MODULE_DEVICE_TABLE(pci, mwifiex_ids);
+ 
+ #ifdef CONFIG_PM_SLEEP
++compat_pci_suspend(mwifiex_pcie_suspend);
++compat_pci_resume(mwifiex_pcie_resume);
++
+ /* Power Management Hooks */
+ static SIMPLE_DEV_PM_OPS(mwifiex_pcie_pm_ops, mwifiex_pcie_suspend,
+ 				mwifiex_pcie_resume);
+@@ -272,9 +275,14 @@ static struct pci_driver __refdata mwifi
+ 	.probe    = mwifiex_pcie_probe,
+ 	.remove   = mwifiex_pcie_remove,
+ #ifdef CONFIG_PM_SLEEP
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	.driver   = {
+ 		.pm = &mwifiex_pcie_pm_ops,
+ 	},
++#else
++	.suspend    = mwifiex_pcie_suspend_compat,
++	.resume     = mwifiex_pcie_resume_compat,
++#endif
+ #endif
+ 	.shutdown = mwifiex_pcie_shutdown,
+ };

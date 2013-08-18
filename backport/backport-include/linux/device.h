@@ -188,4 +188,29 @@ backport_device_release_driver(struct device *dev)
 #define device_release_driver LINUX_BACKPORT(device_release_driver)
 #endif /* LINUX_VERSION_CODE <= KERNEL_VERSION(3,6,0) */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0)
+#define DEVICE_ATTR_RO(_name) \
+struct device_attribute dev_attr_ ## _name = __ATTR_RO(_name);
+
+#define ATTRIBUTE_GROUPS(_name) \
+static struct BP_ATTR_GRP_STRUCT _name##_dev_attrs[ARRAY_SIZE(_name##_attrs)];\
+static void init_##_name##_attrs(void)				\
+{									\
+	int i;								\
+	for (i = 0; _name##_attrs[i]; i++)				\
+		_name##_dev_attrs[i] =				\
+			*container_of(_name##_attrs[i],		\
+				      struct BP_ATTR_GRP_STRUCT,	\
+				      attr);				\
+}
+#else
+#undef ATTRIBUTE_GROUPS
+#define ATTRIBUTE_GROUPS(_name)					\
+static const struct attribute_group _name##_group = {		\
+	.attrs = _name##_attrs,					\
+};								\
+static inline void init_##_name##_attrs(void) {}		\
+__ATTRIBUTE_GROUPS(_name)
+#endif
+
 #endif /* __BACKPORT_DEVICE_H */

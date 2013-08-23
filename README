@@ -13,8 +13,7 @@ down to older kernels. It currently backports the following subsystems:
   * Regulator
 
 This package provides the latest Linux kernel subsystem enhancements
-for kernels 2.6.24 and above. It is technically possible to support
-kernels < 2.6.24 but more work is required for that.
+for kernels 2.6.25 and above.
 
 # Documentation
 

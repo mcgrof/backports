@@ -30,8 +30,6 @@ USB_NET_RNDIS_WLAN 2.6.29
 CARL9170 2.6.29
 
 WL1251_SPI 2.6.37
-WLCORE_SPI 2.6.25
-P54_SPI 2.6.25
 
 WL1251_SDIO 2.6.37
 WLCORE_SDIO 2.6.38
@@ -175,13 +173,6 @@ DVB_NGENE DISABLE
 DVB_USB_PCTV452E DISABLE
 USB_GSPCA DISABLE
 VIDEO_MXB DISABLE
-
-# This requires proc_create(), and that doesn't exist before 2.6.24
-LIBIPW_DEBUG 2.6.25
-
-# blink_set is used unconditionally and we don't carry a patch, so
-# this option must depend on 2.6.25 which got blink_set()
-RT2X00_LIB_LEDS 2.6.25
 
 # struct gpio_chip only got the required members in 2.6.28
 BCMA_DRIVER_GPIO 2.6.28

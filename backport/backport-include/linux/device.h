@@ -19,15 +19,6 @@ typedef int (backport_device_find_function_t)(struct device *, void *);
 			  (backport_device_find_function_t *)(fun))
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,25)
-#define dev_emerg(dev, format, arg...)          \
-	dev_printk(KERN_EMERG , dev , format , ## arg)
-#define dev_alert(dev, format, arg...)          \
-	dev_printk(KERN_ALERT , dev , format , ## arg)
-#define dev_crit(dev, format, arg...)           \
-	dev_printk(KERN_CRIT , dev , format , ## arg)
-#endif
-
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)
 static inline int
 backport_device_move(struct device *dev, struct device *new_parent,

@@ -11,7 +11,7 @@
  * as of 2.6.28 but x86 and ppc had it already.
  */
 #else
-#if defined(CONFIG_64BIT) || defined(CONFIG_X86_PAE) || defned(CONFIG_PPC64) || defined(CONFIG_PHYS_64BIT)
+#if defined(CONFIG_64BIT) || defined(CONFIG_X86_PAE) || defined(CONFIG_PPC64) || defined(CONFIG_PHYS_64BIT)
 #define CONFIG_PHYS_ADDR_T_64BIT 1
 typedef u64 phys_addr_t;
 #else

@@ -12,7 +12,7 @@
  	&bt_link_group,
  	NULL
  };
-@@ -378,7 +386,11 @@ static struct attribute_group bt_host_gr
+@@ -378,7 +382,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  

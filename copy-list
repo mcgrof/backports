@@ -116,6 +116,7 @@ drivers/net/usb/sierra_net.c
 drivers/net/usb/qmi_wwan.c
 
 # DRM
+include/drm/drm_agpsupport.h
 include/drm/drm_buffer.h
 include/drm/drm_cache.h
 include/drm/drm_core.h

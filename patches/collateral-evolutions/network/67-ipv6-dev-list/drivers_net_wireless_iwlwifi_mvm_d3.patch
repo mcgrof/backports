@@ -11,4 +11,4 @@
 +#endif
  		mvmvif->target_ipv6_addrs[idx] = ifa->addr;
  		idx++;
- 		if (idx >= IWL_PROTO_OFFLOAD_NUM_IPV6_ADDRS)
+ 		if (idx >= IWL_PROTO_OFFLOAD_NUM_IPV6_ADDRS_MAX)

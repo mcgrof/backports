@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1205,7 +1205,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1208,7 +1208,11 @@ static void ath6kl_set_multicast_list(st
  	list_for_each_entry_safe(mc_filter, tmp, &vif->mc_filter, list) {
  		found = false;
  		netdev_for_each_mc_addr(ha, ndev) {
@@ -12,7 +12,7 @@
  				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
  				found = true;
  				break;
-@@ -1239,7 +1243,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1242,7 +1246,11 @@ static void ath6kl_set_multicast_list(st
  	netdev_for_each_mc_addr(ha, ndev) {
  		found = false;
  		list_for_each_entry(mc_filter, &vif->mc_filter, list) {
@@ -24,7 +24,7 @@
  				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
  				found = true;
  				break;
-@@ -1254,7 +1262,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1257,7 +1265,11 @@ static void ath6kl_set_multicast_list(st
  				goto out;
  			}
  

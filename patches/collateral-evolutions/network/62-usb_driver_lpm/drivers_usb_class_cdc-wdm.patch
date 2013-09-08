@@ -1,6 +1,6 @@
 --- a/drivers/usb/class/cdc-wdm.c
 +++ b/drivers/usb/class/cdc-wdm.c
-@@ -1060,7 +1060,9 @@ static struct usb_driver wdm_driver = {
+@@ -1065,7 +1065,9 @@ static struct usb_driver wdm_driver = {
  	.post_reset =	wdm_post_reset,
  	.id_table =	wdm_ids,
  	.supports_autosuspend = 1,

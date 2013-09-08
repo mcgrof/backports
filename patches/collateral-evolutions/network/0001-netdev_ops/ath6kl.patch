@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1289,7 +1289,7 @@ static const struct net_device_ops ath6k
+@@ -1292,7 +1292,7 @@ static const struct net_device_ops ath6k
  
  void init_netdev(struct net_device *dev)
  {

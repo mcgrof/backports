@@ -1,6 +1,6 @@
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1648,7 +1648,11 @@ int i915_driver_load(struct drm_device *
+@@ -1659,7 +1659,11 @@ int i915_driver_load(struct drm_device *
  	return 0;
  
  out_gem_unload:
@@ -12,7 +12,7 @@
  		unregister_shrinker(&dev_priv->mm.inactive_shrinker);
  
  	if (dev->pdev->msi_enabled)
-@@ -1682,7 +1686,11 @@ int i915_driver_unload(struct drm_device
+@@ -1698,7 +1702,11 @@ int i915_driver_unload(struct drm_device
  
  	i915_teardown_sysfs(dev);
  
@@ -26,7 +26,7 @@
  	mutex_lock(&dev->struct_mutex);
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -56,10 +56,15 @@ static void i915_gem_object_update_fence
+@@ -57,10 +57,15 @@ static void i915_gem_object_update_fence
  					 struct drm_i915_fence_reg *fence,
  					 bool enable);
  
@@ -42,7 +42,7 @@
  static long i915_gem_purge(struct drm_i915_private *dev_priv, long target);
  static long i915_gem_shrink_all(struct drm_i915_private *dev_priv);
  static void i915_gem_object_truncate(struct drm_i915_gem_object *obj);
-@@ -4464,8 +4469,12 @@ i915_gem_load(struct drm_device *dev)
+@@ -4554,8 +4559,12 @@ i915_gem_load(struct drm_device *dev)
  
  	dev_priv->mm.interruptible = true;
  
@@ -55,7 +55,7 @@
  	dev_priv->mm.inactive_shrinker.seeks = DEFAULT_SEEKS;
  	register_shrinker(&dev_priv->mm.inactive_shrinker);
  }
-@@ -4688,8 +4697,14 @@ static bool mutex_is_locked_by(struct mu
+@@ -4778,8 +4787,14 @@ static bool mutex_is_locked_by(struct mu
  #endif
  }
  
@@ -70,7 +70,7 @@
  {
  	struct drm_i915_private *dev_priv =
  		container_of(shrinker,
-@@ -4698,7 +4713,12 @@ i915_gem_inactive_count(struct shrinker
+@@ -4788,7 +4803,12 @@ i915_gem_inactive_count(struct shrinker
  	struct drm_device *dev = dev_priv->dev;
  	struct drm_i915_gem_object *obj;
  	bool unlock = true;
@@ -83,7 +83,7 @@
  
  	if (!mutex_trylock(&dev->struct_mutex)) {
  		if (!mutex_is_locked_by(&dev->struct_mutex, current))
-@@ -4710,6 +4730,17 @@ i915_gem_inactive_count(struct shrinker
+@@ -4800,6 +4820,17 @@ i915_gem_inactive_count(struct shrinker
  		unlock = false;
  	}
  
@@ -101,15 +101,15 @@
  	count = 0;
  	list_for_each_entry(obj, &dev_priv->mm.unbound_list, global_list)
  		if (obj->pages_pin_count == 0)
-@@ -4800,6 +4831,7 @@ struct i915_vma *i915_gem_obj_to_vma(str
- 	return NULL;
+@@ -4879,6 +4910,7 @@ unsigned long i915_gem_obj_size(struct d
+ 	return 0;
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,12,0))
  static unsigned long
  i915_gem_inactive_scan(struct shrinker *shrinker, struct shrink_control *sc)
  {
-@@ -4833,3 +4865,4 @@ i915_gem_inactive_scan(struct shrinker *
+@@ -4912,3 +4944,4 @@ i915_gem_inactive_scan(struct shrinker *
  		mutex_unlock(&dev->struct_mutex);
  	return freed;
  }

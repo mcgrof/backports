@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1116,6 +1116,7 @@ static struct net_device_stats *ath6kl_g
+@@ -1119,6 +1119,7 @@ static struct net_device_stats *ath6kl_g
  	return &vif->net_stats;
  }
  
@@ -8,7 +8,7 @@
  static int ath6kl_set_features(struct net_device *dev,
  			       netdev_features_t features)
  {
-@@ -1148,6 +1149,7 @@ static int ath6kl_set_features(struct ne
+@@ -1151,6 +1152,7 @@ static int ath6kl_set_features(struct ne
  
  	return err;
  }
@@ -16,7 +16,7 @@
  
  static void ath6kl_set_multicast_list(struct net_device *ndev)
  {
-@@ -1295,7 +1297,9 @@ static const struct net_device_ops ath6k
+@@ -1298,7 +1300,9 @@ static const struct net_device_ops ath6k
  	.ndo_stop               = ath6kl_close,
  	.ndo_start_xmit         = ath6kl_data_tx,
  	.ndo_get_stats          = ath6kl_get_stats,
@@ -26,7 +26,7 @@
  	.ndo_set_rx_mode	= ath6kl_set_multicast_list,
  };
  
-@@ -1312,7 +1316,11 @@ void init_netdev(struct net_device *dev)
+@@ -1315,7 +1319,11 @@ void init_netdev(struct net_device *dev)
  					WMI_MAX_TX_META_SZ +
  					ATH6KL_HTC_ALIGN_BYTES, 4);
  

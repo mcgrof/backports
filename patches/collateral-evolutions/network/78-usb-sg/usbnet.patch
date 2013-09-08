@@ -1,0 +1,53 @@
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1234,6 +1234,7 @@ EXPORT_SYMBOL_GPL(usbnet_tx_timeout);
+ 
+ /*-------------------------------------------------------------------------*/
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,35,0)
+ static int build_dma_sg(const struct sk_buff *skb, struct urb *urb)
+ {
+ 	unsigned num_sgs, total_len = 0;
+@@ -1264,6 +1265,12 @@ static int build_dma_sg(const struct sk_
+ 
+ 	return 1;
+ }
++#else
++static int build_dma_sg(const struct sk_buff *skb, struct urb *urb)
++{
++	return -ENXIO;
++}
++#endif
+ 
+ netdev_tx_t usbnet_start_xmit (struct sk_buff *skb,
+ 				     struct net_device *net)
+@@ -1377,7 +1384,9 @@ not_drop:
+ 		if (skb)
+ 			dev_kfree_skb_any (skb);
+ 		if (urb) {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,35,0)
+ 			kfree(urb->sg);
++#endif
+ 			usb_free_urb(urb);
+ 		}
+ 	} else
+@@ -1430,7 +1439,9 @@ static void usbnet_bh (unsigned long par
+ 			rx_process (dev, skb);
+ 			continue;
+ 		case tx_done:
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,35,0)
+ 			kfree(entry->urb->sg);
++#endif
+ 		case rx_cleanup:
+ 			usb_free_urb (entry->urb);
+ 			dev_kfree_skb (skb);
+@@ -1767,7 +1778,9 @@ int usbnet_resume (struct usb_interface
+ 			retval = usb_submit_urb(res, GFP_ATOMIC);
+ 			if (retval < 0) {
+ 				dev_kfree_skb_any(skb);
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,35,0)
+ 				kfree(res->sg);
++#endif
+ 				usb_free_urb(res);
+ 				usb_autopm_put_interface_async(dev->intf);
+ 			} else {

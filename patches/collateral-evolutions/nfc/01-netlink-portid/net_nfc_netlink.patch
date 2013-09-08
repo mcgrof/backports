@@ -54,7 +54,16 @@
  
  exit:
  	device_unlock(&dev->dev);
-@@ -1315,12 +1315,12 @@ static int nfc_genl_rcv_nl_event(struct
+@@ -1253,7 +1253,7 @@ static int nfc_genl_dump_ses(struct sk_b
+ 	while (dev) {
+ 		int rc;
+ 
+-		rc = nfc_genl_send_se(skb, dev, NETLINK_CB(cb->skb).portid,
++		rc = nfc_genl_send_se(skb, dev, NETLINK_CB_PORTID(cb->skb),
+ 					  cb->nlh->nlmsg_seq, cb, NLM_F_MULTI);
+ 		if (rc < 0)
+ 			break;
+@@ -1408,12 +1408,12 @@ static int nfc_genl_rcv_nl_event(struct
  	if (event != NETLINK_URELEASE || n->protocol != NETLINK_GENERIC)
  		goto out;
  

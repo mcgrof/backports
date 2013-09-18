@@ -125,6 +125,7 @@ include/drm/drm_crtc_helper.h
 include/drm/drm_dp_helper.h
 include/drm/drm_edid.h
 include/drm/drm_encoder_slave.h
+include/drm/drm_flip_work.h
 include/drm/drm_fb_cma_helper.h
 include/drm/drm_fb_helper.h
 include/drm/drm_fixed.h

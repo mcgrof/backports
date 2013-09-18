@@ -192,6 +192,8 @@ backport_device_release_driver(struct device *dev)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0)
 #define DEVICE_ATTR_RO(_name) \
 struct device_attribute dev_attr_ ## _name = __ATTR_RO(_name);
+#define DEVICE_ATTR_RW(_name) \
+struct device_attribute dev_attr_ ## _name = __ATTR_RW(_name)
 
 #define ATTRIBUTE_GROUPS(_name) \
 static struct BP_ATTR_GRP_STRUCT _name##_dev_attrs[ARRAY_SIZE(_name##_attrs)];\

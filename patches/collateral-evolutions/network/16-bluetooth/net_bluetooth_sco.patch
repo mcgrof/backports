@@ -1,6 +1,6 @@
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -423,8 +423,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -430,8 +430,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -13,7 +13,7 @@
  {
  	struct sock *sk;
  
-@@ -711,7 +715,11 @@ static int sco_sock_recvmsg(struct kiocb
+@@ -726,7 +730,11 @@ static int sco_sock_recvmsg(struct kiocb
  	return bt_sock_recvmsg(iocb, sock, msg, len, flags);
  }
  
@@ -24,4 +24,4 @@
 +#endif
  {
  	struct sock *sk = sock->sk;
- 	int err = 0;
+ 	int len, err = 0;

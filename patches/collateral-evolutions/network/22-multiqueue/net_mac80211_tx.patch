@@ -1,6 +1,6 @@
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -1473,6 +1473,10 @@ void ieee80211_xmit(struct ieee80211_sub
+@@ -1475,6 +1475,10 @@ void ieee80211_xmit(struct ieee80211_sub
  		}
  	}
  

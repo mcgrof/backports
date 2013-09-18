@@ -126,7 +126,7 @@
  				cb->nlh->nlmsg_seq, NLM_F_MULTI,
  				wdev->netdev, &survey) < 0)
  			goto out;
-@@ -6665,7 +6665,7 @@ static int nl80211_testmode_dump(struct
+@@ -6676,7 +6676,7 @@ static int nl80211_testmode_dump(struct
  	}
  
  	while (1) {
@@ -135,7 +135,7 @@
  					   cb->nlh->nlmsg_seq, NLM_F_MULTI,
  					   NL80211_CMD_TESTMODE);
  		struct nlattr *tmdata;
-@@ -6747,7 +6747,7 @@ struct sk_buff *cfg80211_testmode_alloc_
+@@ -6758,7 +6758,7 @@ struct sk_buff *cfg80211_testmode_alloc_
  		return NULL;
  
  	return __cfg80211_testmode_alloc_skb(rdev, approxlen,
@@ -144,7 +144,7 @@
  				rdev->testmode_info->snd_seq,
  				GFP_KERNEL);
  }
-@@ -7115,7 +7115,7 @@ static int nl80211_remain_on_channel(str
+@@ -7126,7 +7126,7 @@ static int nl80211_remain_on_channel(str
  	if (!msg)
  		return -ENOMEM;
  
@@ -153,7 +153,7 @@
  			     NL80211_CMD_REMAIN_ON_CHANNEL);
  	if (!hdr) {
  		err = -ENOBUFS;
-@@ -7333,7 +7333,7 @@ static int nl80211_register_mgmt(struct
+@@ -7344,7 +7344,7 @@ static int nl80211_register_mgmt(struct
  	if (!rdev->ops->mgmt_tx)
  		return -EOPNOTSUPP;
  
@@ -162,7 +162,7 @@
  			nla_data(info->attrs[NL80211_ATTR_FRAME_MATCH]),
  			nla_len(info->attrs[NL80211_ATTR_FRAME_MATCH]));
  }
-@@ -7414,7 +7414,7 @@ static int nl80211_tx_mgmt(struct sk_buf
+@@ -7425,7 +7425,7 @@ static int nl80211_tx_mgmt(struct sk_buf
  		if (!msg)
  			return -ENOMEM;
  
@@ -171,7 +171,7 @@
  				     NL80211_CMD_FRAME);
  		if (!hdr) {
  			err = -ENOBUFS;
-@@ -7528,7 +7528,7 @@ static int nl80211_get_power_save(struct
+@@ -7539,7 +7539,7 @@ static int nl80211_get_power_save(struct
  	if (!msg)
  		return -ENOMEM;
  
@@ -180,7 +180,7 @@
  			     NL80211_CMD_GET_POWER_SAVE);
  	if (!hdr) {
  		err = -ENOBUFS;
-@@ -7838,7 +7838,7 @@ static int nl80211_get_wowlan(struct sk_
+@@ -7846,7 +7846,7 @@ static int nl80211_get_wowlan(struct sk_
  	if (!msg)
  		return -ENOMEM;
  
@@ -189,7 +189,7 @@
  			     NL80211_CMD_GET_WOWLAN);
  	if (!hdr)
  		goto nla_put_failure;
-@@ -8267,7 +8267,7 @@ static int nl80211_get_coalesce(struct s
+@@ -8275,7 +8275,7 @@ static int nl80211_get_coalesce(struct s
  	if (!msg)
  		return -ENOMEM;
  
@@ -198,7 +198,7 @@
  			     NL80211_CMD_GET_COALESCE);
  	if (!hdr)
  		goto nla_put_failure;
-@@ -8520,7 +8520,7 @@ static int nl80211_register_unexpected_f
+@@ -8528,7 +8528,7 @@ static int nl80211_register_unexpected_f
  	if (wdev->ap_unexpected_nlportid)
  		return -EBUSY;
  
@@ -207,7 +207,7 @@
  	return 0;
  }
  
-@@ -8550,7 +8550,7 @@ static int nl80211_probe_client(struct s
+@@ -8558,7 +8558,7 @@ static int nl80211_probe_client(struct s
  	if (!msg)
  		return -ENOMEM;
  
@@ -216,7 +216,7 @@
  			     NL80211_CMD_PROBE_CLIENT);
  	if (!hdr) {
  		err = -ENOBUFS;
-@@ -8593,13 +8593,13 @@ static int nl80211_register_beacons(stru
+@@ -8601,13 +8601,13 @@ static int nl80211_register_beacons(stru
  	/* First, check if already registered. */
  	spin_lock_bh(&rdev->beacon_registrations_lock);
  	list_for_each_entry(reg, &rdev->beacon_registrations, list) {
@@ -232,7 +232,7 @@
  	list_add(&nreg->list, &rdev->beacon_registrations);
  
  	spin_unlock_bh(&rdev->beacon_registrations_lock);
-@@ -8666,7 +8666,7 @@ static int nl80211_get_protocol_features
+@@ -8674,7 +8674,7 @@ static int nl80211_get_protocol_features
  	if (!msg)
  		return -ENOMEM;
  
@@ -241,7 +241,7 @@
  			     NL80211_CMD_GET_PROTOCOL_FEATURES);
  	if (!hdr)
  		goto nla_put_failure;
-@@ -8741,7 +8741,7 @@ static int nl80211_crit_protocol_start(s
+@@ -8749,7 +8749,7 @@ static int nl80211_crit_protocol_start(s
  
  	ret = rdev_crit_proto_start(rdev, wdev, proto, duration);
  	if (!ret)
@@ -250,7 +250,7 @@
  
  	return ret;
  }
-@@ -11140,12 +11140,12 @@ static int nl80211_netlink_notify(struct
+@@ -11148,12 +11148,12 @@ static int nl80211_netlink_notify(struct
  
  	list_for_each_entry_rcu(rdev, &cfg80211_rdev_list, list) {
  		list_for_each_entry_rcu(wdev, &rdev->wdev_list, list)

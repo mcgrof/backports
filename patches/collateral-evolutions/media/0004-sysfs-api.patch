@@ -1,0 +1,32 @@
+diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
+index b0f49b0..461e3e1 100644
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -86,6 +86,7 @@ static struct attribute *video_device_at
+ 	&dev_attr_index.attr,
+ 	NULL,
+ };
++#define BP_ATTR_GRP_STRUCT device_attribute
+ ATTRIBUTE_GROUPS(video_device);
+ 
+ /*
+@@ -221,7 +222,11 @@ static void v4l2_device_release(struct d
+ 
+ static struct class video_class = {
+ 	.name = VIDEO_NAME,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0)
+ 	.dev_groups = video_device_groups,
++#else
++	.dev_attrs = video_device_dev_attrs,
++#endif
+ };
+ 
+ struct video_device *video_devdata(struct file *file)
+@@ -991,6 +996,7 @@ static int __init videodev_init(void)
+ 		return ret;
+ 	}
+ 
++	init_video_device_attrs();
+ 	ret = class_register(&video_class);
+ 	if (ret < 0) {
+ 		unregister_chrdev_region(dev, VIDEO_NUM_DEVICES);

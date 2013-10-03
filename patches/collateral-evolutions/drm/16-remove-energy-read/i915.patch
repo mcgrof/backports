@@ -1,0 +1,28 @@
+--- a/drivers/gpu/drm/i915/i915_debugfs.c
++++ b/drivers/gpu/drm/i915/i915_debugfs.c
+@@ -1770,6 +1770,7 @@ static int i915_edp_psr_status(struct se
+ 	return 0;
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
+ static int i915_energy_uJ(struct seq_file *m, void *data)
+ {
+ 	struct drm_info_node *node = m->private;
+@@ -1790,6 +1791,7 @@ static int i915_energy_uJ(struct seq_fil
+ 	seq_printf(m, "%llu", (long long unsigned)power);
+ 	return 0;
+ }
++#endif
+ 
+ static int
+ i915_wedged_get(void *data, u64 *val)
+@@ -2230,7 +2232,9 @@ static struct drm_info_list i915_debugfs
+ 	{"i915_dpio", i915_dpio_info, 0},
+ 	{"i915_llc", i915_llc, 0},
+ 	{"i915_edp_psr_status", i915_edp_psr_status, 0},
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
+ 	{"i915_energy_uJ", i915_energy_uJ, 0},
++#endif
+ };
+ #define I915_DEBUGFS_ENTRIES ARRAY_SIZE(i915_debugfs_list)
+ 

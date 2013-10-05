@@ -139,13 +139,6 @@ config BACKPORT_BUILD_DMA_SHARED_BUFFER
 	#h-file linux/dma-buf.h
 	#c-file drivers/base/dma-buf.c
 
-config BACKPORT_BUILD_CROSS_RESERVATION
-	bool
-	# not possible on kernel < 3.2
-	depends on !BACKPORT_KERNEL_3_2
-	depends on BACKPORT_BUILD_DMA_SHARED_BUFFER || DMA_SHARED_BUFFER
-	default y if BACKPORT_USERSEL_BUILD_ALL
-
 config BACKPORT_DMA_SHARED_BUFFER
 	bool
 

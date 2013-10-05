@@ -171,13 +171,6 @@ include/uapi/linux/videodev2.h
 
 drivers/media/
 
-# Platform
-drivers/platform/x86/Kconfig
-drivers/platform/x86/Makefile
-drivers/platform/x86/intel_ips.c
-drivers/platform/x86/intel_ips.h
-include/asm-generic/io-64-nonatomic-lo-hi.h
-
 include/net/nl802154.h
 include/net/mac802154.h
 include/net/ieee802154.h

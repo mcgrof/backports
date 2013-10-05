@@ -41,8 +41,6 @@ source net/nfc/Kconfig
 source drivers/regulator/Kconfig
 source drivers/media/Kconfig
 
-source drivers/platform/x86/Kconfig
-
 source net/ieee802154/Kconfig
 source net/mac802154/Kconfig
 source drivers/net/ieee802154/Kconfig

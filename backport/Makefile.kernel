@@ -33,7 +33,6 @@ obj-$(CPTCFG_NFC) += net/nfc/
 obj-$(CPTCFG_NFC) += drivers/nfc/
 obj-$(CPTCFG_REGULATOR) += drivers/regulator/
 obj-$(CPTCFG_MEDIA_SUPPORT) += drivers/media/
-obj-$(CPTCFG_INTEL_IPS) += drivers/platform/x86/
 
 obj-$(CPTCFG_IEEE802154) += net/ieee802154/
 obj-$(CPTCFG_MAC802154) += net/mac802154/

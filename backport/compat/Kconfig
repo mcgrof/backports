@@ -185,13 +185,6 @@ config BACKPORT_LEDS_CLASS
 config BACKPORT_LEDS_TRIGGERS
 	bool
 
-config BACKPORT_BUILD_RADIX_HELPERS
-	bool
-	# You have selected to build backported DRM drivers
-	# Build only if on < 3.4
-	depends on DRM && BACKPORT_KERNEL_3_4
-	default y if BACKPORT_USERSEL_BUILD_ALL
-
 config BACKPORT_USERSEL_BUILD_ALL
 	bool "Build all compat code"
 	help

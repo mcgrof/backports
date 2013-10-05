@@ -1,3 +1,0 @@
-acpi_get_table_with_size() was exported with kernels >= 3.6. Revert the
-size checking for kernels < 3.6.
-

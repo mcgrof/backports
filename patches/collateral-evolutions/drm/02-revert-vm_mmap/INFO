@@ -1,5 +1,0 @@
-vm_mmap() and vm_munmap() were introduced in kernels >= 3.4.0. Revert
-those changes for versions older than that.
-
-These can't be backported as they rely on non-exported symbols.
-

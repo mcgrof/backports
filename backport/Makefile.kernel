@@ -8,7 +8,6 @@ NOSTDINC_FLAGS := \
 	-I$(M)/backport-include/uapi \
 	-I$(M)/include/ \
 	-I$(M)/include/uapi \
-	-I$(M)/include/drm \
 	-include $(M)/backport-include/backport/backport.h \
 	$(call backport-cc-disable-warning, unused-but-set-variable) \
 	-DBACKPORTS_VERSION=\"$(BACKPORTS_VERSION)\" \
@@ -30,7 +29,6 @@ obj-$(CPTCFG_SSB) += drivers/ssb/
 obj-$(CPTCFG_BCMA) += drivers/bcma/
 obj-$(CPTCFG_ETHERNET) += drivers/net/ethernet/
 obj-$(CPTCFG_USB_NET_RNDIS_WLAN) += drivers/net/usb/
-obj-$(CPTCFG_DRM) += drivers/gpu/drm/
 obj-$(CPTCFG_NFC) += net/nfc/
 obj-$(CPTCFG_NFC) += drivers/nfc/
 obj-$(CPTCFG_REGULATOR) += drivers/regulator/

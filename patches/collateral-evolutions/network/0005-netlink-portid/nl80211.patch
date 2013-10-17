@@ -250,7 +250,7 @@
  
  	return ret;
  }
-@@ -11148,12 +11148,12 @@ static int nl80211_netlink_notify(struct
+@@ -11150,12 +11150,12 @@ static int nl80211_netlink_notify(struct
  
  	list_for_each_entry_rcu(rdev, &cfg80211_rdev_list, list) {
  		list_for_each_entry_rcu(wdev, &rdev->wdev_list, list)

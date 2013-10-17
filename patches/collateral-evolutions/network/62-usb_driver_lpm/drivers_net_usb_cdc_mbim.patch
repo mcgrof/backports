@@ -1,6 +1,6 @@
 --- a/drivers/net/usb/cdc_mbim.c
 +++ b/drivers/net/usb/cdc_mbim.c
-@@ -417,7 +417,9 @@ static struct usb_driver cdc_mbim_driver
+@@ -421,7 +421,9 @@ static struct usb_driver cdc_mbim_driver
  	.resume = cdc_mbim_resume,
  	.reset_resume =	cdc_mbim_resume,
  	.supports_autosuspend = 1,

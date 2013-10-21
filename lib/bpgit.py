@@ -119,6 +119,13 @@ def verify(git_tree):
 
     return dict(r=process.returncode, output=stdout)
 
+def paranoia(tree):
+    clean(tree)
+    poo = status(tree)
+    if (poo):
+        return dict(r=-1, output=poo)
+    return verify(tree)
+
 def init(tree=None):
     process = subprocess.Popen(['git', 'init'],
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,

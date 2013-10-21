@@ -425,6 +425,7 @@ def upload_release(args, rel_prep, logwrite=lambda x:None):
         if (not args.kup_test):
             logwrite("create directory: %s" % korg_path)
             logwrite(kup.mkdir(korg_path))
+    korg_path += '/'
     if (not args.kup_test):
         logwrite("upload file %s to %s" % (bzip2_name, korg_path))
         logwrite(kup.put(bzip2_name, tar_name + '.asc', korg_path))

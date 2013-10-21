@@ -27,6 +27,16 @@ def rev_parse(rev='HEAD', tree=None):
         raise SHAError()
     return sha
 
+def clean(tree=None):
+    cmd = ['git', 'clean', '-f', '-x', '-d', '-q']
+
+    process = subprocess.Popen(cmd,
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               close_fds=True, universal_newlines=True, cwd=tree)
+    stdout = process.communicate()[0]
+    process.wait()
+    _check(process)
+
 def status(tree=None):
     '''
     For interpretation of the porcelain output refer to

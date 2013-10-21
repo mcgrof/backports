@@ -363,9 +363,9 @@ def create_tar_and_bz2(tar_name, dir_to_tar):
     in the backend decompresses and verifies the tarball against
     our signature.
     """
-    parent = os.path.dirname(tar_name)
+    basename = os.path.basename(dir_to_tar)
     tar = tarfile.open(tar_name, "w")
-    tar.add(dir_to_tar)
+    tar.add(dir_to_tar, basename)
     tar.close()
 
     tar_file = open(tar_name, "r")
@@ -373,8 +373,6 @@ def create_tar_and_bz2(tar_name, dir_to_tar):
     bz2_file = bz2.BZ2File(tar_name + ".bz2", 'wb', compresslevel=9)
     bz2_file.write(tar_file.read())
     bz2_file.close()
-
-    tar.close()
 
 def upload_release(args, rel_prep, logwrite=lambda x:None):
     """

@@ -27,8 +27,14 @@ def rev_parse(rev='HEAD', tree=None):
         raise SHAError()
     return sha
 
-def describe(rev='HEAD', tree=None):
-    process = subprocess.Popen(['git', 'describe', '--always', '--long', rev],
+def describe(rev='HEAD', tree=None, extra_args=[]):
+    cmd = ['git', 'describe', '--always']
+
+    cmd.extend(extra_args)
+    if rev is not None:
+        cmd.append(rev)
+
+    process = subprocess.Popen(cmd,
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                close_fds=True, universal_newlines=True, cwd=tree)
     stdout = process.communicate()[0]

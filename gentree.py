@@ -423,7 +423,7 @@ def upload_release(args, rel_prep, logwrite=lambda x:None):
     for path in rel_prep['paths_to_create']:
         korg_path += '/' + path
         if (not args.kup_test):
-            logwrite(kup.mkdir(path))
+            logwrite(kup.mkdir(korg_path))
     if (not args.kup_test):
         logwrite(kup.put(bzip2_name, tar_name + '.asc', korg_path))
         logwrite("\nFinished upload!\n")

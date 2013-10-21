@@ -107,6 +107,18 @@ def describe(rev='HEAD', tree=None, extra_args=[]):
 
     return stdout.strip()
 
+def verify(git_tree):
+    tag = describe(rev=None, tree=git_tree, extra_args=['--dirty'])
+    cmd = ['git', 'tag', '-v', tag]
+
+    process = subprocess.Popen(cmd,
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               close_fds=True, universal_newlines=True, cwd=git_tree)
+    stdout = process.communicate()[0]
+    process.wait()
+
+    return dict(r=process.returncode, output=stdout)
+
 def init(tree=None):
     process = subprocess.Popen(['git', 'init'],
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,

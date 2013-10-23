@@ -17,8 +17,8 @@
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm = &rtlwifi_pm_ops,
 +#elif defined(CONFIG_PM_SLEEP)
-+	.suspend = rtl_pci_suspend,
-+	.resume = rtl_pci_resume,
++	.suspend = rtl_pci_suspend_compat,
++	.resume = rtl_pci_resume_compat,
 +#endif
  };
  

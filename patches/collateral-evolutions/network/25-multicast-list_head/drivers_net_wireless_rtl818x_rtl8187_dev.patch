@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
-@@ -1290,9 +1290,17 @@ static void rtl8187_bss_info_changed(str
+@@ -1295,9 +1295,17 @@ static void rtl8187_bss_info_changed(str
  }
  
  static u64 rtl8187_prepare_multicast(struct ieee80211_hw *dev,

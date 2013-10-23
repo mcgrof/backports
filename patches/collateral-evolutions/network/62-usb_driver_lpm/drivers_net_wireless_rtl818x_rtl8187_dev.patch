@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
-@@ -1673,7 +1673,9 @@ static struct usb_driver rtl8187_driver
+@@ -1678,7 +1678,9 @@ static struct usb_driver rtl8187_driver
  	.id_table	= rtl8187_table,
  	.probe		= rtl8187_probe,
  	.disconnect	= rtl8187_disconnect,

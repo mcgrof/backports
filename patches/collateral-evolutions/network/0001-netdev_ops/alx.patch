@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/alx/main.c
 +++ b/drivers/net/ethernet/atheros/alx/main.c
-@@ -1261,7 +1261,7 @@ static int alx_probe(struct pci_dev *pde
+@@ -1256,7 +1256,7 @@ static int alx_probe(struct pci_dev *pde
  		goto out_free_netdev;
  	}
  

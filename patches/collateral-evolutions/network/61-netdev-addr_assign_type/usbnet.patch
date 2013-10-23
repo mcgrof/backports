@@ -1,0 +1,14 @@
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1669,9 +1669,11 @@ usbnet_probe (struct usb_interface *udev
+ 		dev->rx_urb_size = dev->hard_mtu;
+ 	dev->maxpacket = usb_maxpacket (dev->udev, dev->out, 1);
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
+ 	/* let userspace know we have a random address */
+ 	if (ether_addr_equal(net->dev_addr, node_id))
+ 		net->addr_assign_type = NET_ADDR_RANDOM;
++#endif
+ 
+ 	if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+ 		SET_NETDEV_DEVTYPE(net, &wlan_type);

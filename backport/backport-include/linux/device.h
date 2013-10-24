@@ -216,4 +216,12 @@ static inline void init_##_name##_attrs(void) {}		\
 __ATTRIBUTE_GROUPS(_name)
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
+#define dev_get_platdata LINUX_BACKPORT(dev_get_platdata)
+static inline void *dev_get_platdata(const struct device *dev)
+{
+	return dev->platform_data;
+}
+#endif
+
 #endif /* __BACKPORT_DEVICE_H */

@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
 +++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -375,6 +375,7 @@ static int atl1e_set_mac_addr(struct net
+@@ -403,6 +403,7 @@ static int atl1e_set_mac_addr(struct net
  	return 0;
  }
  
@@ -8,7 +8,7 @@
  static netdev_features_t atl1e_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -400,6 +401,7 @@ static int atl1e_set_features(struct net
+@@ -432,6 +433,7 @@ static int atl1e_set_features(struct net
  
  	return 0;
  }
@@ -16,7 +16,7 @@
  
  /**
   * atl1e_change_mtu - Change the Maximum Transfer Unit
-@@ -1954,7 +1956,11 @@ void atl1e_down(struct atl1e_adapter *ad
+@@ -1991,7 +1993,11 @@ void atl1e_down(struct atl1e_adapter *ad
  	 * reschedule our watchdog timer */
  	set_bit(__AT_DOWN, &adapter->flags);
  
@@ -28,7 +28,7 @@
  
  	/* reset MAC to disable all RX/TX */
  	atl1e_reset_hw(&adapter->hw);
-@@ -2224,8 +2230,10 @@ static const struct net_device_ops atl1e
+@@ -2261,8 +2267,10 @@ static const struct net_device_ops atl1e
  	.ndo_set_rx_mode	= atl1e_set_multi,
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl1e_set_mac_addr,
@@ -39,7 +39,7 @@
  	.ndo_change_mtu		= atl1e_change_mtu,
  	.ndo_do_ioctl		= atl1e_ioctl,
  	.ndo_tx_timeout		= atl1e_tx_timeout,
-@@ -2245,10 +2253,15 @@ static int atl1e_init_netdev(struct net_
+@@ -2282,12 +2290,17 @@ static int atl1e_init_netdev(struct net_
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1e_set_ethtool_ops(netdev);
  
@@ -48,10 +48,12 @@
  			      NETIF_F_HW_VLAN_CTAG_RX;
  	netdev->features = netdev->hw_features | NETIF_F_LLTX |
  			   NETIF_F_HW_VLAN_CTAG_TX;
+ 	/* not enabled by default */
+ 	netdev->hw_features |= NETIF_F_RXALL | NETIF_F_RXFCS;
 +#else
 +	netdev->features = NETIF_F_SG | NETIF_F_HW_CSUM | NETIF_F_TSO |
 +			   NETIF_F_HW_VLAN_RX | NETIF_F_LLTX | NETIF_F_HW_VLAN_TX;
 +#endif
- 
  	return 0;
  }
+ 

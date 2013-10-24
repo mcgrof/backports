@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/broadcom/b44.c
 +++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -1693,7 +1693,11 @@ static int __b44_load_mcast(struct b44 *
+@@ -1703,7 +1703,11 @@ static int __b44_load_mcast(struct b44 *
  	netdev_for_each_mc_addr(ha, dev) {
  		if (i == num_ents)
  			break;

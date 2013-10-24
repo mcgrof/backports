@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/p54/p54pci.c
 +++ b/drivers/net/wireless/p54/p54pci.c
-@@ -684,6 +684,9 @@ static int p54p_resume(struct device *de
+@@ -683,6 +683,9 @@ static int p54p_resume(struct device *de
  	return pci_set_power_state(pdev, PCI_D0);
  }
  
@@ -10,7 +10,7 @@
  static SIMPLE_DEV_PM_OPS(p54pci_pm_ops, p54p_suspend, p54p_resume);
  
  #define P54P_PM_OPS (&p54pci_pm_ops)
-@@ -696,7 +699,12 @@ static struct pci_driver p54p_driver = {
+@@ -695,7 +698,12 @@ static struct pci_driver p54p_driver = {
  	.id_table	= p54p_table,
  	.probe		= p54p_probe,
  	.remove		= p54p_remove,

@@ -25,10 +25,12 @@ int regulator_map_voltage_ascend(struct regulator_dev *rdev,
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3,13,0)) && \
     (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
+#define devm_regulator_register LINUX_BACKPORT(devm_regulator_register)
 struct regulator_dev *
 devm_regulator_register(struct device *dev,
 			const struct regulator_desc *regulator_desc,
 			const struct regulator_config *config);
+#define devm_regulator_unregister LINUX_BACKPORT(devm_regulator_unregister)
 void devm_regulator_unregister(struct device *dev, struct regulator_dev *rdev);
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(3,13,0)) &&
 	  (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0)) */

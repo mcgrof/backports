@@ -1,0 +1,28 @@
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -999,6 +999,7 @@ static int wcn36xx_remove(struct platfor
+ 
+ 	return 0;
+ }
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
+ static const struct platform_device_id wcn36xx_platform_id_table[] = {
+ 	{
+ 		.name = "wcn36xx",
+@@ -1007,6 +1008,7 @@ static const struct platform_device_id w
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(platform, wcn36xx_platform_id_table);
++#endif
+ 
+ static struct platform_driver wcn36xx_driver = {
+ 	.probe      = wcn36xx_probe,
+@@ -1015,7 +1017,9 @@ static struct platform_driver wcn36xx_dr
+ 		.name   = "wcn36xx",
+ 		.owner  = THIS_MODULE,
+ 	},
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
+ 	.id_table    = wcn36xx_platform_id_table,
++#endif
+ };
+ 
+ static int __init wcn36xx_init(void)

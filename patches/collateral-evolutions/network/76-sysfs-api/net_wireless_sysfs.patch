@@ -1,14 +1,19 @@
 --- a/net/wireless/sysfs.c
 +++ b/net/wireless/sysfs.c
-@@ -71,6 +71,7 @@ static struct attribute *ieee80211_attrs
+@@ -71,7 +71,12 @@ static struct attribute *ieee80211_attrs
  	&dev_attr_name.attr,
  	NULL,
  };
-+#define BP_ATTR_GRP_STRUCT device_attribute
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,11,0)
  ATTRIBUTE_GROUPS(ieee80211);
++#else
++#define BP_ATTR_GRP_STRUCT device_attribute
++ATTRIBUTE_GROUPS_BACKPORT(ieee80211);
++#endif
  
  static void wiphy_dev_release(struct device *dev)
-@@ -151,7 +152,11 @@ struct class ieee80211_class = {
+ {
+@@ -151,7 +156,11 @@ struct class ieee80211_class = {
  	.name = "ieee80211",
  	.owner = THIS_MODULE,
  	.dev_release = wiphy_dev_release,
@@ -20,7 +25,7 @@
  	.dev_uevent = wiphy_uevent,
  #ifdef CONFIG_PM
  	.suspend = wiphy_suspend,
-@@ -165,6 +170,7 @@ struct class ieee80211_class = {
+@@ -165,6 +174,7 @@ struct class ieee80211_class = {
  
  int wiphy_sysfs_init(void)
  {

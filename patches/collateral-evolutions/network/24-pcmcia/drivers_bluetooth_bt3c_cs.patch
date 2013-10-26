@@ -36,7 +36,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -466,7 +478,11 @@ static int bt3c_load_firmware(bt3c_info_
+@@ -458,7 +470,11 @@ static int bt3c_load_firmware(bt3c_info_
  	unsigned int iobase, size, addr, fcs, tmp;
  	int i, err = 0;
  
@@ -48,7 +48,7 @@
  
  	/* Reset */
  	bt3c_io_write(iobase, 0x8040, 0x0404);
-@@ -637,8 +653,27 @@ static int bt3c_probe(struct pcmcia_devi
+@@ -629,8 +645,27 @@ static int bt3c_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -76,7 +76,7 @@
  
  	return bt3c_config(link);
  }
-@@ -649,6 +684,7 @@ static void bt3c_detach(struct pcmcia_de
+@@ -641,6 +676,7 @@ static void bt3c_detach(struct pcmcia_de
  	bt3c_release(link);
  }
  
@@ -84,7 +84,7 @@
  static int bt3c_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -687,6 +723,63 @@ static int bt3c_check_config_notpicky(st
+@@ -679,6 +715,63 @@ static int bt3c_check_config_notpicky(st
  	}
  	return -ENODEV;
  }
@@ -148,7 +148,7 @@
  
  static int bt3c_config(struct pcmcia_device *link)
  {
-@@ -710,9 +803,15 @@ static int bt3c_config(struct pcmcia_dev
+@@ -702,9 +795,15 @@ static int bt3c_config(struct pcmcia_dev
  	goto failed;
  
  found_port:
@@ -164,7 +164,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -747,7 +846,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
+@@ -739,7 +838,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
  
  static struct pcmcia_driver bt3c_driver = {
  	.owner		= THIS_MODULE,

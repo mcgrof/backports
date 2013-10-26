@@ -25,7 +25,7 @@
  		if (!err)
  			bt_sock_reclassify_lock(sock->sk, proto);
  		module_put(bt_proto[proto]->owner);
-@@ -456,7 +464,11 @@ int bt_sock_ioctl(struct socket *sock, u
+@@ -463,7 +471,11 @@ int bt_sock_ioctl(struct socket *sock, u
  		if (sk->sk_state == BT_LISTEN)
  			return -EINVAL;
  

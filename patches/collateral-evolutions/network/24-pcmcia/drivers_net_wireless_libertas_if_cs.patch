@@ -1,7 +1,7 @@
 --- a/drivers/net/wireless/libertas/if_cs.c
 +++ b/drivers/net/wireless/libertas/if_cs.c
 @@ -757,7 +757,11 @@ static void if_cs_prog_firmware(struct l
- 		goto out;
+ 		return;
  
  	/* Now actually get the IRQ */
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
@@ -22,9 +22,9 @@
 +		free_irq(card->p_dev->irq.AssignedIRQ, card);
 +#endif
  	}
+ }
  
- out:
-@@ -824,7 +832,11 @@ static void if_cs_release(struct pcmcia_
+@@ -820,7 +828,11 @@ static void if_cs_release(struct pcmcia_
  
  	lbs_deb_enter(LBS_DEB_CS);
  
@@ -36,7 +36,7 @@
  	pcmcia_disable_device(p_dev);
  	if (card->iobase)
  		ioport_unmap(card->iobase);
-@@ -832,7 +844,7 @@ static void if_cs_release(struct pcmcia_
+@@ -828,7 +840,7 @@ static void if_cs_release(struct pcmcia_
  	lbs_deb_leave(LBS_DEB_CS);
  }
  
@@ -45,7 +45,7 @@
  static int if_cs_ioprobe(struct pcmcia_device *p_dev, void *priv_data)
  {
  	p_dev->resource[0]->flags &= ~IO_DATA_PATH_WIDTH;
-@@ -842,9 +854,39 @@ static int if_cs_ioprobe(struct pcmcia_d
+@@ -838,9 +850,39 @@ static int if_cs_ioprobe(struct pcmcia_d
  		pr_err("wrong CIS (check number of IO windows)\n");
  		return -ENODEV;
  	}
@@ -85,7 +85,7 @@
  }
  
  static int if_cs_probe(struct pcmcia_device *p_dev)
-@@ -863,7 +905,16 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -859,7 +901,16 @@ static int if_cs_probe(struct pcmcia_dev
  	card->p_dev = p_dev;
  	p_dev->priv = card;
  
@@ -102,7 +102,7 @@
  
  	if (pcmcia_loop_config(p_dev, if_cs_ioprobe, NULL)) {
  		pr_err("error in pcmcia_loop_config\n");
-@@ -875,12 +926,26 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -871,12 +922,26 @@ static int if_cs_probe(struct pcmcia_dev
  	 * a handler to the interrupt, unless the 'Handler' member of
  	 * the irq structure is initialized.
  	 */
@@ -129,7 +129,7 @@
  	if (!card->iobase) {
  		pr_err("error in ioport_map\n");
  		ret = -EIO;
-@@ -894,7 +959,17 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -890,7 +955,17 @@ static int if_cs_probe(struct pcmcia_dev
  	}
  
  	/* Finally, report what we've done */
@@ -147,7 +147,7 @@
  
  	/*
  	 * Most of the libertas cards can do unaligned register access, but some
-@@ -1001,7 +1076,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
+@@ -997,7 +1072,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
  
  static struct pcmcia_driver lbs_driver = {
  	.owner		= THIS_MODULE,

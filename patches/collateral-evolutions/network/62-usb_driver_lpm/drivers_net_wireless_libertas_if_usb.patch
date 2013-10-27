@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/libertas/if_usb.c
 +++ b/drivers/net/wireless/libertas/if_usb.c
-@@ -1013,7 +1013,9 @@ static struct usb_driver if_usb_driver =
+@@ -1010,7 +1010,9 @@ static struct usb_driver if_usb_driver =
  	.suspend = if_usb_suspend,
  	.resume = if_usb_resume,
  	.reset_resume = if_usb_resume,

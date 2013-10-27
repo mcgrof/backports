@@ -1,6 +1,6 @@
 --- a/net/nfc/netlink.c
 +++ b/net/nfc/netlink.c
-@@ -70,7 +70,7 @@ static int nfc_genl_send_target(struct s
+@@ -71,7 +71,7 @@ static int nfc_genl_send_target(struct s
  {
  	void *hdr;
  
@@ -9,7 +9,7 @@
  			  &nfc_genl_family, flags, NFC_CMD_GET_TARGET);
  	if (!hdr)
  		return -EMSGSIZE;
-@@ -545,7 +545,7 @@ static int nfc_genl_dump_devices(struct
+@@ -546,7 +546,7 @@ static int nfc_genl_dump_devices(struct
  	while (dev) {
  		int rc;
  
@@ -18,7 +18,7 @@
  					  cb->nlh->nlmsg_seq, cb, NLM_F_MULTI);
  		if (rc < 0)
  			break;
-@@ -664,7 +664,7 @@ static int nfc_genl_get_device(struct sk
+@@ -665,7 +665,7 @@ static int nfc_genl_get_device(struct sk
  		goto out_putdev;
  	}
  
@@ -27,7 +27,7 @@
  				  NULL, 0);
  	if (rc < 0)
  		goto out_free;
-@@ -755,7 +755,7 @@ static int nfc_genl_start_poll(struct sk
+@@ -756,7 +756,7 @@ static int nfc_genl_start_poll(struct sk
  
  	rc = nfc_start_poll(dev, im_protocols, tm_protocols);
  	if (!rc)
@@ -36,7 +36,7 @@
  
  	mutex_unlock(&dev->genl_data.genl_data_mutex);
  
-@@ -789,7 +789,7 @@ static int nfc_genl_stop_poll(struct sk_
+@@ -790,7 +790,7 @@ static int nfc_genl_stop_poll(struct sk_
  
  	mutex_lock(&dev->genl_data.genl_data_mutex);
  
@@ -45,7 +45,7 @@
  		rc = -EBUSY;
  		goto out;
  	}
-@@ -915,7 +915,7 @@ static int nfc_genl_llc_get_params(struc
+@@ -916,7 +916,7 @@ static int nfc_genl_llc_get_params(struc
  		goto exit;
  	}
  
@@ -54,7 +54,7 @@
  
  exit:
  	device_unlock(&dev->dev);
-@@ -1253,7 +1253,7 @@ static int nfc_genl_dump_ses(struct sk_b
+@@ -1254,7 +1254,7 @@ static int nfc_genl_dump_ses(struct sk_b
  	while (dev) {
  		int rc;
  
@@ -63,7 +63,7 @@
  					  cb->nlh->nlmsg_seq, cb, NLM_F_MULTI);
  		if (rc < 0)
  			break;
-@@ -1408,12 +1408,12 @@ static int nfc_genl_rcv_nl_event(struct
+@@ -1499,12 +1499,12 @@ static int nfc_genl_rcv_nl_event(struct
  	if (event != NETLINK_URELEASE || n->protocol != NETLINK_GENERIC)
  		goto out;
  

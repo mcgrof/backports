@@ -1,6 +1,6 @@
 --- a/net/bluetooth/hci_sysfs.c
 +++ b/net/bluetooth/hci_sysfs.c
-@@ -72,7 +72,11 @@ static struct attribute_group bt_link_gr
+@@ -53,7 +53,11 @@ static struct attribute_group bt_link_gr
  	.attrs = bt_link_attrs,
  };
  
@@ -12,7 +12,7 @@
  	&bt_link_group,
  	NULL
  };
-@@ -378,7 +382,11 @@ static struct attribute_group bt_host_gr
+@@ -186,7 +190,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  

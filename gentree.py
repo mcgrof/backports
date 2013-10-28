@@ -348,7 +348,7 @@ def get_rel_prep(rel):
         if (rel_specs['RELMOD_TYPE'] != ''):
             ignore += rel_specs['RELMOD_TYPE']
         base_rel = rel.replace(ignore, "")
-        paths.append(base_rel)
+        paths.append("v" + base_rel)
         rel_tag = "v" + rel.replace(rel_specs['RELMOD_TYPE'], "")
 
     rel_prep = dict(stable = is_stable,

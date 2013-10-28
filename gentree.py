@@ -382,7 +382,7 @@ def upload_release(args, rel_prep, logwrite=lambda x:None):
     korg_path = "/pub/linux/kernel/projects/backports"
 
     if (rel_prep['stable']):
-        korg_path += "stable"
+        korg_path += "/stable"
 
     parent = os.path.dirname(args.outdir)
     release = os.path.basename(args.outdir)

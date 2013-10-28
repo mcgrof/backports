@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2743,6 +2743,9 @@ static const struct pci_error_handlers a
+@@ -2781,6 +2781,9 @@ static const struct pci_error_handlers a
  	.resume = atl1c_io_resume,
  };
  
@@ -10,7 +10,7 @@
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
  static struct pci_driver atl1c_driver = {
-@@ -2752,7 +2755,12 @@ static struct pci_driver atl1c_driver =
+@@ -2790,7 +2793,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = atl1c_remove,
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,

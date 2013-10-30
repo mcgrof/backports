@@ -594,10 +594,13 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
 
     logwrite('Apply patches ...')
     patches = []
+    sempatches = []
     for root, dirs, files in os.walk(os.path.join(source_dir, 'patches')):
         for f in files:
             if f.endswith('.patch'):
                 patches.append(os.path.join(root, f))
+            if f.endswith('.cocci'):
+                sempatches.append(os.path.join(root, f))
     patches.sort()
     prefix_len = len(os.path.join(source_dir, 'patches')) + 1
     for pfile in patches:
@@ -672,6 +675,39 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         for root, dirs, files in os.walk(args.outdir):
             for f in files:
                 if f[-5:] == '.orig' or f[-4:] == '.rej':
+                    os.unlink(os.path.join(root, f))
+        git_debug_snapshot(args, "apply backport patch %s" % print_name)
+
+    sempatches.sort()
+    prefix_len = len(os.path.join(source_dir, 'patches')) + 1
+    for cocci_file in sempatches:
+        print_name = cocci_file[prefix_len:]
+        if args.verbose:
+            logwrite("Applying patch %s" % print_name)
+
+        process = subprocess.Popen(['spatch', '--sp-file', cocci_file, '--in-place',
+                                    '--backup-suffix', '.cocci_backup', '--dir', '.'],
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                   close_fds=True, universal_newlines=True,
+                                   cwd=args.outdir)
+        output = process.communicate()[0]
+        output = output.split('\n')
+        if output[-1] == '':
+            output = output[:-1]
+        if args.verbose:
+            for line in output:
+                logwrite('> %s' % line)
+        if process.returncode != 0:
+            if not args.verbose:
+                logwrite("Failed to apply changes from %s" % print_name)
+                for line in output:
+                    logwrite('> %s' % line)
+            return 2
+
+        # remove cocci_backup files
+        for root, dirs, files in os.walk(args.outdir):
+            for f in files:
+                if f.endswith('.cocci_backup'):
                     os.unlink(os.path.join(root, f))
         git_debug_snapshot(args, "apply backport patch %s" % print_name)
 

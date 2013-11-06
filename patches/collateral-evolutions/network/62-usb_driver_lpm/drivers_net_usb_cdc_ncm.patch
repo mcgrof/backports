@@ -1,6 +1,6 @@
 --- a/drivers/net/usb/cdc_ncm.c
 +++ b/drivers/net/usb/cdc_ncm.c
-@@ -1271,7 +1271,9 @@ static struct usb_driver cdc_ncm_driver
+@@ -1212,7 +1212,9 @@ static struct usb_driver cdc_ncm_driver
  	.resume = usbnet_resume,
  	.reset_resume =	usbnet_resume,
  	.supports_autosuspend = 1,

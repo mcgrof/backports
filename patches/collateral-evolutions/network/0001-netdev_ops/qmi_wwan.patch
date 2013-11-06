@@ -1,6 +1,6 @@
 --- a/drivers/net/usb/qmi_wwan.c
 +++ b/drivers/net/usb/qmi_wwan.c
-@@ -345,7 +345,7 @@ next_desc:
+@@ -343,7 +343,7 @@ next_desc:
  		dev->net->dev_addr[0] |= 0x02;	/* set local assignment bit */
  		dev->net->dev_addr[0] &= 0xbf;	/* clear "IP" bit */
  	}

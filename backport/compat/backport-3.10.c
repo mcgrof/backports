@@ -95,6 +95,7 @@ unsigned int get_random_int(void)
 EXPORT_SYMBOL_GPL(get_random_int);
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
+#ifdef CONFIG_TTY
 /**
  * tty_port_tty_wakeup - helper to wake up a tty
  *
@@ -126,4 +127,5 @@ void tty_port_tty_hangup(struct tty_port *port, bool check_clocal)
 	tty_kref_put(tty);
 }
 EXPORT_SYMBOL_GPL(tty_port_tty_hangup);
+#endif /* CONFIG_TTY */
 #endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28)) */

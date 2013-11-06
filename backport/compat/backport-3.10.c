@@ -34,6 +34,7 @@
 #endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)) */
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
+#ifdef CONFIG_REGULATOR
 /**
  * regulator_map_voltage_ascend - map_voltage() for ascendant voltage list
  *
@@ -65,6 +66,7 @@ int regulator_map_voltage_ascend(struct regulator_dev *rdev,
 }
 EXPORT_SYMBOL_GPL(regulator_map_voltage_ascend);
 
+#endif /* CONFIG_REGULATOR */
 #endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)) */
 
 void proc_set_size(struct proc_dir_entry *de, loff_t size)

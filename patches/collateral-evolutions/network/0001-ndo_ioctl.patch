@@ -36,3 +36,16 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
     Signed-off-by: Stephen Hemminger <shemminger@vyatta.com>
     Signed-off-by: David S. Miller <davem@davemloft.net>
 
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -925,9 +925,7 @@ static int wireless_process_ioctl(struct
+ 			return private(dev, iwr, cmd, info, handler);
+ 	}
+ 	/* Old driver API : call driver ioctl handler */
+-	if (dev->netdev_ops->ndo_do_ioctl)
+-		return dev->netdev_ops->ndo_do_ioctl(dev, ifr, cmd);
+-	return -EOPNOTSUPP;
++	return ndo_do_ioctl(dev, ifr, cmd);
+ }
+ 
+ /* If command is `set a parameter', or `get the encoding parameters',

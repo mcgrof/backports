@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atlx/atl2.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl2.c
-@@ -365,6 +365,7 @@ static inline void atl2_irq_disable(stru
+@@ -361,6 +361,7 @@ static inline void atl2_irq_disable(stru
      synchronize_irq(adapter->pdev->irq);
  }
  
@@ -8,7 +8,7 @@
  static void __atl2_vlan_mode(netdev_features_t features, u32 *ctrl)
  {
  	if (features & NETIF_F_HW_VLAN_CTAG_RX) {
-@@ -390,12 +391,16 @@ static void atl2_vlan_mode(struct net_de
+@@ -386,12 +387,16 @@ static void atl2_vlan_mode(struct net_de
  
  	atl2_irq_enable(adapter);
  }
@@ -25,7 +25,7 @@
  static netdev_features_t atl2_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -421,6 +426,7 @@ static int atl2_set_features(struct net_
+@@ -417,6 +422,7 @@ static int atl2_set_features(struct net_
  
  	return 0;
  }
@@ -33,7 +33,7 @@
  
  static void atl2_intr_rx(struct atl2_adapter *adapter)
  {
-@@ -1154,7 +1160,9 @@ static void atl2_setup_mac_ctrl(struct a
+@@ -1150,7 +1156,9 @@ static void atl2_setup_mac_ctrl(struct a
  		MAC_CTRL_PRMLEN_SHIFT);
  
  	/* vlan */
@@ -43,7 +43,7 @@
  
  	/* filter mode */
  	value |= MAC_CTRL_BC_EN;
-@@ -1319,8 +1327,10 @@ static const struct net_device_ops atl2_
+@@ -1315,8 +1323,10 @@ static const struct net_device_ops atl2_
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl2_set_mac,
  	.ndo_change_mtu		= atl2_change_mtu,
@@ -54,7 +54,7 @@
  	.ndo_do_ioctl		= atl2_ioctl,
  	.ndo_tx_timeout		= atl2_tx_timeout,
  #ifdef CONFIG_NET_POLL_CONTROLLER
-@@ -1417,8 +1427,12 @@ static int atl2_probe(struct pci_dev *pd
+@@ -1413,8 +1423,12 @@ static int atl2_probe(struct pci_dev *pd
  
  	err = -EIO;
  
@@ -67,7 +67,7 @@
  
  	/* Init PHY as early as possible due to power saving issue  */
  	atl2_phy_init(&adapter->hw);
-@@ -2092,6 +2106,13 @@ static int atl2_nway_reset(struct net_de
+@@ -2088,6 +2102,13 @@ static int atl2_nway_reset(struct net_de
  	return 0;
  }
  
@@ -81,7 +81,7 @@
  static const struct ethtool_ops atl2_ethtool_ops = {
  	.get_settings		= atl2_get_settings,
  	.set_settings		= atl2_set_settings,
-@@ -2107,6 +2128,14 @@ static const struct ethtool_ops atl2_eth
+@@ -2103,6 +2124,14 @@ static const struct ethtool_ops atl2_eth
  	.get_eeprom_len		= atl2_get_eeprom_len,
  	.get_eeprom		= atl2_get_eeprom,
  	.set_eeprom		= atl2_set_eeprom,

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3757,7 +3757,9 @@ static struct usb_driver rndis_wlan_driv
+@@ -3753,7 +3753,9 @@ static struct usb_driver rndis_wlan_driv
  	.disconnect =	usbnet_disconnect,
  	.suspend =	usbnet_suspend,
  	.resume =	usbnet_resume,

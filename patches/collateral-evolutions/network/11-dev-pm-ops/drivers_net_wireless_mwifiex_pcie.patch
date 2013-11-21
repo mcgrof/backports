@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/mwifiex/pcie.c
 +++ b/drivers/net/wireless/mwifiex/pcie.c
-@@ -260,6 +260,9 @@ static DEFINE_PCI_DEVICE_TABLE(mwifiex_i
+@@ -259,6 +259,9 @@ static DEFINE_PCI_DEVICE_TABLE(mwifiex_i
  MODULE_DEVICE_TABLE(pci, mwifiex_ids);
  
  #ifdef CONFIG_PM_SLEEP
@@ -10,7 +10,7 @@
  /* Power Management Hooks */
  static SIMPLE_DEV_PM_OPS(mwifiex_pcie_pm_ops, mwifiex_pcie_suspend,
  				mwifiex_pcie_resume);
-@@ -272,9 +275,14 @@ static struct pci_driver __refdata mwifi
+@@ -271,9 +274,14 @@ static struct pci_driver __refdata mwifi
  	.probe    = mwifiex_pcie_probe,
  	.remove   = mwifiex_pcie_remove,
  #ifdef CONFIG_PM_SLEEP

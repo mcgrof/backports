@@ -1,6 +1,6 @@
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1675,9 +1675,11 @@ usbnet_probe (struct usb_interface *udev
+@@ -1672,9 +1672,11 @@ usbnet_probe (struct usb_interface *udev
  		dev->rx_urb_size = dev->hard_mtu;
  	dev->maxpacket = usb_maxpacket (dev->udev, dev->out, 1);
  

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -590,7 +590,11 @@ static int lbs_thread(void *data)
+@@ -574,7 +574,11 @@ static int lbs_thread(void *data)
  
  			/* Reset card, but only when it isn't in the process
  			 * of being shutdown anyway. */

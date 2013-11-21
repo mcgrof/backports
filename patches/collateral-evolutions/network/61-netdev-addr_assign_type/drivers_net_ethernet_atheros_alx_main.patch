@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/alx/main.c
 +++ b/drivers/net/ethernet/atheros/alx/main.c
-@@ -499,8 +499,10 @@ static int alx_set_mac_address(struct ne
+@@ -495,8 +495,10 @@ static int alx_set_mac_address(struct ne
  	if (!is_valid_ether_addr(addr->sa_data))
  		return -EADDRNOTAVAIL;
  

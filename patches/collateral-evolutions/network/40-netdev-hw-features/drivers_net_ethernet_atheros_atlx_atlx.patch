@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atlx/atlx.c
 +++ b/drivers/net/ethernet/atheros/atlx/atlx.c
-@@ -254,6 +254,7 @@ static void atlx_restore_vlan(struct atl
+@@ -250,6 +250,7 @@ static void atlx_restore_vlan(struct atl
  	atlx_vlan_mode(adapter->netdev, adapter->netdev->features);
  }
  
@@ -8,7 +8,7 @@
  static netdev_features_t atlx_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -279,5 +280,6 @@ static int atlx_set_features(struct net_
+@@ -275,5 +276,6 @@ static int atlx_set_features(struct net_
  
  	return 0;
  }

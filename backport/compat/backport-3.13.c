@@ -159,6 +159,10 @@ int __backport_genl_register_family(struct genl_family *family)
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 	__copy(netnsok);
 #endif
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)
+	__copy(pre_doit);
+	__copy(post_doit);
+#endif
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
 	__copy(parallel_ops);
 #endif

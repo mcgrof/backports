@@ -90,9 +90,6 @@ drivers/bluetooth/
 # Ethernet drivers
 drivers/net/ethernet/Kconfig
 drivers/net/ethernet/Makefile
-drivers/net/mdio.c
-include/linux/mdio.h
-include/uapi/linux/mdio.h
 
 drivers/net/ethernet/atheros/
 

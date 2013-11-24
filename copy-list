@@ -19,7 +19,6 @@ drivers/net/wireless/Makefile
 
 include/linux/ieee80211.h
 include/linux/pci_ids.h
-include/linux/eeprom_93cx6.h
 include/linux/ath9k_platform.h
 include/linux/wl12xx.h
 include/linux/rndis.h

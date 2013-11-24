@@ -12,6 +12,7 @@
 
 COPYING
 MAINTAINERS
+include/linux/unaligned/
 
 # 802.11
 drivers/net/wireless/Kconfig

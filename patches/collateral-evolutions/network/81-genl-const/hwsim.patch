@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2097,7 +2097,7 @@ out:
+@@ -2105,7 +2105,7 @@ out:
  }
  
  /* Generic Netlink operations array */

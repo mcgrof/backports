@@ -4,7 +4,7 @@
 #include_next <linux/usb.h>
 #include <linux/version.h>
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
+#ifndef module_usb_driver
 /**
  * module_usb_driver() - Helper macro for registering a USB driver
  * @__usb_driver: usb_driver struct

@@ -70,7 +70,7 @@
 #define compat_pci_resume(fn)
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0)
+#ifndef module_pci_driver
 /**
  * module_pci_driver() - Helper macro for registering a PCI driver
  * @__pci_driver: pci_driver struct

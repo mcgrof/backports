@@ -29,7 +29,7 @@ backport_device_move(struct device *dev, struct device *new_parent,
 #define device_move LINUX_BACKPORT(device_move)
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
+#ifndef module_driver
 /**
  * module_driver() - Helper macro for drivers that don't do anything
  * special in module init/exit. This eliminates a lot of boilerplate.

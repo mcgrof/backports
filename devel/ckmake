@@ -419,7 +419,7 @@ class kernel_set():
 	def parse_releases(self, target_kranges):
 		self.target_kranges = target_kranges
 		for dirname, dirnames, filenames in os.walk(modules):
-			dirnames.sort()
+		        rels = []
 			for subdirname in dirnames:
 				specifics = get_rel_spec_ubuntu(subdirname)
 				if (not specifics):
@@ -439,8 +439,7 @@ class kernel_set():
 					ver = ver + '.' + specifics['SUBLEVEL']
 
 				get_rel_spec_base(subdirname)
-				rel = dict(idx=len(self.releases),
-					   name=subdirname,
+				rel = dict(name=subdirname,
 					   full_path=dirname + '/' +
 							 subdirname,
 					   version=ver,
@@ -454,6 +453,12 @@ class kernel_set():
 					   processed=False,
 					   log='',
 					   status=1234)
+                                rels.append(rel)
+			def relsort(rel):
+				return int(rel['ver']), int(rel['pat']), int(rel['sub'])
+			rels.sort(key=relsort)
+			for rel in rels:
+				rel['idx'] = len(self.releases)
 				self.evaluate_new_rel(rel)
 		self.refresh()
 	def setup_screen(self):

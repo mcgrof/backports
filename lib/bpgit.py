@@ -37,6 +37,13 @@ def clean(tree=None):
     process.wait()
     _check(process)
 
+def fetch(tree=None):
+    cmd = ['git', 'fetch']
+
+    process = subprocess.Popen(cmd, cwd=tree)
+    process.wait()
+    _check(process)
+
 def status(tree=None):
     '''
     For interpretation of the porcelain output refer to

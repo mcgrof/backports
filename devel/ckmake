@@ -37,7 +37,7 @@ ckmake_log = my_cwd + "/ckmake.log"
 ckmake_report = my_cwd + "/ckmake-report.log"
 
 home = os.getenv("HOME")
-ksrc = home + "/" + "compat-ksrc"
+ksrc = home + "/" + "ksrc-backports"
 modules = ksrc + "/lib/modules"
 
 def clean():

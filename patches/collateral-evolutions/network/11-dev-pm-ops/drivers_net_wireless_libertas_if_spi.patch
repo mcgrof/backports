@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/libertas/if_spi.c
 +++ b/drivers/net/wireless/libertas/if_spi.c
-@@ -1245,6 +1245,7 @@ static int libertas_spi_remove(struct sp
+@@ -1244,6 +1244,7 @@ static int libertas_spi_remove(struct sp
  	return 0;
  }
  
@@ -8,7 +8,7 @@
  static int if_spi_suspend(struct device *dev)
  {
  	struct spi_device *spi = to_spi_device(dev);
-@@ -1278,6 +1279,7 @@ static const struct dev_pm_ops if_spi_pm
+@@ -1277,6 +1278,7 @@ static const struct dev_pm_ops if_spi_pm
  	.suspend	= if_spi_suspend,
  	.resume		= if_spi_resume,
  };
@@ -16,7 +16,7 @@
  
  static struct spi_driver libertas_spi_driver = {
  	.probe	= if_spi_probe,
-@@ -1285,7 +1287,9 @@ static struct spi_driver libertas_spi_dr
+@@ -1284,7 +1286,9 @@ static struct spi_driver libertas_spi_dr
  	.driver = {
  		.name	= "libertas_spi",
  		.owner	= THIS_MODULE,

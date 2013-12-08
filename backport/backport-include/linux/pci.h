@@ -100,24 +100,28 @@ int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
 int pcie_capability_clear_and_set_dword(struct pci_dev *dev, int pos,
 					u32 clear, u32 set);
 
+#define pcie_capability_set_word LINUX_BACKPORT(pcie_capability_set_word)
 static inline int pcie_capability_set_word(struct pci_dev *dev, int pos,
 					   u16 set)
 {
 	return pcie_capability_clear_and_set_word(dev, pos, 0, set);
 }
 
+#define pcie_capability_set_dword LINUX_BACKPORT(pcie_capability_set_dword)
 static inline int pcie_capability_set_dword(struct pci_dev *dev, int pos,
 					    u32 set)
 {
 	return pcie_capability_clear_and_set_dword(dev, pos, 0, set);
 }
 
+#define pcie_capability_clear_word LINUX_BACKPORT(pcie_capability_clear_word)
 static inline int pcie_capability_clear_word(struct pci_dev *dev, int pos,
 					     u16 clear)
 {
 	return pcie_capability_clear_and_set_word(dev, pos, clear, 0);
 }
 
+#define pcie_capability_clear_dword LINUX_BACKPORT(pcie_capability_clear_dword)
 static inline int pcie_capability_clear_dword(struct pci_dev *dev, int pos,
 					      u32 clear)
 {

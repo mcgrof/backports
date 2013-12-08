@@ -40,7 +40,8 @@ static inline void eth_hw_addr_random(struct net_device *dev)
 #define eth_hw_addr_random LINUX_BACKPORT(eth_hw_addr_random)
 static inline void eth_hw_addr_random(struct net_device *dev)
 {
-	dev_hw_addr_random(dev, dev->dev_addr);
+	dev->addr_assign_type |= NET_ADDR_RANDOM;
+	random_ether_addr(dev->dev_addr);
 }
 #endif
 

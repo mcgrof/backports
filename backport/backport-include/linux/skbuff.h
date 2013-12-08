@@ -78,6 +78,7 @@ static inline int skb_checksum_start_offset(const struct sk_buff *skb)
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37)
+#define skb_has_frag_list LINUX_BACKPORT(skb_has_frag_list)
 static inline bool skb_has_frag_list(const struct sk_buff *skb)
 {
 	return skb_shinfo(skb)->frag_list != NULL;

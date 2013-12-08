@@ -52,6 +52,7 @@ static inline void eth_hw_addr_random(struct net_device *dev)
  *
  * Assign the broadcast address to the given address array.
  */
+#define eth_broadcast_addr LINUX_BACKPORT(eth_broadcast_addr)
 static inline void eth_broadcast_addr(u8 *addr)
 {
 	memset(addr, 0xff, ETH_ALEN);
@@ -83,6 +84,7 @@ static inline void eth_random_addr(u8 *addr)
  * 
  *     etherdevice: introduce help function eth_zero_addr() 
  */
+#define eth_zero_addr LINUX_BACKPORT(eth_zero_addr)
 static inline void eth_zero_addr(u8 *addr)
 {
 	memset(addr, 0x00, ETH_ALEN);
@@ -108,6 +110,7 @@ static inline bool ether_addr_equal(const u8 *addr1, const u8 *addr2)
  *
  * Return true if the address is a unicast address.
  */
+#define is_unicast_ether_addr LINUX_BACKPORT(is_unicast_ether_addr)
 static inline int is_unicast_ether_addr(const u8 *addr)
 {
 	return !is_multicast_ether_addr(addr);

@@ -1,9 +1,0 @@
-The 2.6.29 kernel has new struct dev_pm_ops [1] which are used
-on the pci device to distinguish power management hooks for suspend
-to RAM and hibernation. Older kernels don't have these so we need
-to resort back to the good ol' suspend/resume. Fortunately the calls
-are not so different so it should be possible to resuse the same
-calls on compat code with only slight modifications.
-
-[1] http://lxr.linux.no/#linux+v2.6.29/include/linux/pm.h#L170
-

@@ -1,0 +1,38 @@
+This backports commit b25c340c1 added by Thomas through kernel v2.6.32
+which added support for IRQF_ONESHOT. This lets drivers that use
+threaded IRQ support to request that the IRQ is not masked after the
+hard interrupt handler as this requires access times devices in hard
+IRQ context and for buses such as i2c and spi this at times is not
+possible.
+
+Note that the TI driver reports this as a platform quirk with
+WL12XX_PLATFORM_QUIRK_EDGE_IRQ. In retrospect this quirk does not
+seem backportable unless IRQF_ONESHOT is really not a requirement,
+but desired. If WL12XX_PLATFORM_QUIRK_EDGE_IRQ is indeed a requirement
+for IRQF_ONESHOT then we should not net probe complete. Its unclear
+if this is a universal thing or not.
+
+mcgrof@ergon ~/linux-next (git::master)$ git describe --contains b25c340c1
+v2.6.32-rc1~722^2~3
+
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -6080,6 +6080,10 @@ static void wlcore_nvs_cb(const struct f
+ 	wl->irq = platform_get_irq(pdev, 0);
+ 	wl->platform_quirks = pdata->platform_quirks;
+ 	wl->if_ops = pdev_data->if_ops;
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
++	irqflags = IRQF_TRIGGER_RISING;
++	hardirq_fn = wlcore_hardirq;
++#else
+ 
+ 	if (wl->platform_quirks & WL12XX_PLATFORM_QUIRK_EDGE_IRQ) {
+ 		irqflags = IRQF_TRIGGER_RISING;
+@@ -6087,6 +6091,7 @@ static void wlcore_nvs_cb(const struct f
+ 	} else {
+ 		irqflags = IRQF_TRIGGER_HIGH | IRQF_ONESHOT;
+ 	}
++#endif
+ 
+ 	ret = request_threaded_irq(wl->irq, hardirq_fn, wlcore_irq,
+ 				   irqflags, pdev->name, wl);

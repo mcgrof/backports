@@ -1,6 +1,5 @@
 The 2.6.31 kernel has threaded IRQ support and b43 is the first
 wireless driver that makes use of it. To support threaded IRSs
 on older kernels we built our own struct compat_threaded_irq
-to queue_work() onto it as the kernel thread be running the
+to queue_work() onto it as the kernel thread will running the
 thread in process context as well.
-

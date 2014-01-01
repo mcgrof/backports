@@ -1,6 +1,6 @@
 --- a/net/nfc/netlink.c
 +++ b/net/nfc/netlink.c
-@@ -30,7 +30,7 @@
+@@ -28,7 +28,7 @@
  #include "nfc.h"
  #include "llcp.h"
  
@@ -9,7 +9,7 @@
  	{ .name = NFC_GENL_MCAST_EVENT_NAME, },
  };
  
-@@ -1364,7 +1364,7 @@ static int nfc_genl_se_io(struct sk_buff
+@@ -1362,7 +1362,7 @@ static int nfc_genl_se_io(struct sk_buff
  	return dev->ops->se_io(dev, se_idx, apdu, apdu_len, se_io_cb, ctx);
  }
  

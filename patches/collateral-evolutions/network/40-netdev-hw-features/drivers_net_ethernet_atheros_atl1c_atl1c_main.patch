@@ -1,6 +1,6 @@
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -492,6 +492,7 @@ static void atl1c_set_rxbufsize(struct a
+@@ -494,6 +494,7 @@ static void atl1c_set_rxbufsize(struct a
  	adapter->rx_frag_size = roundup_pow_of_two(head_size);
  }
  
@@ -8,7 +8,7 @@
  static netdev_features_t atl1c_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -520,6 +521,7 @@ static int atl1c_set_features(struct net
+@@ -522,6 +523,7 @@ static int atl1c_set_features(struct net
  
  	return 0;
  }
@@ -16,7 +16,7 @@
  
  /**
   * atl1c_change_mtu - Change the Maximum Transfer Unit
-@@ -552,8 +554,19 @@ static int atl1c_change_mtu(struct net_d
+@@ -554,8 +556,19 @@ static int atl1c_change_mtu(struct net_d
  		netdev->mtu = new_mtu;
  		adapter->hw.max_frame_size = new_mtu;
  		atl1c_set_rxbufsize(adapter, netdev);
@@ -36,7 +36,7 @@
  		atl1c_up(adapter);
  		clear_bit(__AT_RESETTING, &adapter->flags);
  	}
-@@ -2493,8 +2506,10 @@ static const struct net_device_ops atl1c
+@@ -2495,8 +2508,10 @@ static const struct net_device_ops atl1c
  	.ndo_set_mac_address	= atl1c_set_mac_addr,
  	.ndo_set_rx_mode	= atl1c_set_multi,
  	.ndo_change_mtu		= atl1c_change_mtu,
@@ -47,7 +47,7 @@
  	.ndo_do_ioctl		= atl1c_ioctl,
  	.ndo_tx_timeout		= atl1c_tx_timeout,
  	.ndo_get_stats		= atl1c_get_stats,
-@@ -2512,6 +2527,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2514,6 +2529,7 @@ static int atl1c_init_netdev(struct net_
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1c_set_ethtool_ops(netdev);
  
@@ -55,7 +55,7 @@
  	/* TODO: add when ready */
  	netdev->hw_features =	NETIF_F_SG		|
  				NETIF_F_HW_CSUM		|
-@@ -2520,6 +2536,14 @@ static int atl1c_init_netdev(struct net_
+@@ -2522,6 +2538,14 @@ static int atl1c_init_netdev(struct net_
  				NETIF_F_TSO6;
  	netdev->features =	netdev->hw_features	|
  				NETIF_F_HW_VLAN_CTAG_TX;

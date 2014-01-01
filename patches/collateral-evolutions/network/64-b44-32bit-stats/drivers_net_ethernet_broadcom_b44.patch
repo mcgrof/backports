@@ -1,14 +1,14 @@
 --- a/drivers/net/ethernet/broadcom/b44.c
 +++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -29,6 +29,7 @@
- #include <linux/dma-mapping.h>
+@@ -31,6 +31,7 @@
  #include <linux/ssb/ssb.h>
  #include <linux/slab.h>
+ #include <linux/phy.h>
 +#include <linux/u64_stats_sync.h>
  
  #include <asm/uaccess.h>
  #include <asm/io.h>
-@@ -1646,10 +1647,17 @@ static int b44_close(struct net_device *
+@@ -1670,10 +1671,17 @@ static int b44_close(struct net_device *
  	return 0;
  }
  
@@ -26,7 +26,7 @@
  	struct b44_hw_stats *hwstat = &bp->hw_stats;
  	unsigned int start;
  
-@@ -2134,7 +2142,11 @@ static const struct net_device_ops b44_n
+@@ -2183,7 +2191,11 @@ static const struct net_device_ops b44_n
  	.ndo_open		= b44_open,
  	.ndo_stop		= b44_close,
  	.ndo_start_xmit		= b44_start_xmit,

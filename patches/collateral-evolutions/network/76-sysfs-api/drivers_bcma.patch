@@ -25,7 +25,7 @@
  };
  
  static u16 bcma_cc_core_id(struct bcma_bus *bus)
-@@ -492,6 +501,7 @@ static int __init bcma_modinit(void)
+@@ -493,6 +502,7 @@ static int __init bcma_modinit(void)
  {
  	int err;
  

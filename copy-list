@@ -176,6 +176,7 @@ include/linux/platform_data/camera-rcar.h
 include/net/nl802154.h
 include/net/mac802154.h
 include/net/ieee802154.h
+include/net/af_ieee802154.h
 include/linux/nl802154.h
 include/net/ieee802154_netdev.h
 include/net/wpan-phy.h

@@ -229,4 +229,8 @@ static inline void *dev_get_platdata(const struct device *dev)
 }
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,13,0)
+#define devm_kmalloc(dev, size, flags) devm_kzalloc(dev, size, flags) 
+#endif
+
 #endif /* __BACKPORT_DEVICE_H */

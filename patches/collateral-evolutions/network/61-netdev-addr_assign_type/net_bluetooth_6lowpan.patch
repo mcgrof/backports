@@ -1,0 +1,12 @@
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -632,7 +632,9 @@ static void set_addr(u8 *eui, u8 *addr,
+ static void set_dev_addr(struct net_device *netdev, bdaddr_t *addr,
+ 		         u8 addr_type)
+ {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
+ 	netdev->addr_assign_type = NET_ADDR_PERM;
++#endif
+ 	set_addr(netdev->dev_addr, addr->b, addr_type);
+ 	netdev->dev_addr[0] ^= 2;
+ }

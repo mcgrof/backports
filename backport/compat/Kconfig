@@ -93,15 +93,6 @@ config BACKPORT_BUILD_CORDIC
 config BACKPORT_CORDIC
 	bool
 
-config BACKPORT_BUILD_CRC8
-	tristate
-	depends on !CRC8
-	default m if BACKPORT_CRC8
-	default m if BACKPORT_USERSEL_BUILD_ALL
-
-config BACKPORT_CRC8
-	bool
-
 config BACKPORT_BUILD_GENERIC_ATOMIC64
 	bool
 	default y if !64BIT && !GENERIC_ATOMIC64

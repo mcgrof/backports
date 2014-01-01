@@ -14,6 +14,7 @@ from lib import kconfig, patch, make
 from lib import bpgit as git
 from lib import bpgpg as gpg
 from lib import bpkup as kup
+from lib.tempdir import tempdir
 
 def read_copy_list(copyfile):
     """
@@ -679,37 +680,50 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         git_debug_snapshot(args, "apply backport patch %s" % print_name)
 
     sempatches.sort()
-    prefix_len = len(os.path.join(source_dir, 'patches')) + 1
-    for cocci_file in sempatches:
-        print_name = cocci_file[prefix_len:]
-        if args.verbose:
-            logwrite("Applying patch %s" % print_name)
+    with tempdir() as t:
+        if not args.gitdebug:
+            # combine all spatches
+            fn = os.path.join(t, 'combined.cocci')
+            f = open(fn, 'w')
+            for cocci_file in sempatches:
+                for l in open(cocci_file, 'r'):
+                    f.write(l)
+                f.write('\n')
+            f.close()
+            sempatches = [fn]
+            prefix_len = 0
+        else:
+            prefix_len = len(os.path.join(source_dir, 'patches')) + 1
+        for cocci_file in sempatches:
+            print_name = cocci_file[prefix_len:]
+            if args.verbose:
+                logwrite("Applying patch %s" % print_name)
 
-        process = subprocess.Popen(['spatch', '--sp-file', cocci_file, '--in-place',
-                                    '--backup-suffix', '.cocci_backup', '--dir', '.'],
-                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                   close_fds=True, universal_newlines=True,
-                                   cwd=args.outdir)
-        output = process.communicate()[0]
-        output = output.split('\n')
-        if output[-1] == '':
-            output = output[:-1]
-        if args.verbose:
-            for line in output:
-                logwrite('> %s' % line)
-        if process.returncode != 0:
-            if not args.verbose:
-                logwrite("Failed to apply changes from %s" % print_name)
+            process = subprocess.Popen(['spatch', '--sp-file', cocci_file, '--in-place',
+                                        '--backup-suffix', '.cocci_backup', '--dir', '.'],
+                                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                       close_fds=True, universal_newlines=True,
+                                       cwd=args.outdir)
+            output = process.communicate()[0]
+            output = output.split('\n')
+            if output[-1] == '':
+                output = output[:-1]
+            if args.verbose:
                 for line in output:
                     logwrite('> %s' % line)
-            return 2
+            if process.returncode != 0:
+                if not args.verbose:
+                    logwrite("Failed to apply changes from %s" % print_name)
+                    for line in output:
+                        logwrite('> %s' % line)
+                return 2
 
-        # remove cocci_backup files
-        for root, dirs, files in os.walk(args.outdir):
-            for f in files:
-                if f.endswith('.cocci_backup'):
-                    os.unlink(os.path.join(root, f))
-        git_debug_snapshot(args, "apply backport patch %s" % print_name)
+            # remove cocci_backup files
+            for root, dirs, files in os.walk(args.outdir):
+                for f in files:
+                    if f.endswith('.cocci_backup'):
+                        os.unlink(os.path.join(root, f))
+            git_debug_snapshot(args, "apply backport patch %s" % print_name)
 
     # some post-processing is required
     configtree = kconfig.ConfigTree(os.path.join(args.outdir, 'Kconfig'))

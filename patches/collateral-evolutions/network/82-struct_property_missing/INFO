@@ -1,0 +1,4 @@
+struct property is missing in the general header files in older kernel 
+versions. There are different versions of this header depending on the 
+architecture code in use. This removed the access to any members of 
+struct property

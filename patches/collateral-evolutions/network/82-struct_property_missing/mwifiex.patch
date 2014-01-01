@@ -1,0 +1,28 @@
+--- a/drivers/net/wireless/mwifiex/sta_cmd.c
++++ b/drivers/net/wireless/mwifiex/sta_cmd.c
+@@ -25,6 +25,7 @@
+ #include "wmm.h"
+ #include "11n.h"
+ #include "11ac.h"
++#include <linux/of.h>
+ 
+ /*
+  * This function prepares command to set/get RSSI information.
+@@ -1194,6 +1195,7 @@ static int mwifiex_cmd_cfg_data(struct m
+ 	int ret;
+ 
+ 	if (prop) {
++#if defined(CONFIG_OF) || (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
+ 		len = prop->length;
+ 		ret = of_property_read_u8_array(adapter->dt_node, prop->name,
+ 						data, len);
+@@ -1201,6 +1203,9 @@ static int mwifiex_cmd_cfg_data(struct m
+ 			return ret;
+ 		dev_dbg(adapter->dev,
+ 			"download cfg_data from device tree: %s\n", prop->name);
++#else
++		return -1;
++#endif
+ 	} else if (adapter->cal_data->data && adapter->cal_data->size > 0) {
+ 		len = mwifiex_parse_cal_cfg((u8 *)adapter->cal_data->data,
+ 					    adapter->cal_data->size, data);

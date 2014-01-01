@@ -167,6 +167,7 @@ include/uapi/linux/v4l2-dv-timings.h
 include/uapi/linux/v4l2-mediabus.h
 include/uapi/linux/v4l2-subdev.h
 include/uapi/linux/videodev2.h
+include/uapi/linux/vsp1.h
 include/trace/events/v4l2.h
 
 drivers/media/

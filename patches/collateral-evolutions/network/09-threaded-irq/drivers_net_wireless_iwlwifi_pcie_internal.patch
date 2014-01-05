@@ -1,9 +1,9 @@
 --- a/drivers/net/wireless/iwlwifi/pcie/internal.h
 +++ b/drivers/net/wireless/iwlwifi/pcie/internal.h
-@@ -311,6 +311,9 @@ struct iwl_trans_pcie {
- 
+@@ -312,6 +312,9 @@ struct iwl_trans_pcie {
  	/*protect hw register */
  	spinlock_t reg_lock;
+ 	bool cmd_in_flight;
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	struct compat_threaded_irq irq_compat;
 +#endif

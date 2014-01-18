@@ -158,4 +158,36 @@ static inline void eth_hw_addr_inherit(struct net_device *dst,
 }
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,13,0) */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0)
+/**
+ * ether_addr_equal_64bits - Compare two Ethernet addresses
+ * @addr1: Pointer to an array of 8 bytes
+ * @addr2: Pointer to an other array of 8 bytes
+ *
+ * Compare two Ethernet addresses, returns true if equal, false otherwise.
+ *
+ * The function doesn't need any conditional branches and possibly uses
+ * word memory accesses on CPU allowing cheap unaligned memory reads.
+ * arrays = { byte1, byte2, byte3, byte4, byte5, byte6, pad1, pad2 }
+ *
+ * Please note that alignment of addr1 & addr2 are only guaranteed to be 16 bits.
+ */
+
+static inline bool ether_addr_equal_64bits(const u8 addr1[6+2],
+					   const u8 addr2[6+2])
+{
+#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) && BITS_PER_LONG == 64
+	u64 fold = (*(const u64 *)addr1) ^ (*(const u64 *)addr2);
+
+#ifdef __BIG_ENDIAN
+	return (fold >> 16) == 0;
+#else
+	return (fold << 16) == 0;
+#endif
+#else
+	return ether_addr_equal(addr1, addr2);
+#endif
+}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0) */
+
 #endif /* _BACKPORT_LINUX_ETHERDEVICE_H */

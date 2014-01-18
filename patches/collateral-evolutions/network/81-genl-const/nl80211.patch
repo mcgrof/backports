@@ -12,7 +12,7 @@
  			      struct genl_info *info);
  
  /* the netlink family */
-@@ -56,7 +56,7 @@ enum nl80211_multicast_groups {
+@@ -57,7 +57,7 @@ enum nl80211_multicast_groups {
  	NL80211_MCGRP_TESTMODE /* keep last - ifdef! */
  };
  
@@ -21,7 +21,7 @@
  	[NL80211_MCGRP_CONFIG] = { .name = "config", },
  	[NL80211_MCGRP_SCAN] = { .name = "scan", },
  	[NL80211_MCGRP_REGULATORY] = { .name = "regulatory", },
-@@ -9076,7 +9076,7 @@ EXPORT_SYMBOL_GPL(cfg80211_vendor_cmd_re
+@@ -9190,7 +9190,7 @@ static int nl80211_set_qos_map(struct sk
  #define NL80211_FLAG_NEED_WDEV_UP	(NL80211_FLAG_NEED_WDEV |\
  					 NL80211_FLAG_CHECK_NETDEV_UP)
  
@@ -30,7 +30,7 @@
  			    struct genl_info *info)
  {
  	struct cfg80211_registered_device *rdev;
-@@ -9145,7 +9145,7 @@ static int nl80211_pre_doit(const struct
+@@ -9259,7 +9259,7 @@ static int nl80211_pre_doit(const struct
  	return 0;
  }
  
@@ -39,7 +39,7 @@
  			      struct genl_info *info)
  {
  	if (info->user_ptr[1]) {
-@@ -9162,7 +9162,7 @@ static void nl80211_post_doit(const stru
+@@ -9276,7 +9276,7 @@ static void nl80211_post_doit(const stru
  		rtnl_unlock();
  }
  

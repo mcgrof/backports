@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/adm8211.c
 +++ b/drivers/net/wireless/adm8211.c
-@@ -1321,19 +1321,37 @@ static void adm8211_bss_info_changed(str
+@@ -1320,19 +1320,37 @@ static void adm8211_bss_info_changed(str
  }
  
  static u64 adm8211_prepare_multicast(struct ieee80211_hw *hw,

@@ -34,7 +34,7 @@
  	if (netif_running(netdev))
  		alx_reinit(alx);
  	return 0;
-@@ -1176,7 +1188,9 @@ static const struct net_device_ops alx_n
+@@ -1226,7 +1238,9 @@ static const struct net_device_ops alx_n
  	.ndo_change_mtu         = alx_change_mtu,
  	.ndo_do_ioctl           = alx_ioctl,
  	.ndo_tx_timeout         = alx_tx_timeout,
@@ -44,7 +44,7 @@
  #ifdef CONFIG_NET_POLL_CONTROLLER
  	.ndo_poll_controller    = alx_poll_controller,
  #endif
-@@ -1294,7 +1308,11 @@ static int alx_probe(struct pci_dev *pde
+@@ -1344,7 +1358,11 @@ static int alx_probe(struct pci_dev *pde
  		}
  	}
  

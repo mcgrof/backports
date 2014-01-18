@@ -1,14 +1,14 @@
 --- a/drivers/net/wireless/ath/main.c
 +++ b/drivers/net/wireless/ath/main.c
-@@ -59,6 +59,7 @@ struct sk_buff *ath_rxbuf_alloc(struct a
+@@ -67,6 +67,7 @@ bool ath_is_mybeacon(struct ath_common *
  }
- EXPORT_SYMBOL(ath_rxbuf_alloc);
+ EXPORT_SYMBOL(ath_is_mybeacon);
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
  void ath_printk(const char *level, const struct ath_common* common,
  		const char *fmt, ...)
  {
-@@ -78,4 +79,24 @@ void ath_printk(const char *level, const
+@@ -86,4 +87,24 @@ void ath_printk(const char *level, const
  
  	va_end(args);
  }

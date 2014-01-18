@@ -1,6 +1,6 @@
 --- a/drivers/media/v4l2-core/v4l2-dev.c
 +++ b/drivers/media/v4l2-core/v4l2-dev.c
-@@ -90,7 +90,12 @@ static struct attribute *video_device_at
+@@ -86,7 +86,12 @@ static struct attribute *video_device_at
  	&dev_attr_index.attr,
  	NULL,
  };
@@ -13,7 +13,7 @@
  
  /*
   *	Active devices
-@@ -225,7 +230,11 @@ static void v4l2_device_release(struct d
+@@ -221,7 +226,11 @@ static void v4l2_device_release(struct d
  
  static struct class video_class = {
  	.name = VIDEO_NAME,
@@ -25,7 +25,7 @@
  };
  
  struct video_device *video_devdata(struct file *file)
-@@ -999,6 +1008,7 @@ static int __init videodev_init(void)
+@@ -990,6 +999,7 @@ static int __init videodev_init(void)
  		return ret;
  	}
  

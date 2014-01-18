@@ -183,6 +183,12 @@ BCMA_DRIVER_GPIO 3.0
 BCMA_DRIVER_MIPS 3.3
 SSB_DRIVER_MIPS 3.3
 
+# the irq handler in the gpio driver uses 
+# irq_set_chip_and_handler_name() which gets exported starting with 
+# kernel 3.7. This code is only compiled if BCMA_DRIVER_GPIO and
+# BCMA_HOST_SOC are set.
+BCMA_HOST_SOC 3.7
+
 # rfkill-regulator uses a kernel header file
 # (rfkill-regulator.h) that we don't backport
 # right now, so make it depend on 3.0

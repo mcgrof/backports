@@ -1,0 +1,19 @@
+diff --git a/drivers/net/wireless/mwifiex/main.c b/drivers/net/wireless/mwifiex/main.c
+index 4d79761..8bd0316 100644
+--- a/drivers/net/wireless/mwifiex/main.c
++++ b/drivers/net/wireless/mwifiex/main.c
+@@ -746,9 +746,14 @@ static struct net_device_stats *mwifiex_
+ 	return &priv->stats;
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,13,0)
+ static u16
+ mwifiex_netdev_select_wmm_queue(struct net_device *dev, struct sk_buff *skb,
+ 				void *accel_priv)
++#else
++static u16
++mwifiex_netdev_select_wmm_queue(struct net_device *dev, struct sk_buff *skb)
++#endif
+ {
+ 	skb->priority = cfg80211_classify8021d(skb, NULL);
+ 	return mwifiex_1d_to_wmm_queue[skb->priority];

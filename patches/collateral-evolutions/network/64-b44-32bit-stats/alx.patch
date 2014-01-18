@@ -1,0 +1,36 @@
+diff --git a/drivers/net/ethernet/atheros/alx/main.c b/drivers/net/ethernet/atheros/alx/main.c
+index e92ffd6..78bf4f4 100644
+--- a/drivers/net/ethernet/atheros/alx/main.c
++++ b/drivers/net/ethernet/atheros/alx/main.c
+@@ -1180,11 +1180,19 @@ static void alx_poll_controller(struct n
+ }
+ #endif
+ 
++
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ static struct rtnl_link_stats64 *alx_get_stats64(struct net_device *dev,
+ 					struct rtnl_link_stats64 *net_stats)
++#else
++static struct net_device_stats *alx_get_stats(struct net_device *dev)
++#endif
+ {
+ 	struct alx_priv *alx = netdev_priv(dev);
+ 	struct alx_hw_stats *hw_stats = &alx->hw.stats;
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36))
++	struct net_device_stats *net_stats = &dev->stats;
++#endif
+ 
+ 	spin_lock(&alx->stats_lock);
+ 
+@@ -1233,7 +1241,11 @@ static const struct net_device_ops alx_n
+ 	.ndo_open               = alx_open,
+ 	.ndo_stop               = alx_stop,
+ 	.ndo_start_xmit         = alx_start_xmit,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	.ndo_get_stats64        = alx_get_stats64,
++#else
++	.ndo_get_stats		= alx_get_stats,
++#endif
+ 	.ndo_set_rx_mode        = alx_set_rx_mode,
+ 	.ndo_validate_addr      = eth_validate_addr,
+ 	.ndo_set_mac_address    = alx_set_mac_address,

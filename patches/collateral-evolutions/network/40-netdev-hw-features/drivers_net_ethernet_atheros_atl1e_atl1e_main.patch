@@ -1,6 +1,22 @@
 --- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
 +++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -399,6 +399,7 @@ static int atl1e_set_mac_addr(struct net
+@@ -313,6 +313,7 @@ static void atl1e_set_multi(struct net_d
+ 	}
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
+ static void __atl1e_rx_mode(netdev_features_t features, u32 *mac_ctrl_data)
+ {
+ 
+@@ -339,6 +340,7 @@ static void atl1e_rx_mode(struct net_dev
+ 	AT_WRITE_REG(&adapter->hw, REG_MAC_CTRL, mac_ctrl_data);
+ 	atl1e_irq_enable(adapter);
+ }
++#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)) */
+ 
+ 
+ static void __atl1e_vlan_mode(netdev_features_t features, u32 *mac_ctrl_data)
+@@ -399,6 +401,7 @@ static int atl1e_set_mac_addr(struct net
  	return 0;
  }
  
@@ -8,7 +24,7 @@
  static netdev_features_t atl1e_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -428,6 +429,7 @@ static int atl1e_set_features(struct net
+@@ -428,6 +431,7 @@ static int atl1e_set_features(struct net
  
  	return 0;
  }
@@ -16,7 +32,7 @@
  
  /**
   * atl1e_change_mtu - Change the Maximum Transfer Unit
-@@ -1987,7 +1989,11 @@ void atl1e_down(struct atl1e_adapter *ad
+@@ -1995,7 +1999,11 @@ void atl1e_down(struct atl1e_adapter *ad
  	 * reschedule our watchdog timer */
  	set_bit(__AT_DOWN, &adapter->flags);
  
@@ -28,7 +44,7 @@
  
  	/* reset MAC to disable all RX/TX */
  	atl1e_reset_hw(&adapter->hw);
-@@ -2257,8 +2263,10 @@ static const struct net_device_ops atl1e
+@@ -2265,8 +2273,10 @@ static const struct net_device_ops atl1e
  	.ndo_set_rx_mode	= atl1e_set_multi,
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl1e_set_mac_addr,
@@ -39,7 +55,7 @@
  	.ndo_change_mtu		= atl1e_change_mtu,
  	.ndo_do_ioctl		= atl1e_ioctl,
  	.ndo_tx_timeout		= atl1e_tx_timeout,
-@@ -2278,12 +2286,17 @@ static int atl1e_init_netdev(struct net_
+@@ -2286,12 +2296,17 @@ static int atl1e_init_netdev(struct net_
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1e_set_ethtool_ops(netdev);
  

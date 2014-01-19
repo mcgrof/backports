@@ -172,7 +172,7 @@ static inline void eth_hw_addr_inherit(struct net_device *dst,
  *
  * Please note that alignment of addr1 & addr2 are only guaranteed to be 16 bits.
  */
-
+#define ether_addr_equal_64bits LINUX_BACKPORT(ether_addr_equal_64bits)
 static inline bool ether_addr_equal_64bits(const u8 addr1[6+2],
 					   const u8 addr2[6+2])
 {
@@ -200,6 +200,7 @@ static inline bool ether_addr_equal_64bits(const u8 addr1[6+2],
  *
  * Please note: Use only when any Ethernet address may not be u16 aligned.
  */
+#define ether_addr_equal_unaligned LINUX_BACKPORT(ether_addr_equal_unaligned)
 static inline bool ether_addr_equal_unaligned(const u8 *addr1, const u8 *addr2)
 {
 #if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS)

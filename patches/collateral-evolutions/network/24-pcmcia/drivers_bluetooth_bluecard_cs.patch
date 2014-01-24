@@ -1,6 +1,6 @@
 --- a/drivers/bluetooth/bluecard_cs.c
 +++ b/drivers/bluetooth/bluecard_cs.c
-@@ -158,7 +158,12 @@ static void bluecard_detach(struct pcmci
+@@ -157,7 +157,12 @@ static void bluecard_detach(struct pcmci
  static void bluecard_activity_led_timeout(u_long arg)
  {
  	bluecard_info_t *info = (bluecard_info_t *)arg;
@@ -13,7 +13,7 @@
  
  	if (!test_bit(CARD_HAS_PCCARD_ID, &(info->hw_state)))
  		return;
-@@ -175,7 +180,11 @@ static void bluecard_activity_led_timeou
+@@ -174,7 +179,11 @@ static void bluecard_activity_led_timeou
  
  static void bluecard_enable_activity_led(bluecard_info_t *info)
  {
@@ -25,7 +25,7 @@
  
  	if (!test_bit(CARD_HAS_PCCARD_ID, &(info->hw_state)))
  		return;
-@@ -231,7 +240,11 @@ static void bluecard_write_wakeup(blueca
+@@ -230,7 +239,11 @@ static void bluecard_write_wakeup(blueca
  	}
  
  	do {
@@ -37,7 +37,7 @@
  		unsigned int offset;
  		unsigned char command;
  		unsigned long ready_bit;
-@@ -378,7 +391,11 @@ static void bluecard_receive(bluecard_in
+@@ -377,7 +390,11 @@ static void bluecard_receive(bluecard_in
  		return;
  	}
  
@@ -49,7 +49,7 @@
  
  	if (test_bit(XMIT_SENDING_READY, &(info->tx_state)))
  		bluecard_enable_activity_led(info);
-@@ -506,7 +523,11 @@ static irqreturn_t bluecard_interrupt(in
+@@ -505,7 +522,11 @@ static irqreturn_t bluecard_interrupt(in
  	if (!test_bit(CARD_READY, &(info->hw_state)))
  		return IRQ_HANDLED;
  
@@ -61,7 +61,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -628,7 +649,11 @@ static int bluecard_hci_open(struct hci_
+@@ -627,7 +648,11 @@ static int bluecard_hci_open(struct hci_
  		return 0;
  
  	if (test_bit(CARD_HAS_PCCARD_ID, &(info->hw_state))) {
@@ -73,7 +73,7 @@
  
  		/* Enable LED */
  		outb(0x08 | 0x20, iobase + 0x30);
-@@ -648,7 +673,11 @@ static int bluecard_hci_close(struct hci
+@@ -647,7 +672,11 @@ static int bluecard_hci_close(struct hci
  	bluecard_hci_flush(hdev);
  
  	if (test_bit(CARD_HAS_PCCARD_ID, &(info->hw_state))) {
@@ -85,7 +85,7 @@
  
  		/* Disable LED */
  		outb(0x00, iobase + 0x30);
-@@ -690,7 +719,11 @@ static int bluecard_hci_send_frame(struc
+@@ -689,7 +718,11 @@ static int bluecard_hci_send_frame(struc
  
  static int bluecard_open(bluecard_info_t *info)
  {
@@ -97,7 +97,7 @@
  	struct hci_dev *hdev;
  	unsigned char id;
  
-@@ -805,7 +838,11 @@ static int bluecard_open(bluecard_info_t
+@@ -804,7 +837,11 @@ static int bluecard_open(bluecard_info_t
  
  static int bluecard_close(bluecard_info_t *info)
  {
@@ -109,7 +109,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -840,7 +877,18 @@ static int bluecard_probe(struct pcmcia_
+@@ -839,7 +876,18 @@ static int bluecard_probe(struct pcmcia_
  	info->p_dev = link;
  	link->priv = info;
  
@@ -128,7 +128,7 @@
  
  	return bluecard_config(link);
  }
-@@ -857,15 +905,30 @@ static int bluecard_config(struct pcmcia
+@@ -856,15 +904,30 @@ static int bluecard_config(struct pcmcia
  	bluecard_info_t *info = link->priv;
  	int i, n;
  
@@ -159,7 +159,7 @@
  		if (i == 0)
  			break;
  	}
-@@ -873,9 +936,15 @@ static int bluecard_config(struct pcmcia
+@@ -872,9 +935,15 @@ static int bluecard_config(struct pcmcia
  	if (i != 0)
  		goto failed;
  
@@ -175,7 +175,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -913,7 +982,13 @@ MODULE_DEVICE_TABLE(pcmcia, bluecard_ids
+@@ -912,7 +981,13 @@ MODULE_DEVICE_TABLE(pcmcia, bluecard_ids
  
  static struct pcmcia_driver bluecard_driver = {
  	.owner		= THIS_MODULE,

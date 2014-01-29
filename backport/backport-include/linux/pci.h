@@ -178,6 +178,11 @@ bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
 	.subvendor = (subvend), .subdevice = (subdev)
 #endif /* PCI_DEVICE_SUB */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0)
+#define pci_sriov_set_totalvfs LINUX_BACKPORT(pci_sriov_set_totalvfs)
+int pci_sriov_set_totalvfs(struct pci_dev *dev, u16 numvfs);
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0) */
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
 /* Taken from drivers/pci/pci.h */
 struct pci_sriov {
@@ -211,5 +216,4 @@ static inline int pci_vfs_assigned(struct pci_dev *dev)
 #endif
 
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0) */
-
 #endif /* _BACKPORT_LINUX_PCI_H */

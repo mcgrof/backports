@@ -1,0 +1,57 @@
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index f2a5abf..dd878b6 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -207,7 +207,9 @@ static const struct dev_pm_ops igb_pm_op
+ };
+ #endif
+ static void igb_shutdown(struct pci_dev *);
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
+ static int igb_pci_sriov_configure(struct pci_dev *dev, int num_vfs);
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0) */
+ #ifdef CONFIG_IGB_DCA
+ static int igb_notify_dca(struct notifier_block *, unsigned long, void *);
+ static struct notifier_block dca_notifier = {
+@@ -249,7 +251,9 @@ static struct pci_driver igb_driver = {
+ 	.driver.pm = &igb_pm_ops,
+ #endif
+ 	.shutdown = igb_shutdown,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
+ 	.sriov_configure = igb_pci_sriov_configure,
++#endif
+ 	.err_handler = &igb_err_handler
+ };
+ 
+@@ -7519,6 +7523,7 @@ static int igb_sriov_reinit(struct pci_d
+ 	return 0;
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
+ static int igb_pci_disable_sriov(struct pci_dev *dev)
+ {
+ 	int err = igb_disable_sriov(dev);
+@@ -7528,6 +7533,7 @@ static int igb_pci_disable_sriov(struct
+ 
+ 	return err;
+ }
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0) */
+ 
+ static int igb_pci_enable_sriov(struct pci_dev *dev, int num_vfs)
+ {
+@@ -7545,6 +7551,8 @@ out:
+ }
+ 
+ #endif
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0)
+ static int igb_pci_sriov_configure(struct pci_dev *dev, int num_vfs)
+ {
+ #ifdef CONFIG_PCI_IOV
+@@ -7555,6 +7563,7 @@ static int igb_pci_sriov_configure(struc
+ #endif
+ 	return 0;
+ }
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0) */
+ 
+ #ifdef CONFIG_NET_POLL_CONTROLLER
+ /* Polling 'interrupt' - used by things like netconsole to send skbs

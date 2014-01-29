@@ -224,4 +224,13 @@ static inline void skb_queue_splice_tail(const struct sk_buff_head *list,
 		     skb = skb->next)
 #endif /* < 2.6.28 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
+#ifndef NETDEV_FRAG_PAGE_MAX_ORDER
+#define NETDEV_FRAG_PAGE_MAX_ORDER get_order(32768)
+#endif
+#ifndef NETDEV_FRAG_PAGE_MAX_SIZE
+#define NETDEV_FRAG_PAGE_MAX_SIZE  (PAGE_SIZE << NETDEV_FRAG_PAGE_MAX_ORDER)
+#endif
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0) */
+
 #endif /* __BACKPORT_SKBUFF_H */

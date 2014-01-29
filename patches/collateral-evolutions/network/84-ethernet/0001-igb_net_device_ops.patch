@@ -1,0 +1,56 @@
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 14ad4c7..f2a5abf 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -161,8 +161,13 @@ static int igb_ioctl(struct net_device *
+ static void igb_tx_timeout(struct net_device *);
+ static void igb_reset_task(struct work_struct *);
+ static void igb_vlan_mode(struct net_device *netdev, netdev_features_t features);
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
+ static int igb_vlan_rx_add_vid(struct net_device *, __be16, u16);
+ static int igb_vlan_rx_kill_vid(struct net_device *, __be16, u16);
++#else
++static int igb_vlan_rx_add_vid(struct net_device *, u16);
++static int igb_vlan_rx_kill_vid(struct net_device *, u16);
++#endif
+ static void igb_restore_vlan(struct igb_adapter *);
+ static void igb_rar_set_qsel(struct igb_adapter *, u8 *, u32 , u8);
+ static void igb_ping_all_vfs(struct igb_adapter *);
+@@ -7168,8 +7173,12 @@ static void igb_vlan_mode(struct net_dev
+ 	igb_rlpml_set(adapter);
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
+ static int igb_vlan_rx_add_vid(struct net_device *netdev,
+ 			       __be16 proto, u16 vid)
++#else
++static int igb_vlan_rx_add_vid(struct net_device *netdev, u16 vid)
++#endif
+ {
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
+ 	struct e1000_hw *hw = &adapter->hw;
+@@ -7186,8 +7195,12 @@ static int igb_vlan_rx_add_vid(struct ne
+ 	return 0;
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
+ static int igb_vlan_rx_kill_vid(struct net_device *netdev,
+ 				__be16 proto, u16 vid)
++#else
++static int igb_vlan_rx_kill_vid(struct net_device *netdev, u16 vid)
++#endif
+ {
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
+ 	struct e1000_hw *hw = &adapter->hw;
+@@ -7213,7 +7226,11 @@ static void igb_restore_vlan(struct igb_
+ 	igb_vlan_mode(adapter->netdev, adapter->netdev->features);
+ 
+ 	for_each_set_bit(vid, adapter->active_vlans, VLAN_N_VID)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
+ 		igb_vlan_rx_add_vid(adapter->netdev, htons(ETH_P_8021Q), vid);
++#else
++		igb_vlan_rx_add_vid(adapter->netdev, vid);
++#endif
+ }
+ 
+ int igb_set_spd_dplx(struct igb_adapter *adapter, u32 spd, u8 dplx)

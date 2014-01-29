@@ -42,6 +42,8 @@ BRCMFMAC 2.6.29
 # b44 depends on mdio_bus
 B44 2.6.28
 
+IGB 3.0
+
 WL_TI 2.6.30
 WLCORE 2.6.30
 # requires irq_modify_status() which was only exported in 3.0

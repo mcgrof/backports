@@ -1,0 +1,56 @@
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index 9767f11..3cf9600 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -2355,6 +2355,7 @@ static void igb_get_strings(struct net_d
+ 	}
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0)
+ static int igb_get_ts_info(struct net_device *dev,
+ 			   struct ethtool_ts_info *info)
+ {
+@@ -2410,6 +2411,7 @@ static int igb_get_ts_info(struct net_de
+ 		return -EOPNOTSUPP;
+ 	}
+ }
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0) */
+ 
+ static int igb_get_rss_hash_opts(struct igb_adapter *adapter,
+ 				 struct ethtool_rxnfc *cmd)
+@@ -2721,6 +2723,7 @@ static int igb_set_eee(struct net_device
+ }
+ #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0) */
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0)
+ static int igb_get_module_info(struct net_device *netdev,
+ 			       struct ethtool_modinfo *modinfo)
+ {
+@@ -2799,6 +2802,7 @@ static int igb_get_module_eeprom(struct
+ 
+ 	return 0;
+ }
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0) */
+ 
+ static int igb_ethtool_begin(struct net_device *netdev)
+ {
+@@ -3005,15 +3009,19 @@ static const struct ethtool_ops igb_etht
+ 	.get_ethtool_stats	= igb_get_ethtool_stats,
+ 	.get_coalesce		= igb_get_coalesce,
+ 	.set_coalesce		= igb_set_coalesce,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0)
+ 	.get_ts_info		= igb_get_ts_info,
++#endif
+ 	.get_rxnfc		= igb_get_rxnfc,
+ 	.set_rxnfc		= igb_set_rxnfc,
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)
+ 	.get_eee		= igb_get_eee,
+ 	.set_eee		= igb_set_eee,
+ #endif
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0)
+ 	.get_module_info	= igb_get_module_info,
+ 	.get_module_eeprom	= igb_get_module_eeprom,
++#endif
+ 	.get_rxfh_indir_size	= igb_get_rxfh_indir_size,
+ 	.get_rxfh_indir		= igb_get_rxfh_indir,
+ 	.set_rxfh_indir		= igb_set_rxfh_indir,

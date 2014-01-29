@@ -224,6 +224,27 @@ static inline void skb_queue_splice_tail(const struct sk_buff_head *list,
 		     skb = skb->next)
 #endif /* < 2.6.28 */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0)
+#define skb_frag_size_sub LINUX_BACKPORT(skb_frag_size_sub)
+static inline void skb_frag_size_sub(skb_frag_t *frag, int delta)
+{
+	frag->size -= delta;
+}
+
+/**
+ * skb_frag_address - gets the address of the data contained in a paged fragment
+ * @frag: the paged fragment buffer
+ *
+ * Returns the address of the data within @frag. The page must already
+ * be mapped.
+ */
+#define skb_frag_address LINUX_BACKPORT(skb_frag_address)
+static inline void *skb_frag_address(const skb_frag_t *frag)
+{
+	return page_address(skb_frag_page(frag)) + frag->page_offset;
+}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0) */
+
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0) && LINUX_VERSION_CODE < KERNEL_VERSION(3,6,0)
 /**
  *	__skb_alloc_pages - allocate pages for ps-rx on a skb and preserve pfmemalloc data

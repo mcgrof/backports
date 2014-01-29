@@ -178,6 +178,23 @@ bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
 	.subvendor = (subvend), .subdevice = (subdev)
 #endif /* PCI_DEVICE_SUB */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0)
+#define pci_dev_flags LINUX_BACKPORT(pci_dev_flags)
+#define PCI_DEV_FLAGS_MSI_INTX_DISABLE_BUG LINUX_BACKPORT(PCI_DEV_FLAGS_MSI_INTX_DISABLE_BUG)
+#define PCI_DEV_FLAGS_NO_D3 LINUX_BACKPORT(PCI_DEV_FLAGS_NO_D3)
+#define PCI_DEV_FLAGS_ASSIGNED LINUX_BACKPORT(PCI_DEV_FLAGS_ASSIGNED)
+enum pci_dev_flags {
+	/* INTX_DISABLE in PCI_COMMAND register disables MSI
+	 * generation too.
+	 */
+	PCI_DEV_FLAGS_MSI_INTX_DISABLE_BUG = (__force pci_dev_flags_t) 1,
+	/* Device configuration is irrevocably lost if disabled into D3 */
+	PCI_DEV_FLAGS_NO_D3 = (__force pci_dev_flags_t) 2,
+	/* Provide indication device is assigned by a Virtual Machine Manager */
+	PCI_DEV_FLAGS_ASSIGNED = (__force pci_dev_flags_t) 4,
+};
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0) */
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,8,0)
 #define pci_sriov_set_totalvfs LINUX_BACKPORT(pci_sriov_set_totalvfs)
 int pci_sriov_set_totalvfs(struct pci_dev *dev, u16 numvfs);

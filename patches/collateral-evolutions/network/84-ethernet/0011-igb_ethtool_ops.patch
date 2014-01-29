@@ -1,0 +1,31 @@
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index 5e519ce..9f61f1d 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -2413,6 +2413,7 @@ static int igb_get_ts_info(struct net_de
+ }
+ #endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0) */
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0)
+ static int igb_get_rss_hash_opts(struct igb_adapter *adapter,
+ 				 struct ethtool_rxnfc *cmd)
+ {
+@@ -2591,6 +2592,7 @@ static int igb_set_rxnfc(struct net_devi
+ 
+ 	return ret;
+ }
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0) */
+ 
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)
+ static int igb_get_eee(struct net_device *netdev, struct ethtool_eee *edata)
+@@ -3016,8 +3018,10 @@ static const struct ethtool_ops igb_etht
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0)
+ 	.get_ts_info		= igb_get_ts_info,
+ #endif
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0)
+ 	.get_rxnfc		= igb_get_rxnfc,
+ 	.set_rxnfc		= igb_set_rxnfc,
++#endif
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0)
+ 	.get_eee		= igb_get_eee,
+ 	.set_eee		= igb_set_eee,

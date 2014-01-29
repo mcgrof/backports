@@ -1,0 +1,49 @@
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index c3143da..05fd6f8 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -249,10 +249,12 @@ static int igb_get_settings(struct net_d
+ 	else
+ 		ecmd->eth_tp_mdix = ETH_TP_MDI_INVALID;
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
+ 	if (hw->phy.mdix == AUTO_ALL_MODES)
+ 		ecmd->eth_tp_mdix_ctrl = ETH_TP_MDI_AUTO;
+ 	else
+ 		ecmd->eth_tp_mdix_ctrl = hw->phy.mdix;
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0) */
+ 
+ 	return 0;
+ }
+@@ -271,6 +273,7 @@ static int igb_set_settings(struct net_d
+ 		return -EINVAL;
+ 	}
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
+ 	/* MDI setting is only allowed when autoneg enabled because
+ 	 * some hardware doesn't allow MDI setting when speed or
+ 	 * duplex is forced.
+@@ -285,6 +288,7 @@ static int igb_set_settings(struct net_d
+ 			return -EINVAL;
+ 		}
+ 	}
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0) */
+ 
+ 	while (test_and_set_bit(__IGB_RESETTING, &adapter->state))
+ 		msleep(1);
+@@ -328,6 +332,7 @@ static int igb_set_settings(struct net_d
+ 		}
+ 	}
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
+ 	/* MDI-X => 2; MDI => 1; Auto => 3 */
+ 	if (ecmd->eth_tp_mdix_ctrl) {
+ 		/* fix up the value for auto (3 => 0) as zero is mapped
+@@ -338,6 +343,7 @@ static int igb_set_settings(struct net_d
+ 		else
+ 			hw->phy.mdix = ecmd->eth_tp_mdix_ctrl;
+ 	}
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0) */
+ 
+ 	/* reset the link */
+ 	if (netif_running(adapter->netdev)) {

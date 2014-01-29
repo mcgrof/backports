@@ -1,0 +1,64 @@
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 37e6062..6bf0a88 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -164,10 +164,13 @@ static void igb_vlan_mode(struct net_dev
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
+ static int igb_vlan_rx_add_vid(struct net_device *, __be16, u16);
+ static int igb_vlan_rx_kill_vid(struct net_device *, __be16, u16);
+-#else
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0)
+ static int igb_vlan_rx_add_vid(struct net_device *, u16);
+ static int igb_vlan_rx_kill_vid(struct net_device *, u16);
+-#endif
++#else
++static void igb_vlan_rx_add_vid(struct net_device *, u16);
++static void igb_vlan_rx_kill_vid(struct net_device *, u16);
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0) */
+ static void igb_restore_vlan(struct igb_adapter *);
+ static void igb_rar_set_qsel(struct igb_adapter *, u8 *, u32 , u8);
+ static void igb_ping_all_vfs(struct igb_adapter *);
+@@ -7185,8 +7188,10 @@ static void igb_vlan_mode(struct net_dev
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
+ static int igb_vlan_rx_add_vid(struct net_device *netdev,
+ 			       __be16 proto, u16 vid)
+-#else
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0)
+ static int igb_vlan_rx_add_vid(struct net_device *netdev, u16 vid)
++#else
++static void igb_vlan_rx_add_vid(struct net_device *netdev, u16 vid)
+ #endif
+ {
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
+@@ -7201,15 +7206,19 @@ static int igb_vlan_rx_add_vid(struct ne
+ 
+ 	set_bit(vid, adapter->active_vlans);
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0)
+ 	return 0;
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0) */
+ }
+ 
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
+ static int igb_vlan_rx_kill_vid(struct net_device *netdev,
+ 				__be16 proto, u16 vid)
+-#else
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0)
+ static int igb_vlan_rx_kill_vid(struct net_device *netdev, u16 vid)
+-#endif
++#else
++static void igb_vlan_rx_kill_vid(struct net_device *netdev, u16 vid)
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0) */
+ {
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
+ 	struct e1000_hw *hw = &adapter->hw;
+@@ -7225,7 +7234,9 @@ static int igb_vlan_rx_kill_vid(struct n
+ 
+ 	clear_bit(vid, adapter->active_vlans);
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0)
+ 	return 0;
++#endif /* LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0) */
+ }
+ 
+ static void igb_restore_vlan(struct igb_adapter *adapter)

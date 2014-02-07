@@ -8,17 +8,23 @@
  static int hidp_get_raw_report(struct hid_device *hid,
  		unsigned char report_number,
  		unsigned char *data, size_t count,
-@@ -352,7 +353,9 @@ err:
+@@ -352,6 +353,7 @@ err:
  	mutex_unlock(&session->report_mutex);
  	return ret;
  }
 +#endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,38)) */
  
+ static int hidp_set_raw_report(struct hid_device *hid, unsigned char reportnum,
+ 			       unsigned char *data, size_t count,
+@@ -418,6 +420,7 @@ err:
+ 	return ret;
+ }
+ 
 +#if defined(CPTCFG_BACKPORT_OPTION_BT_SOCK_CREATE_NEEDS_KERN)
  static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count,
  		unsigned char report_type)
  {
-@@ -410,6 +413,16 @@ err:
+@@ -475,6 +478,16 @@ err:
  	mutex_unlock(&session->report_mutex);
  	return ret;
  }
@@ -33,9 +39,9 @@
 +}
 +#endif
  
- static void hidp_idle_timeout(unsigned long arg)
- {
-@@ -698,6 +711,87 @@ static void hidp_close(struct hid_device
+ static int hidp_raw_request(struct hid_device *hid, unsigned char reportnum,
+ 			    __u8 *buf, size_t len, unsigned char rtype,
+@@ -786,6 +799,87 @@ static void hidp_close(struct hid_device
  {
  }
  
@@ -123,7 +129,7 @@
  static int hidp_parse(struct hid_device *hid)
  {
  	struct hidp_session *session = hid->driver_data;
-@@ -775,7 +869,9 @@ static int hidp_setup_hid(struct hidp_se
+@@ -865,7 +959,9 @@ static int hidp_setup_hid(struct hidp_se
  	hid->dev.parent = &session->conn->hcon->dev;
  	hid->ll_driver = &hidp_hid_driver;
  
@@ -133,7 +139,7 @@
  	hid->hid_output_raw_report = hidp_output_raw_report;
  
  	/* True if device is blacklisted in drivers/hid/hid-core.c */
-@@ -793,6 +889,7 @@ fault:
+@@ -883,6 +979,7 @@ fault:
  
  	return err;
  }
@@ -141,7 +147,7 @@
  
  /* initialize session devices */
  static int hidp_session_dev_init(struct hidp_session *session,
-@@ -855,10 +952,17 @@ static int hidp_session_dev_add(struct h
+@@ -945,10 +1042,17 @@ static int hidp_session_dev_add(struct h
  /* remove HID/input devices from their bus systems */
  static void hidp_session_dev_del(struct hidp_session *session)
  {

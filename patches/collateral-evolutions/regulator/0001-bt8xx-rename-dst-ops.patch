@@ -3,7 +3,7 @@ names and another symbol from older kernels.
 
 --- a/drivers/media/pci/bt8xx/dst.c
 +++ b/drivers/media/pci/bt8xx/dst.c
-@@ -1543,7 +1543,7 @@ static int dst_send_burst(struct dvb_fro
+@@ -1544,7 +1544,7 @@ static int dst_send_burst(struct dvb_fro
  }
  
  
@@ -12,7 +12,7 @@ names and another symbol from older kernels.
  {
  	struct dst_state *state = fe->demodulator_priv;
  
-@@ -1706,7 +1706,7 @@ static int dst_get_frontend(struct dvb_f
+@@ -1707,7 +1707,7 @@ static int dst_get_frontend(struct dvb_f
  	return 0;
  }
  
@@ -21,7 +21,7 @@ names and another symbol from older kernels.
  {
  	struct dst_state *state = fe->demodulator_priv;
  	if (state->dst_ca) {
-@@ -1775,8 +1775,8 @@ static struct dvb_frontend_ops dst_dvbt_
+@@ -1776,8 +1776,8 @@ static struct dvb_frontend_ops dst_dvbt_
  			FE_CAN_GUARD_INTERVAL_AUTO
  	},
  
@@ -32,7 +32,7 @@ names and another symbol from older kernels.
  	.tune = dst_tune_frontend,
  	.set_frontend = dst_set_frontend,
  	.get_frontend = dst_get_frontend,
-@@ -1800,8 +1800,8 @@ static struct dvb_frontend_ops dst_dvbs_
+@@ -1801,8 +1801,8 @@ static struct dvb_frontend_ops dst_dvbs_
  		.caps = FE_CAN_FEC_AUTO | FE_CAN_QPSK
  	},
  
@@ -43,7 +43,7 @@ names and another symbol from older kernels.
  	.tune = dst_tune_frontend,
  	.set_frontend = dst_set_frontend,
  	.get_frontend = dst_get_frontend,
-@@ -1833,8 +1833,8 @@ static struct dvb_frontend_ops dst_dvbc_
+@@ -1834,8 +1834,8 @@ static struct dvb_frontend_ops dst_dvbc_
  			FE_CAN_QAM_256
  	},
  
@@ -54,7 +54,7 @@ names and another symbol from older kernels.
  	.tune = dst_tune_frontend,
  	.set_frontend = dst_set_frontend,
  	.get_frontend = dst_get_frontend,
-@@ -1856,8 +1856,8 @@ static struct dvb_frontend_ops dst_atsc_
+@@ -1857,8 +1857,8 @@ static struct dvb_frontend_ops dst_atsc_
  		.caps = FE_CAN_FEC_AUTO | FE_CAN_QAM_AUTO | FE_CAN_QAM_64 | FE_CAN_QAM_256 | FE_CAN_8VSB
  	},
  

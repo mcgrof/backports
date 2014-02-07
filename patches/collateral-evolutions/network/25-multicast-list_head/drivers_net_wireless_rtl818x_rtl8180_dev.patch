@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/rtl818x/rtl8180/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8180/dev.c
-@@ -817,10 +817,19 @@ static void rtl8180_bss_info_changed(str
+@@ -834,10 +834,19 @@ static void rtl8180_bss_info_changed(str
  	}
  }
  

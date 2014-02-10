@@ -9,8 +9,6 @@ obj-$(CPTCFG_BACKPORT_USERSEL_NET_SCH_CODEL) += sch_codel.o
 sch_fq_codel-y = sch_fq_codel_core.o flow_dissector.o
 obj-$(CPTCFG_BACKPORT_USERSEL_NET_SCH_FQ_CODEL) += sch_fq_codel.o
 
-obj-$(CPTCFG_BACKPORT_BUILD_CORDIC) += cordic.o
-
 # Compat kernel compatibility code
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_26) += compat-2.6.26.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_27) += compat-2.6.27.o

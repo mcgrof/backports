@@ -89,6 +89,8 @@ config BACKPORT_BUILD_CORDIC
 	depends on !CORDIC
 	default m if BACKPORT_CORDIC
 	default m if BACKPORT_USERSEL_BUILD_ALL
+	#module-name cordic
+	#c-file lib/cordic.c
 
 config BACKPORT_CORDIC
 	bool

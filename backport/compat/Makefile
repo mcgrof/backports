@@ -4,9 +4,6 @@ compat-y += main.o
 
 obj-$(CPTCFG_BACKPORT_BUILD_FW_LOADER) += compat_firmware_class.o
 
-sch_fq_codel-y = sch_fq_codel_core.o flow_dissector.o
-obj-$(CPTCFG_BACKPORT_USERSEL_NET_SCH_FQ_CODEL) += sch_fq_codel.o
-
 # Compat kernel compatibility code
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_26) += compat-2.6.26.o
 compat-$(CPTCFG_BACKPORT_KERNEL_2_6_27) += compat-2.6.27.o

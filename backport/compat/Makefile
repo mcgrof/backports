@@ -4,8 +4,6 @@ compat-y += main.o
 
 obj-$(CPTCFG_BACKPORT_BUILD_FW_LOADER) += compat_firmware_class.o
 
-obj-$(CPTCFG_BACKPORT_USERSEL_NET_SCH_CODEL) += sch_codel.o
-
 sch_fq_codel-y = sch_fq_codel_core.o flow_dissector.o
 obj-$(CPTCFG_BACKPORT_USERSEL_NET_SCH_FQ_CODEL) += sch_fq_codel.o
 

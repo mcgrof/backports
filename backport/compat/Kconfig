@@ -65,11 +65,13 @@ config BACKPORT_FW_LOADER
 	bool
 
 config BACKPORT_USERSEL_NET_SCH_CODEL
-	tristate "codel"
+	tristate "Controlled Delay AQM (CODEL)"
 	depends on m
 	depends on !BACKPORT_KERNEL_2_6_25
 	default m if NET_SCH_CODEL=n
 	default m if BACKPORT_USERSEL_BUILD_ALL
+	#module-name sch_codel
+	#c-file net/sched/sch_codel.c
 
 config BACKPORT_USERSEL_NET_SCH_FQ_CODEL
 	tristate "FQ codel"

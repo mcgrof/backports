@@ -8,7 +8,7 @@
  
  /*
   * This function prepares command to set/get RSSI information.
-@@ -1192,9 +1193,10 @@ static int mwifiex_cmd_cfg_data(struct m
+@@ -1430,9 +1431,10 @@ static int mwifiex_cmd_cfg_data(struct m
  	struct property *prop = data_buf;
  	u32 len;
  	u8 *data = (u8 *)cmd + S_DS_GEN;
@@ -20,7 +20,7 @@
  		len = prop->length;
  		ret = of_property_read_u8_array(adapter->dt_node, prop->name,
  						data, len);
-@@ -1202,6 +1204,9 @@ static int mwifiex_cmd_cfg_data(struct m
+@@ -1440,6 +1442,9 @@ static int mwifiex_cmd_cfg_data(struct m
  			return ret;
  		dev_dbg(adapter->dev,
  			"download cfg_data from device tree: %s\n", prop->name);

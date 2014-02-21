@@ -9,7 +9,7 @@
  	/* see nl-phy.c */
  	IEEE802154_DUMP(IEEE802154_LIST_PHY, ieee802154_list_phy,
  			ieee802154_dump_phy),
-@@ -125,7 +125,7 @@ static const struct genl_ops ieee8021154
+@@ -126,7 +126,7 @@ static const struct genl_ops ieee8021154
  			ieee802154_dump_iface),
  };
  

@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ath/wcn36xx/main.c
 +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1000,6 +1000,7 @@ static int wcn36xx_remove(struct platfor
+@@ -1062,6 +1062,7 @@ static int wcn36xx_remove(struct platfor
  
  	return 0;
  }
@@ -8,7 +8,7 @@
  static const struct platform_device_id wcn36xx_platform_id_table[] = {
  	{
  		.name = "wcn36xx",
-@@ -1008,6 +1009,7 @@ static const struct platform_device_id w
+@@ -1070,6 +1071,7 @@ static const struct platform_device_id w
  	{}
  };
  MODULE_DEVICE_TABLE(platform, wcn36xx_platform_id_table);
@@ -16,7 +16,7 @@
  
  static struct platform_driver wcn36xx_driver = {
  	.probe      = wcn36xx_probe,
-@@ -1016,7 +1018,9 @@ static struct platform_driver wcn36xx_dr
+@@ -1078,7 +1080,9 @@ static struct platform_driver wcn36xx_dr
  		.name   = "wcn36xx",
  		.owner  = THIS_MODULE,
  	},

@@ -1,6 +1,6 @@
 --- a/net/bluetooth/rfcomm/tty.c
 +++ b/net/bluetooth/rfcomm/tty.c
-@@ -796,7 +796,11 @@ static int rfcomm_tty_write_room(struct
+@@ -822,7 +822,11 @@ static int rfcomm_tty_write_room(struct
  	return room;
  }
  
@@ -12,7 +12,7 @@
  {
  	BT_DBG("tty %p cmd 0x%02x", tty, cmd);
  
-@@ -1045,7 +1049,11 @@ static void rfcomm_tty_hangup(struct tty
+@@ -1071,7 +1075,11 @@ static void rfcomm_tty_hangup(struct tty
  	tty_port_hangup(&dev->port);
  }
  
@@ -24,7 +24,7 @@
  {
  	struct rfcomm_dev *dev = (struct rfcomm_dev *) tty->driver_data;
  
-@@ -1054,7 +1062,11 @@ static int rfcomm_tty_tiocmget(struct tt
+@@ -1080,7 +1088,11 @@ static int rfcomm_tty_tiocmget(struct tt
  	return dev->modem_status;
  }
  

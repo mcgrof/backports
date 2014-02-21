@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ti/wl12xx/main.c
 +++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -1825,16 +1825,20 @@ out:
+@@ -1888,16 +1888,20 @@ out:
  	return wlcore_remove(pdev);
  }
  

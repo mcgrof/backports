@@ -1,6 +1,6 @@
 --- a/net/bluetooth/rfcomm/sock.c
 +++ b/net/bluetooth/rfcomm/sock.c
-@@ -305,8 +305,13 @@ static struct sock *rfcomm_sock_alloc(st
+@@ -310,8 +310,13 @@ static struct sock *rfcomm_sock_alloc(st
  	return sk;
  }
  
@@ -14,7 +14,7 @@
  {
  	struct sock *sk;
  
-@@ -675,7 +680,11 @@ static int rfcomm_sock_setsockopt_old(st
+@@ -681,7 +686,11 @@ static int rfcomm_sock_setsockopt_old(st
  	return err;
  }
  

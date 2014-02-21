@@ -1,6 +1,6 @@
 --- a/net/ieee802154/wpan-class.c
 +++ b/net/ieee802154/wpan-class.c
-@@ -77,7 +77,12 @@ static struct attribute *pmib_attrs[] =
+@@ -75,7 +75,12 @@ static struct attribute *pmib_attrs[] =
  	&dev_attr_cca_mode.attr,
  	NULL,
  };
@@ -13,7 +13,7 @@
  
  static void wpan_phy_release(struct device *d)
  {
-@@ -88,7 +93,11 @@ static void wpan_phy_release(struct devi
+@@ -86,7 +91,11 @@ static void wpan_phy_release(struct devi
  static struct class wpan_phy_class = {
  	.name = "ieee802154",
  	.dev_release = wpan_phy_release,
@@ -25,7 +25,7 @@
  };
  
  static DEFINE_MUTEX(wpan_phy_mutex);
-@@ -199,6 +208,7 @@ EXPORT_SYMBOL(wpan_phy_free);
+@@ -203,6 +212,7 @@ EXPORT_SYMBOL(wpan_phy_free);
  static int __init wpan_phy_class_init(void)
  {
  	int rc;

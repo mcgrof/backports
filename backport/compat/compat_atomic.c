@@ -7,25 +7,25 @@ static DEFINE_SPINLOCK(lock);
 
 long long atomic64_read(const atomic64_t *v)
 {
-    unsigned long flags;
-    long long val;
+	unsigned long flags;
+	long long val;
 
-    spin_lock_irqsave(&lock, flags);
-    val = v->counter;
-    spin_unlock_irqrestore(&lock, flags);
-    return val;
+	spin_lock_irqsave(&lock, flags);
+	val = v->counter;
+	spin_unlock_irqrestore(&lock, flags);
+	return val;
 }
 EXPORT_SYMBOL_GPL(atomic64_read);
 
 long long atomic64_add_return(long long a, atomic64_t *v)
 {
-    unsigned long flags;
-    long long val;
+	unsigned long flags;
+	long long val;
 
-    spin_lock_irqsave(&lock, flags);
-    val = v->counter += a;
-    spin_unlock_irqrestore(&lock, flags);
-    return val;
+	spin_lock_irqsave(&lock, flags);
+	val = v->counter += a;
+	spin_unlock_irqrestore(&lock, flags);
+	return val;
 }
 EXPORT_SYMBOL_GPL(atomic64_add_return);
 

@@ -1,0 +1,24 @@
+diff --git a/net/ieee802154/6lowpan.c b/net/ieee802154/6lowpan.c
+index 8edfea5..04f18ab 100644
+--- a/net/ieee802154/6lowpan.c
++++ b/net/ieee802154/6lowpan.c
+@@ -530,7 +530,9 @@ static struct header_ops lowpan_header_o
+ 	.create	= lowpan_header_create,
+ };
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
+ static struct lock_class_key lowpan_tx_busylock;
++#endif
+ static struct lock_class_key lowpan_netdev_xmit_lock_key;
+ 
+ static void lowpan_set_lockdep_class_one(struct net_device *dev,
+@@ -545,7 +547,9 @@ static void lowpan_set_lockdep_class_one
+ static int lowpan_dev_init(struct net_device *dev)
+ {
+ 	netdev_for_each_tx_queue(dev, lowpan_set_lockdep_class_one, NULL);
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
+ 	dev->qdisc_tx_busylock = &lowpan_tx_busylock;
++#endif
+ 	return 0;
+ }
+ 

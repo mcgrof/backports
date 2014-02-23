@@ -46,6 +46,21 @@ static inline int of_property_read_u8_array(const struct device_node *np,
 #endif /* CONFIG_OF */
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0) */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0)
+#define of_property_read_u32_index LINUX_BACKPORT(of_property_read_u32_index)
+#ifdef CONFIG_OF
+extern int of_property_read_u32_index(const struct device_node *np,
+				       const char *propname,
+				       u32 index, u32 *out_value);
+#else
+static inline int of_property_read_u32_index(const struct device_node *np,
+			const char *propname, u32 index, u32 *out_value)
+{
+	return -ENOSYS;
+}
+#endif /* CONFIG_OF */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,10,0) */
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,15,0)
 #define of_property_count_elems_of_size LINUX_BACKPORT(of_property_count_elems_of_size)
 #ifdef CONFIG_OF

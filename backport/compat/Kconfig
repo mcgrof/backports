@@ -175,3 +175,12 @@ config BACKPORT_USERSEL_BUILD_ALL
 
 	  It's only really useful for compat testing, so
 	  you probably shouldn't enable it.
+
+config BACKPORT_CRYPTO_CCM
+	bool
+
+config BACKPORT_BUILD_CRYPTO_CCM
+	bool
+	default n if CRYPTO_CCM
+	default y if BACKPORT_CRYPTO_CCM
+	#c-file crypto/ccm.c

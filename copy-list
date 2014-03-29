@@ -191,3 +191,9 @@ include/linux/spi/at86rf230.h
 net/ieee802154/
 net/mac802154/
 drivers/net/ieee802154/
+
+# MPLS labels, checked on skb->protocol on the
+# respective 802 family, only ethernet seems to use
+# this right now, see 960d97f95
+include/linux/mpls.h
+include/uapi/linux/mpls.h

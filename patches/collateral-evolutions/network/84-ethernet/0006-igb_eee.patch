@@ -2,7 +2,7 @@ diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet
 index 9b15820..9767f11 100644
 --- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
 +++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -2590,6 +2590,7 @@ static int igb_set_rxnfc(struct net_devi
+@@ -2589,6 +2589,7 @@ static int igb_set_rxnfc(struct net_devi
  	return ret;
  }
  
@@ -10,7 +10,7 @@ index 9b15820..9767f11 100644
  static int igb_get_eee(struct net_device *netdev, struct ethtool_eee *edata)
  {
  	struct igb_adapter *adapter = netdev_priv(netdev);
-@@ -2718,6 +2719,7 @@ static int igb_set_eee(struct net_device
+@@ -2717,6 +2718,7 @@ static int igb_set_eee(struct net_device
  
  	return 0;
  }
@@ -18,7 +18,7 @@ index 9b15820..9767f11 100644
  
  static int igb_get_module_info(struct net_device *netdev,
  			       struct ethtool_modinfo *modinfo)
-@@ -3006,8 +3008,10 @@ static const struct ethtool_ops igb_etht
+@@ -3005,8 +3007,10 @@ static const struct ethtool_ops igb_etht
  	.get_ts_info		= igb_get_ts_info,
  	.get_rxnfc		= igb_get_rxnfc,
  	.set_rxnfc		= igb_set_rxnfc,

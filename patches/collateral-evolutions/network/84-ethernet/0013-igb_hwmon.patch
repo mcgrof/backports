@@ -2,7 +2,7 @@ diff --git a/drivers/net/ethernet/intel/igb/igb_hwmon.c b/drivers/net/ethernet/i
 index fdf2b82..99507de 100644
 --- a/drivers/net/ethernet/intel/igb/igb_hwmon.c
 +++ b/drivers/net/ethernet/intel/igb/igb_hwmon.c
-@@ -177,7 +177,9 @@ int igb_sysfs_init(struct igb_adapter *a
+@@ -176,7 +176,9 @@ int igb_sysfs_init(struct igb_adapter *a
  {
  	struct hwmon_buff *igb_hwmon;
  	struct i2c_client *client;
@@ -12,7 +12,7 @@ index fdf2b82..99507de 100644
  	unsigned int i;
  	int rc = 0;
  
-@@ -234,6 +236,7 @@ int igb_sysfs_init(struct igb_adapter *a
+@@ -233,6 +235,7 @@ int igb_sysfs_init(struct igb_adapter *a
  	igb_hwmon->groups[0] = &igb_hwmon->group;
  	igb_hwmon->group.attrs = igb_hwmon->attrs;
  
@@ -20,7 +20,7 @@ index fdf2b82..99507de 100644
  	hwmon_dev = devm_hwmon_device_register_with_groups(&adapter->pdev->dev,
  							   client->name,
  							   igb_hwmon,
-@@ -246,6 +249,7 @@ int igb_sysfs_init(struct igb_adapter *a
+@@ -245,6 +248,7 @@ int igb_sysfs_init(struct igb_adapter *a
  	goto exit;
  
  err:

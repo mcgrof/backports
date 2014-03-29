@@ -21,7 +21,7 @@
  	[NL80211_MCGRP_CONFIG] = { .name = "config", },
  	[NL80211_MCGRP_SCAN] = { .name = "scan", },
  	[NL80211_MCGRP_REGULATORY] = { .name = "regulatory", },
-@@ -9259,7 +9259,7 @@ static int nl80211_set_qos_map(struct sk
+@@ -9270,7 +9270,7 @@ static int nl80211_set_qos_map(struct sk
  #define NL80211_FLAG_NEED_WDEV_UP	(NL80211_FLAG_NEED_WDEV |\
  					 NL80211_FLAG_CHECK_NETDEV_UP)
  
@@ -30,7 +30,7 @@
  			    struct genl_info *info)
  {
  	struct cfg80211_registered_device *rdev;
-@@ -9328,7 +9328,7 @@ static int nl80211_pre_doit(const struct
+@@ -9339,7 +9339,7 @@ static int nl80211_pre_doit(const struct
  	return 0;
  }
  
@@ -39,7 +39,7 @@
  			      struct genl_info *info)
  {
  	if (info->user_ptr[1]) {
-@@ -9345,7 +9345,7 @@ static void nl80211_post_doit(const stru
+@@ -9356,7 +9356,7 @@ static void nl80211_post_doit(const stru
  		rtnl_unlock();
  }
  

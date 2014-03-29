@@ -2,7 +2,7 @@ diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/in
 index 14ad4c7..f2a5abf 100644
 --- a/drivers/net/ethernet/intel/igb/igb_main.c
 +++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -161,8 +161,13 @@ static int igb_ioctl(struct net_device *
+@@ -160,8 +160,13 @@ static int igb_ioctl(struct net_device *
  static void igb_tx_timeout(struct net_device *);
  static void igb_reset_task(struct work_struct *);
  static void igb_vlan_mode(struct net_device *netdev, netdev_features_t features);
@@ -16,7 +16,7 @@ index 14ad4c7..f2a5abf 100644
  static void igb_restore_vlan(struct igb_adapter *);
  static void igb_rar_set_qsel(struct igb_adapter *, u8 *, u32 , u8);
  static void igb_ping_all_vfs(struct igb_adapter *);
-@@ -7169,8 +7174,12 @@ static void igb_vlan_mode(struct net_dev
+@@ -7168,8 +7173,12 @@ static void igb_vlan_mode(struct net_dev
  	igb_rlpml_set(adapter);
  }
  
@@ -29,7 +29,7 @@ index 14ad4c7..f2a5abf 100644
  {
  	struct igb_adapter *adapter = netdev_priv(netdev);
  	struct e1000_hw *hw = &adapter->hw;
-@@ -7187,8 +7196,12 @@ static int igb_vlan_rx_add_vid(struct ne
+@@ -7186,8 +7195,12 @@ static int igb_vlan_rx_add_vid(struct ne
  	return 0;
  }
  
@@ -42,7 +42,7 @@ index 14ad4c7..f2a5abf 100644
  {
  	struct igb_adapter *adapter = netdev_priv(netdev);
  	struct e1000_hw *hw = &adapter->hw;
-@@ -7214,7 +7227,11 @@ static void igb_restore_vlan(struct igb_
+@@ -7213,7 +7226,11 @@ static void igb_restore_vlan(struct igb_
  	igb_vlan_mode(adapter->netdev, adapter->netdev->features);
  
  	for_each_set_bit(vid, adapter->active_vlans, VLAN_N_VID)

@@ -2,7 +2,7 @@ diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/in
 index 35ac7d8..e609f71 100644
 --- a/drivers/net/ethernet/intel/igb/igb_main.c
 +++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -182,8 +182,10 @@ static int igb_ndo_set_vf_mac(struct net
+@@ -181,8 +181,10 @@ static int igb_ndo_set_vf_mac(struct net
  static int igb_ndo_set_vf_vlan(struct net_device *netdev,
  			       int vf, u16 vlan, u8 qos);
  static int igb_ndo_set_vf_bw(struct net_device *netdev, int vf, int tx_rate);
@@ -13,7 +13,7 @@ index 35ac7d8..e609f71 100644
  static int igb_ndo_get_vf_config(struct net_device *netdev, int vf,
  				 struct ifla_vf_info *ivi);
  static void igb_check_vf_rate_limit(struct igb_adapter *);
-@@ -2057,7 +2059,9 @@ static const struct net_device_ops igb_n
+@@ -2056,7 +2058,9 @@ static const struct net_device_ops igb_n
  	.ndo_set_vf_mac		= igb_ndo_set_vf_mac,
  	.ndo_set_vf_vlan	= igb_ndo_set_vf_vlan,
  	.ndo_set_vf_tx_rate	= igb_ndo_set_vf_bw,
@@ -23,7 +23,7 @@ index 35ac7d8..e609f71 100644
  	.ndo_get_vf_config	= igb_ndo_get_vf_config,
  #ifdef CONFIG_NET_POLL_CONTROLLER
  	.ndo_poll_controller	= igb_netpoll,
-@@ -7855,6 +7859,7 @@ static int igb_ndo_set_vf_bw(struct net_
+@@ -7854,6 +7858,7 @@ static int igb_ndo_set_vf_bw(struct net_
  	return 0;
  }
  
@@ -31,7 +31,7 @@ index 35ac7d8..e609f71 100644
  static int igb_ndo_set_vf_spoofchk(struct net_device *netdev, int vf,
  				   bool setting)
  {
-@@ -7881,6 +7886,7 @@ static int igb_ndo_set_vf_spoofchk(struc
+@@ -7880,6 +7885,7 @@ static int igb_ndo_set_vf_spoofchk(struc
  	adapter->vf_data[vf].spoofchk_enabled = setting;
  	return E1000_SUCCESS;
  }
@@ -39,7 +39,7 @@ index 35ac7d8..e609f71 100644
  
  static int igb_ndo_get_vf_config(struct net_device *netdev,
  				 int vf, struct ifla_vf_info *ivi)
-@@ -7893,7 +7899,9 @@ static int igb_ndo_get_vf_config(struct
+@@ -7892,7 +7898,9 @@ static int igb_ndo_get_vf_config(struct
  	ivi->tx_rate = adapter->vf_data[vf].tx_rate;
  	ivi->vlan = adapter->vf_data[vf].pf_vlan;
  	ivi->qos = adapter->vf_data[vf].pf_qos;

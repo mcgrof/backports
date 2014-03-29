@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/mwifiex/sdio.c
 +++ b/drivers/net/wireless/mwifiex/sdio.c
-@@ -111,6 +111,7 @@ mwifiex_sdio_probe(struct sdio_func *fun
+@@ -112,6 +112,7 @@ mwifiex_sdio_probe(struct sdio_func *fun
  	return ret;
  }
  
@@ -8,7 +8,7 @@
  /*
   * SDIO resume.
   *
-@@ -155,6 +156,7 @@ static int mwifiex_sdio_resume(struct de
+@@ -156,6 +157,7 @@ static int mwifiex_sdio_resume(struct de
  
  	return 0;
  }
@@ -25,9 +25,9 @@
  			mwifiex_sdio_resume(adapter->dev);
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34)) */
  
- 		for (i = 0; i < adapter->priv_num; i++)
- 			if ((GET_BSS_ROLE(adapter->priv[i]) ==
-@@ -200,6 +204,7 @@ mwifiex_sdio_remove(struct sdio_func *fu
+ 		mwifiex_deauthenticate_all(adapter);
+ 
+@@ -196,6 +200,7 @@ mwifiex_sdio_remove(struct sdio_func *fu
  	mwifiex_remove_card(card->adapter, &add_remove_card_sem);
  }
  
@@ -35,7 +35,7 @@
  /*
   * SDIO suspend.
   *
-@@ -254,6 +259,7 @@ static int mwifiex_sdio_suspend(struct d
+@@ -250,6 +255,7 @@ static int mwifiex_sdio_suspend(struct d
  
  	return ret;
  }
@@ -43,7 +43,7 @@
  
  /* Device ID for SD8786 */
  #define SDIO_DEVICE_ID_MARVELL_8786   (0x9116)
-@@ -279,10 +285,12 @@ static const struct sdio_device_id mwifi
+@@ -275,10 +281,12 @@ static const struct sdio_device_id mwifi
  
  MODULE_DEVICE_TABLE(sdio, mwifiex_ids);
  
@@ -56,7 +56,7 @@
  
  static struct sdio_driver mwifiex_sdio = {
  	.name = "mwifiex_sdio",
-@@ -291,7 +299,9 @@ static struct sdio_driver mwifiex_sdio =
+@@ -287,7 +295,9 @@ static struct sdio_driver mwifiex_sdio =
  	.remove = mwifiex_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,

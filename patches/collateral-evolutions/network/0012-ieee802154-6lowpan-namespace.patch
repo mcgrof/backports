@@ -16,7 +16,7 @@ idea yet.
  
  	lowpan_expire_frag_queue(fq, &lowpan_frags);
  }
-@@ -386,28 +390,44 @@ EXPORT_SYMBOL(lowpan_frag_rcv);
+@@ -390,28 +394,44 @@ EXPORT_SYMBOL(lowpan_frag_rcv);
  static struct ctl_table lowpan_frags_ns_ctl_table[] = {
  	{
  		.procname	= "6lowpanfrag_high_thresh",

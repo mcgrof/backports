@@ -12,7 +12,7 @@
  		register struct sk_buff *skb;
  		int len;
  
-@@ -209,7 +213,11 @@ static void dtl1_receive(dtl1_info_t *in
+@@ -210,7 +214,11 @@ static void dtl1_receive(dtl1_info_t *in
  		return;
  	}
  
@@ -24,7 +24,7 @@
  
  	do {
  		info->hdev->stat.byte_rx++;
-@@ -295,7 +303,11 @@ static irqreturn_t dtl1_interrupt(int ir
+@@ -298,7 +306,11 @@ static irqreturn_t dtl1_interrupt(int ir
  		/* our irq handler is shared */
  		return IRQ_NONE;
  
@@ -36,7 +36,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -436,7 +448,11 @@ static int dtl1_hci_send_frame(struct hc
+@@ -439,7 +451,11 @@ static int dtl1_hci_send_frame(struct hc
  static int dtl1_open(dtl1_info_t *info)
  {
  	unsigned long flags;
@@ -48,7 +48,7 @@
  	struct hci_dev *hdev;
  
  	spin_lock_init(&(info->lock));
-@@ -479,8 +495,13 @@ static int dtl1_open(dtl1_info_t *info)
+@@ -482,8 +498,13 @@ static int dtl1_open(dtl1_info_t *info)
  	outb(UART_LCR_WLEN8, iobase + UART_LCR);	/* Reset DLAB */
  	outb((UART_MCR_DTR | UART_MCR_RTS | UART_MCR_OUT2), iobase + UART_MCR);
  
@@ -62,7 +62,7 @@
  
  	/* Turn on interrupts */
  	outb(UART_IER_RLSI | UART_IER_RDI | UART_IER_THRI, iobase + UART_IER);
-@@ -505,7 +526,11 @@ static int dtl1_open(dtl1_info_t *info)
+@@ -508,7 +529,11 @@ static int dtl1_open(dtl1_info_t *info)
  static int dtl1_close(dtl1_info_t *info)
  {
  	unsigned long flags;
@@ -74,7 +74,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -541,7 +566,24 @@ static int dtl1_probe(struct pcmcia_devi
+@@ -544,7 +569,24 @@ static int dtl1_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -99,7 +99,7 @@
  
  	return dtl1_config(link);
  }
-@@ -555,6 +597,7 @@ static void dtl1_detach(struct pcmcia_de
+@@ -558,6 +600,7 @@ static void dtl1_detach(struct pcmcia_de
  	pcmcia_disable_device(link);
  }
  
@@ -107,7 +107,7 @@
  static int dtl1_confcheck(struct pcmcia_device *p_dev, void *priv_data)
  {
  	if ((p_dev->resource[1]->end) || (p_dev->resource[1]->end < 8))
-@@ -565,6 +608,29 @@ static int dtl1_confcheck(struct pcmcia_
+@@ -568,6 +611,29 @@ static int dtl1_confcheck(struct pcmcia_
  
  	return pcmcia_request_io(p_dev);
  }
@@ -137,7 +137,7 @@
  
  static int dtl1_config(struct pcmcia_device *link)
  {
-@@ -572,14 +638,24 @@ static int dtl1_config(struct pcmcia_dev
+@@ -575,14 +641,24 @@ static int dtl1_config(struct pcmcia_dev
  	int ret;
  
  	/* Look for a generic full-sized window */
@@ -162,7 +162,7 @@
  
  	ret = pcmcia_enable_device(link);
  	if (ret)
-@@ -607,7 +683,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
+@@ -610,7 +686,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
  
  static struct pcmcia_driver dtl1_driver = {
  	.owner		= THIS_MODULE,

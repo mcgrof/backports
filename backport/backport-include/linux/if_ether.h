@@ -2,6 +2,11 @@
 #define __BACKPORT_IF_ETHER_H
 #include_next <linux/if_ether.h>
 
+/* See commit b62faf3c in next-20140311 */
+#ifndef ETH_P_80221
+#define ETH_P_80221	0x8917	/* IEEE 802.21 Media Independent Handover Protocol */
+#endif
+
 /*
  * backport of:
  * commit e5c5d22e8dcf7c2d430336cbf8e180bd38e8daf1

@@ -10,6 +10,13 @@
  * 2.6.27		had broken tracing
  * 2.6.28-2.6.32	didn't have anything like DECLARE_EVENT_CLASS
  *			and faking it would be extremely difficult
+ * 2.6.37		moved to using jump labels
+ * 3.0			static branch optimiziations through d430d3d7e
+ * 3.3			Ingo splits up static key from jump labels,
+ *                      Note that git sees this as in v3.5 though!
+ * 3.5                  We can start relying on the static_key.h file
+ * 3.13			static_key_initialized() STATIC_KEY_CHECK_USE()
+ * 			added via commit c4b2c0c5f
  */
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
 /*

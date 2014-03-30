@@ -170,6 +170,15 @@ USB_GSPCA DISABLE
 VIDEO_MXB DISABLE
 VIDEO_RENESAS_VSP1 3.6
 
+# Drivers that depend on I2C bus segments behind multiplexers to
+# have a clas, see eee543e8. This requires quite a bit of collateral,
+# folks involved in this and who want it can backport if it they wish.
+# This was added as of 3.7. Although we should be able to only enable
+# this for 3.7 DVB_USB_RTL28XXU ends up selecting DVB_RTL2832 and
+# that seems to currently require pegging both.
+DVB_RTL2832 3.7
+DVB_USB_RTL28XXU 3.7
+
 # struct gpio_chip only got the required members in 2.6.28
 BCMA_DRIVER_GPIO 2.6.28
 SSB_DRIVER_GPIO 2.6.28

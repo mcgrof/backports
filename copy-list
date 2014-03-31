@@ -181,6 +181,7 @@ include/linux/platform_data/vsp1.h
 include/linux/platform_data/camera-rcar.h
 
 include/net/6lowpan.h
+include/net/netns/ieee802154_6lowpan.h
 include/net/nl802154.h
 include/net/mac802154.h
 include/net/ieee802154.h

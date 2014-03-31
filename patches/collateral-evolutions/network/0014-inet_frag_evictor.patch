@@ -1,0 +1,20 @@
+We can't backport this with a macro or inline helper, so just
+carry the patch and if this grows consider Coccinelle SmPL version.
+
+--- a/net/ieee802154/reassembly.c
++++ b/net/ieee802154/reassembly.c
+@@ -374,7 +374,14 @@ int lowpan_frag_rcv(struct sk_buff *skb,
+ 	if (frag_info->d_size > ieee802154_lowpan->max_dsize)
+ 		goto err;
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,7,0)
+ 	inet_frag_evictor(&ieee802154_lowpan->frags, &lowpan_frags, false);
++#else
++	if (atomic_read(&ieee802154_lowpan->frags.mem) <= &ieee802154_lowpan->frags.high_thresh)
++		return 0;
++	else
++		inet_frag_evictor(&ieee802154_lowpan->frags, &lowpan_frags);
++#endif
+ 
+ 	fq = fq_find(net, frag_info, &mac_cb(skb)->sa, &mac_cb(skb)->da);
+ 	if (fq != NULL) {

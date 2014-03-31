@@ -2,10 +2,8 @@
 #define _COMPAT_NET_NET_NAMESPACE_H 1
 
 #include <linux/version.h>
-
-#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,23))
+#include <net/netns/ieee802154_6lowpan.h>
 #include_next <net/net_namespace.h>
-#endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,23)) */
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)
 #ifdef CONFIG_NET_NS
@@ -59,5 +57,23 @@ struct net *sock_net(const struct sock *sk)
 #endif
 }
 #endif /* < 2.6.26 */
+
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,15,0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
+/*
+ * we provide backport for 6lowpan as per the dependencies file
+ * down to 3.5 only.
+ */
+extern struct netns_ieee802154_lowpan ieee802154_lowpan;
+struct netns_ieee802154_lowpan *net_ieee802154_lowpan(struct net *net);
+#endif
+#else
+/* This can be removed once and if this gets upstream */
+static inline struct netns_ieee802154_lowpan *
+net_ieee802154_lowpan(struct net *net)
+{
+	return &net->ieee802154_lowpan;
+}
+#endif
 
 #endif	/* _COMPAT_NET_NET_NAMESPACE_H */

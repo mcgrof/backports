@@ -14,6 +14,7 @@ from lib import kconfig, patch, make
 from lib import bpgit as git
 from lib import bpgpg as gpg
 from lib import bpkup as kup
+from lib import bpcoccinelle as coccinelle
 from lib.tempdir import tempdir
 
 def read_copy_list(copyfile):
@@ -699,24 +700,13 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
             if args.verbose:
                 logwrite("Applying patch %s" % print_name)
 
-            process = subprocess.Popen(['spatch', '--sp-file', cocci_file, '--in-place',
-                                        '--backup-suffix', '.cocci_backup', '--dir', '.'],
-                                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                       close_fds=True, universal_newlines=True,
-                                       cwd=args.outdir)
-            output = process.communicate()[0]
+            output = coccinelle.threaded_spatch(cocci_file, args.outdir, logwrite, print_name)
             output = output.split('\n')
             if output[-1] == '':
                 output = output[:-1]
             if args.verbose:
                 for line in output:
                     logwrite('> %s' % line)
-            if process.returncode != 0:
-                if not args.verbose:
-                    logwrite("Failed to apply changes from %s" % print_name)
-                    for line in output:
-                        logwrite('> %s' % line)
-                return 2
 
             # remove cocci_backup files
             for root, dirs, files in os.walk(args.outdir):

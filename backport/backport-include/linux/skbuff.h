@@ -300,4 +300,15 @@ static inline struct page *__skb_alloc_page(gfp_t gfp_mask,
 #endif
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0) */
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0)
+#define skb_unclone LINUX_BACKPORT(skb_unclone)
+static inline int skb_unclone(struct sk_buff *skb, gfp_t pri)
+{
+	might_sleep_if(pri & __GFP_WAIT);
+	if (skb_cloned(skb))
+		return pskb_expand_head(skb, 0, 0, pri);
+       return 0;
+}
+#endif
+
 #endif /* __BACKPORT_SKBUFF_H */

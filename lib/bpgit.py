@@ -142,7 +142,7 @@ def init(tree=None):
     _check(process)
 
 def add(path, tree=None):
-    process = subprocess.Popen(['git', 'add', path],
+    process = subprocess.Popen(['git', 'add', '--ignore-removal', path],
                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                close_fds=True, universal_newlines=True, cwd=tree)
     stdout = process.communicate()[0]
@@ -266,7 +266,7 @@ def ls_remote(branch, tree=None, remote='origin'):
     return sha
 
 def add(fn, tree=None):
-    process = subprocess.Popen(['git', 'add', fn], cwd=tree,
+    process = subprocess.Popen(['git', 'add', '--ignore-removal', fn], cwd=tree,
                                close_fds=True, universal_newlines=True)
     process.wait()
     _check(process)

@@ -52,9 +52,11 @@ def spatch(cocci_file, outdir,
     outfile.close()
     ret_q.put((sprocess.returncode, fn))
 
-def threaded_spatch(cocci_file, outdir, logwrite, print_name):
+def threaded_spatch(cocci_file, outdir, logwrite, print_name, test_cocci):
     num_cpus = cpu_count()
     threads = num_cpus * 3
+    if test_cocci:
+        threads = num_cpus * 10
     jobs = list()
     output = ''
     ret_q = Queue()

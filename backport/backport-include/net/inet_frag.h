@@ -34,6 +34,11 @@ static inline int sum_frag_mem_limit(struct netns_frags *nf)
 {
 	return atomic_read(&nf->mem);
 }
+
+#define inet_frag_maybe_warn_overflow LINUX_BACKPORT(inet_frag_maybe_warn_overflow)
+void inet_frag_maybe_warn_overflow(struct inet_frag_queue *q,
+				   const char *prefix);
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,9,0) */
+
 
 #endif /* __BACKPORT__NET_FRAG_H__ */

@@ -328,3 +328,15 @@ def reset(opts=[], tree=None):
                                close_fds=True, universal_newlines=True, cwd=tree)
     process.wait()
     _check(process)
+
+def diff(tree=None, extra_args=None):
+    cmd = ['git', 'diff', '--color=always'] + extra_args
+
+    process = subprocess.Popen(cmd,
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                               close_fds=True, universal_newlines=True, cwd=tree)
+    stdout = process.communicate()[0]
+    process.wait()
+    _check(process)
+
+    return stdout

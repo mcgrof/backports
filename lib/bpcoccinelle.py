@@ -52,7 +52,8 @@ def spatch(cocci_file, outdir,
     outfile.close()
     ret_q.put((sprocess.returncode, fn))
 
-def threaded_spatch(cocci_file, outdir, logwrite, print_name, test_cocci):
+def threaded_spatch(cocci_file, outdir, logwrite, print_name,
+                    test_cocci, extra_args=[]):
     num_cpus = cpu_count()
     threads = num_cpus * 3
     if test_cocci:
@@ -64,7 +65,8 @@ def threaded_spatch(cocci_file, outdir, logwrite, print_name, test_cocci):
 
         for num in range(threads):
             p = Process(target=spatch, args=(cocci_file, outdir,
-                                             threads, num, t, ret_q))
+                                             threads, num, t, ret_q,
+                                             extra_args))
             jobs.append(p)
         for p in jobs:
             p.start()

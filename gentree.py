@@ -478,6 +478,10 @@ def _main():
                         help='Only use the cocci file passed for Coccinelle, don\'t do anything else, ' +
                              'also creates a git repo on the target directory for easy inspection ' +
                              'of changes done by Coccinelle.')
+    parser.add_argument('--profile-cocci', metavar='<sp_file>', type=str, default=None,
+                        help='Only use the cocci file passed and pass --profile  to Coccinelle, ' +
+                             'also creates a git repo on the target directory for easy inspection ' +
+                             'of changes done by Coccinelle.')
     args = parser.parse_args()
 
     def logwrite(msg):
@@ -493,6 +497,7 @@ def _main():
                    kup=args.kup,
                    kup_test=args.kup_test,
                    test_cocci=args.test_cocci,
+                   profile_cocci=args.profile_cocci,
                    logwrite=logwrite)
 
 def process(kerneldir, outdir, copy_list_file, git_revision=None,
@@ -500,6 +505,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
             verbose=False, extra_driver=[], kup=False,
             kup_test=False,
             test_cocci=None,
+            profile_cocci=None,
             logwrite=lambda x:None,
             git_tracked_version=False):
     class Args(object):
@@ -507,7 +513,8 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
                      git_revision, clean, refresh, base_name,
                      gitdebug, verbose, extra_driver, kup,
                      kup_test,
-                     test_cocci):
+                     test_cocci,
+                     profile_cocci):
             self.kerneldir = kerneldir
             self.outdir = outdir
             self.copy_list = copy_list_file
@@ -521,7 +528,8 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
             self.kup = kup
             self.kup_test = kup_test
             self.test_cocci = test_cocci
-            if self.test_cocci:
+            self.profile_cocci = profile_cocci
+            if self.test_cocci or self.profile_cocci:
                 self.gitdebug = True
     def git_paranoia(tree=None, logwrite=lambda x:None):
         data = git.paranoia(tree)
@@ -535,7 +543,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     args = Args(kerneldir, outdir, copy_list_file,
                 git_revision, clean, refresh, base_name,
                 gitdebug, verbose, extra_driver, kup, kup_test,
-                test_cocci)
+                test_cocci, profile_cocci)
     rel_prep = None
 
     # start processing ...
@@ -605,8 +613,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         bpcfg.disable_symbols(disable_list)
     git_debug_snapshot(args, 'Add automatic backports')
 
-    # Extend with other tests for Coccinelle
-    test_cocci = args.test_cocci
+    test_cocci = args.test_cocci or args.profile_cocci
 
     logwrite('Apply patches ...')
     patches = []
@@ -621,6 +628,8 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
                         continue
                     if args.test_cocci:
                         logwrite("Testing Coccinelle SmPL patch: %s" % test_cocci)
+                    elif args.profile_cocci:
+                        logwrite("Profiling Coccinelle SmPL patch: %s" % test_cocci)
                 sempatches.append(os.path.join(root, f))
     patches.sort()
     prefix_len = len(os.path.join(source_dir, 'patches')) + 1
@@ -715,13 +724,17 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         else:
             prefix_len = len(os.path.join(source_dir, 'patches')) + 1
         for cocci_file in sempatches:
+            extra_spatch_args = []
+            if args.profile_cocci:
+                extra_spatch_args.append('--profile')
             print_name = cocci_file[prefix_len:]
             if args.verbose:
                 logwrite("Applying SmPL patch %s" % print_name)
 
             output = coccinelle.threaded_spatch(cocci_file, args.outdir,
                                                 logwrite, print_name,
-                                                test_cocci)
+                                                test_cocci,
+                                                extra_args=extra_spatch_args)
             output = output.split('\n')
             if output[-1] == '':
                 output = output[:-1]

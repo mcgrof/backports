@@ -1,0 +1,21 @@
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -6080,6 +6080,10 @@ static void wlcore_nvs_cb(const struct f
+ 	wl->irq = platform_get_irq(pdev, 0);
+ 	wl->platform_quirks = pdata->platform_quirks;
+ 	wl->if_ops = pdev_data->if_ops;
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
++	irqflags = IRQF_TRIGGER_RISING;
++	hardirq_fn = wlcore_hardirq;
++#else
+ 
+ 	if (wl->platform_quirks & WL12XX_PLATFORM_QUIRK_EDGE_IRQ) {
+ 		irqflags = IRQF_TRIGGER_RISING;
+@@ -6087,6 +6091,7 @@ static void wlcore_nvs_cb(const struct f
+ 	} else {
+ 		irqflags = IRQF_TRIGGER_HIGH | IRQF_ONESHOT;
+ 	}
++#endif
+ 
+ 	ret = request_threaded_irq(wl->irq, hardirq_fn, wlcore_irq,
+ 				   irqflags, pdev->name, wl);

@@ -25,7 +25,7 @@
  };
  
  struct video_device *video_devdata(struct file *file)
-@@ -1012,6 +1021,7 @@ static int __init videodev_init(void)
+@@ -1014,6 +1023,7 @@ static int __init videodev_init(void)
  		return ret;
  	}
  

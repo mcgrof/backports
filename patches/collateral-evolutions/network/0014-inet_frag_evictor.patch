@@ -3,7 +3,7 @@ carry the patch and if this grows consider Coccinelle SmPL version.
 
 --- a/net/ieee802154/reassembly.c
 +++ b/net/ieee802154/reassembly.c
-@@ -374,7 +374,14 @@ int lowpan_frag_rcv(struct sk_buff *skb,
+@@ -380,7 +380,14 @@ int lowpan_frag_rcv(struct sk_buff *skb,
  	if (frag_info->d_size > ieee802154_lowpan->max_dsize)
  		goto err;
  
@@ -16,5 +16,5 @@ carry the patch and if this grows consider Coccinelle SmPL version.
 +		inet_frag_evictor(&ieee802154_lowpan->frags, &lowpan_frags);
 +#endif
  
- 	fq = fq_find(net, frag_info, &mac_cb(skb)->sa, &mac_cb(skb)->da);
+ 	fq = fq_find(net, frag_info, &source, &dest);
  	if (fq != NULL) {

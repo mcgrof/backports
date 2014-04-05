@@ -10,7 +10,7 @@ index 9b15820..9767f11 100644
  static int igb_get_eee(struct net_device *netdev, struct ethtool_eee *edata)
  {
  	struct igb_adapter *adapter = netdev_priv(netdev);
-@@ -2717,6 +2718,7 @@ static int igb_set_eee(struct net_device
+@@ -2730,6 +2731,7 @@ static int igb_set_eee(struct net_device
  
  	return 0;
  }
@@ -18,7 +18,7 @@ index 9b15820..9767f11 100644
  
  static int igb_get_module_info(struct net_device *netdev,
  			       struct ethtool_modinfo *modinfo)
-@@ -3005,8 +3007,10 @@ static const struct ethtool_ops igb_etht
+@@ -3018,8 +3020,10 @@ static const struct ethtool_ops igb_etht
  	.get_ts_info		= igb_get_ts_info,
  	.get_rxnfc		= igb_get_rxnfc,
  	.set_rxnfc		= igb_set_rxnfc,

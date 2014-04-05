@@ -94,7 +94,7 @@
  	    nla_put_u32(skb, TCA_FQ_CODEL_INTERVAL,
  			codel_time_to_us(q->cparams.interval)) ||
  	    nla_put_u32(skb, TCA_FQ_CODEL_ECN,
-@@ -599,7 +630,9 @@ static struct Qdisc_ops fq_codel_qdisc_o
+@@ -598,7 +629,9 @@ static struct Qdisc_ops fq_codel_qdisc_o
  	.priv_size	=	sizeof(struct fq_codel_sched_data),
  	.enqueue	=	fq_codel_enqueue,
  	.dequeue	=	fq_codel_dequeue,

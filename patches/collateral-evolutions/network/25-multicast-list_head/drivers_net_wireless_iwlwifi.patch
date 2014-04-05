@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/iwlwifi/mvm/mac80211.c
 +++ b/drivers/net/wireless/iwlwifi/mvm/mac80211.c
-@@ -952,12 +952,21 @@ static void iwl_mvm_recalc_multicast(str
+@@ -1029,12 +1029,21 @@ static void iwl_mvm_recalc_multicast(str
  }
  
  static u64 iwl_mvm_prepare_multicast(struct ieee80211_hw *hw,
@@ -22,7 +22,7 @@
  	bool pass_all = false;
  	int len;
  
-@@ -976,11 +985,15 @@ static u64 iwl_mvm_prepare_multicast(str
+@@ -1053,11 +1062,15 @@ static u64 iwl_mvm_prepare_multicast(str
  		return (u64)(unsigned long)cmd;
  	}
  

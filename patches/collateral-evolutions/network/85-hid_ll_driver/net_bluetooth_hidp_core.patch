@@ -16,15 +16,15 @@
  
  static int hidp_set_raw_report(struct hid_device *hid, unsigned char reportnum,
  			       unsigned char *data, size_t count,
-@@ -394,6 +396,7 @@ static int hidp_output_raw_report(struct
- 	return hidp_set_raw_report(hid, data[0], data, count, report_type);
+@@ -382,6 +384,7 @@ static int hidp_output_report(struct hid
+ 				      data, count);
  }
  
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,15,0)
  static int hidp_raw_request(struct hid_device *hid, unsigned char reportnum,
  			    __u8 *buf, size_t len, unsigned char rtype,
  			    int reqtype)
-@@ -407,6 +410,7 @@ static int hidp_raw_request(struct hid_d
+@@ -395,6 +398,7 @@ static int hidp_raw_request(struct hid_d
  		return -EIO;
  	}
  }
@@ -32,7 +32,7 @@
  
  static void hidp_idle_timeout(unsigned long arg)
  {
-@@ -736,8 +740,10 @@ static struct hid_ll_driver hidp_hid_dri
+@@ -724,8 +728,10 @@ static struct hid_ll_driver hidp_hid_dri
  	.stop = hidp_stop,
  	.open  = hidp_open,
  	.close = hidp_close,

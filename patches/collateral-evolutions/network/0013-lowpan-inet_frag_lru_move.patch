@@ -4,7 +4,7 @@ and then domain specific inet_frag_lru_move() define.
 
 --- a/net/ieee802154/reassembly.c
 +++ b/net/ieee802154/reassembly.c
-@@ -81,6 +81,9 @@ void lowpan_frag_init(struct inet_frag_q
+@@ -91,6 +91,9 @@ static void lowpan_frag_init(struct inet
  	fq->d_size = arg->d_size;
  	fq->saddr = *arg->src;
  	fq->daddr = *arg->dst;
@@ -12,8 +12,8 @@ and then domain specific inet_frag_lru_move() define.
 +	spin_lock_init(&fq->lru_lock);
 +#endif
  }
- EXPORT_SYMBOL(lowpan_frag_init);
  
+ static void lowpan_frag_expire(unsigned long data)
 --- a/net/ieee802154/reassembly.h
 +++ b/net/ieee802154/reassembly.h
 @@ -2,6 +2,7 @@
@@ -56,4 +56,4 @@ and then domain specific inet_frag_lru_move() define.
 +
  static inline u32 ieee802154_addr_hash(const struct ieee802154_addr *a)
  {
- 	switch (a->addr_type) {
+ 	switch (a->mode) {

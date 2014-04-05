@@ -4,7 +4,7 @@ idea yet.
 
 --- a/net/ieee802154/reassembly.c
 +++ b/net/ieee802154/reassembly.c
-@@ -104,7 +104,11 @@ static void lowpan_frag_expire(unsigned
+@@ -99,7 +99,11 @@ static void lowpan_frag_expire(unsigned
  	struct net *net;
  
  	fq = container_of((struct inet_frag_queue *)data, struct frag_queue, q);
@@ -14,9 +14,9 @@ idea yet.
 +	net = &init_net;
 +#endif
  
- 	lowpan_expire_frag_queue(fq, &lowpan_frags);
- }
-@@ -390,28 +394,44 @@ EXPORT_SYMBOL(lowpan_frag_rcv);
+ 	spin_lock(&fq->q.lock);
+ 
+@@ -396,28 +400,44 @@ EXPORT_SYMBOL(lowpan_frag_rcv);
  static struct ctl_table lowpan_frags_ns_ctl_table[] = {
  	{
  		.procname	= "6lowpanfrag_high_thresh",

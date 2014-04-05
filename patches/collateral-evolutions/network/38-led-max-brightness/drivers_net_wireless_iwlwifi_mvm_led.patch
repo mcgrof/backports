@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/iwlwifi/mvm/led.c
 +++ b/drivers/net/wireless/iwlwifi/mvm/led.c
-@@ -108,7 +108,9 @@ int iwl_mvm_leds_init(struct iwl_mvm *mv
+@@ -110,7 +110,9 @@ int iwl_mvm_leds_init(struct iwl_mvm *mv
  	mvm->led.name = kasprintf(GFP_KERNEL, "%s-led",
  				   wiphy_name(mvm->hw->wiphy));
  	mvm->led.brightness_set = iwl_led_brightness_set;

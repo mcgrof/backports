@@ -14,15 +14,9 @@ with no code changes.
 
 Cc:Alexander Aring <alex.aring@gmail.com>
 Signed-off-by: Luis R. Rodriguez <mcgrof@suse.com>
----
-diff --git a/net/ieee802154/reassembly.c b/net/ieee802154/reassembly.c
-index f4ac957..0bcbef3 100644
--- 
-1.9.0
-
 --- a/net/ieee802154/reassembly.c
 +++ b/net/ieee802154/reassembly.c
-@@ -116,6 +116,8 @@ fq_find(struct net *net, const struct ie
+@@ -120,6 +120,8 @@ fq_find(struct net *net, const struct lo
  	struct inet_frag_queue *q;
  	struct lowpan_create_arg arg;
  	unsigned int hash;
@@ -31,7 +25,7 @@ index f4ac957..0bcbef3 100644
  
  	arg.tag = frag_info->d_tag;
  	arg.d_size = frag_info->d_size;
-@@ -125,7 +127,7 @@ fq_find(struct net *net, const struct ie
+@@ -129,7 +131,7 @@ fq_find(struct net *net, const struct lo
  	read_lock(&lowpan_frags.lock);
  	hash = lowpan_hash_frag(frag_info->d_tag, frag_info->d_size, src, dst);
  
@@ -40,15 +34,16 @@ index f4ac957..0bcbef3 100644
  			   &lowpan_frags, &arg, hash);
  	if (IS_ERR_OR_NULL(q)) {
  		inet_frag_maybe_warn_overflow(q, pr_fmt());
-@@ -354,16 +356,18 @@ int lowpan_frag_rcv(struct sk_buff *skb,
- 	struct lowpan_frag_queue *fq;
+@@ -357,6 +359,8 @@ int lowpan_frag_rcv(struct sk_buff *skb,
  	struct net *net = dev_net(skb->dev);
- 	struct ieee802154_frag_info *frag_info = &mac_cb(skb)->frag_info;
+ 	struct lowpan_frag_info *frag_info = lowpan_cb(skb);
+ 	struct ieee802154_addr source, dest;
 +	struct netns_ieee802154_lowpan *ieee802154_lowpan =
 +		net_ieee802154_lowpan(net);
  	int err;
  
- 	err = lowpan_get_frag_info(skb, frag_type, frag_info);
+ 	source = mac_cb(skb)->source;
+@@ -366,10 +370,10 @@ int lowpan_frag_rcv(struct sk_buff *skb,
  	if (err < 0)
  		goto err;
  
@@ -59,9 +54,9 @@ index f4ac957..0bcbef3 100644
 -	inet_frag_evictor(&net->ieee802154_lowpan.frags, &lowpan_frags, false);
 +	inet_frag_evictor(&ieee802154_lowpan->frags, &lowpan_frags, false);
  
- 	fq = fq_find(net, frag_info, &mac_cb(skb)->sa, &mac_cb(skb)->da);
+ 	fq = fq_find(net, frag_info, &source, &dest);
  	if (fq != NULL) {
-@@ -430,6 +434,8 @@ static int __net_init lowpan_frags_ns_sy
+@@ -436,6 +440,8 @@ static int __net_init lowpan_frags_ns_sy
  {
  	struct ctl_table *table;
  	struct ctl_table_header *hdr;
@@ -70,7 +65,7 @@ index f4ac957..0bcbef3 100644
  
  	table = lowpan_frags_ns_ctl_table;
  	if (!net_eq(net, &init_net)) {
-@@ -438,10 +444,10 @@ static int __net_init lowpan_frags_ns_sy
+@@ -444,10 +450,10 @@ static int __net_init lowpan_frags_ns_sy
  		if (table == NULL)
  			goto err_alloc;
  
@@ -85,7 +80,7 @@ index f4ac957..0bcbef3 100644
  
  		/* Don't export sysctls to unprivileged users */
  		if (net->user_ns != &init_user_ns)
-@@ -452,7 +458,7 @@ static int __net_init lowpan_frags_ns_sy
+@@ -458,7 +464,7 @@ static int __net_init lowpan_frags_ns_sy
  	if (hdr == NULL)
  		goto err_reg;
  
@@ -94,7 +89,7 @@ index f4ac957..0bcbef3 100644
  	return 0;
  
  err_reg:
-@@ -465,9 +471,11 @@ err_alloc:
+@@ -471,9 +477,11 @@ err_alloc:
  static void __net_exit lowpan_frags_ns_sysctl_unregister(struct net *net)
  {
  	struct ctl_table *table;
@@ -108,7 +103,7 @@ index f4ac957..0bcbef3 100644
  	if (!net_eq(net, &init_net))
  		kfree(table);
  }
-@@ -508,20 +516,26 @@ static inline void lowpan_frags_sysctl_u
+@@ -514,20 +522,26 @@ static inline void lowpan_frags_sysctl_u
  
  static int __net_init lowpan_frags_init_net(struct net *net)
  {

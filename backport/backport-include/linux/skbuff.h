@@ -313,6 +313,18 @@ static inline int skb_unclone(struct sk_buff *skb, gfp_t pri)
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0)
 
+#define skb_frag_size_set LINUX_BACKPORT(skb_frag_size_set)
+static inline void skb_frag_size_set(skb_frag_t *frag, unsigned int size)
+{
+	frag->size = size;
+}
+
+#define skb_frag_size_add LINUX_BACKPORT(skb_frag_size_add)
+static inline void skb_frag_size_add(skb_frag_t *frag, int delta)
+{
+	frag->size += delta;
+}
+
 #define __skb_fill_page_desc LINUX_BACKPORT(__skb_fill_page_desc)
 /**
  * __skb_fill_page_desc - initialise a paged fragment in an skb

@@ -20,6 +20,46 @@ struct inet6_dev;
  */
 #include <linux/hardirq.h>
 
+/* d1c76af9e */
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)
+enum { /* backport: provide the enum name already */
+	GRO_MERGED,
+	GRO_MERGED_FREE,
+	GRO_HELD,
+	GRO_NORMAL,
+	GRO_DROP,
+};
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30) */
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,33)
+
+/*
+ * We can count on the enum definitions being present so
+ * but since we cannot dedeclare the enum but we have to
+ * peg the typedef to a similar enum we can just use the
+ * same values and then use the #defines below to modify
+ * code for older kernels to use the new enum we define
+ * here. This works even for switch statements and gcc -Wall.
+ * This backports 5b252f0c2
+ */
+enum gro_result {
+	BACKPORT_GRO_MERGED 		= GRO_MERGED,
+	BACKPORT_GRO_MERGED_FREE 	= GRO_MERGED_FREE,
+	BACKPORT_GRO_HELD 		= GRO_HELD,
+	BACKPORT_GRO_NORMAL		= GRO_NORMAL,
+	BACKPORT_GRO_DROP		= GRO_DROP,
+};
+
+#define GRO_MERGED	BACKPORT_GRO_MERGED
+#define GRO_MERGED_FREE	BACKPORT_GRO_MERGED_FREE
+#define GRO_HELD	BACKPORT_GRO_HELD
+#define GRO_NORMAL	BACKPORT_GRO_NORMAL
+#define GRO_DROP	BACKPORT_GRO_DROP
+
+typedef enum gro_result gro_result_t;
+
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0) */
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
 #define dev_change_net_namespace(a, b, c) (-EOPNOTSUPP)
 

@@ -185,8 +185,13 @@ VIDEO_RENESAS_VSP1 3.6
 # This was added as of 3.7. Although we should be able to only enable
 # this for 3.7 DVB_USB_RTL28XXU ends up selecting DVB_RTL2832 and
 # that seems to currently require pegging both.
-DVB_RTL2832 3.7
-DVB_USB_RTL28XXU 3.7
+#
+# DVB_USB_RTL28XXU has a nasty ccflag usage thoug that includes staging
+# headers introduced via commit bcf43393:
+# ccflags-y += -I$(srctree)/drivers/staging/media/rtl2832u_sdr
+# Let's not support this nastiness.
+DVB_RTL2832 DISABLE
+DVB_USB_RTL28XXU DISABLE
 
 # struct gpio_chip only got the required members in 2.6.28
 BCMA_DRIVER_GPIO 2.6.28

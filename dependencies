@@ -241,6 +241,11 @@ BT_HIDP 2.6.33
 # only introduced in kernel 3.1
 NFC 3.1
 
+# requires devm_gpio_request_one() added but since
+# gpio infrastructure has been strongly shuffled around
+# we require drivers to use the in-kernel gptio infrastructure
+NFC_TRF7970A 3.5
+
 INTEL_IPS 3.2
 
 NFC_MEI_PHY 3.10

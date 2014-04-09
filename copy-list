@@ -163,7 +163,6 @@ drivers/regulator/
 include/media/
 
 include/linux/videodev2.h
-include/linux/video_output.h
 
 include/uapi/linux/media.h
 include/uapi/linux/dvb/

@@ -20,6 +20,68 @@ struct inet6_dev;
  */
 #include <linux/hardirq.h>
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0)
+/*
+ * Backports note: if in-kernel support is provided we could then just
+ * take the kernel's implementation of __dev_kfree_skb_irq() as it requires
+ * raise_softirq_irqoff() which is not exported. For the backport case we
+ * just use slightly less optimized version and we don't get the ability
+ * to distinguish the two different reasons to free the skb -- whether it
+ * was consumed or dropped.
+ *
+ * The upstream documentation for this:
+ *
+ * It is not allowed to call kfree_skb() or consume_skb() from hardware
+ * interrupt context or with hardware interrupts being disabled.
+ * (in_irq() || irqs_disabled())
+ *
+ * We provide four helpers that can be used in following contexts :
+ *
+ * dev_kfree_skb_irq(skb) when caller drops a packet from irq context,
+ *  replacing kfree_skb(skb)
+ *
+ * dev_consume_skb_irq(skb) when caller consumes a packet from irq context.
+ *  Typically used in place of consume_skb(skb) in TX completion path
+ *
+ * dev_kfree_skb_any(skb) when caller doesn't know its current irq context,
+ *  replacing kfree_skb(skb)
+ *
+ * dev_consume_skb_any(skb) when caller doesn't know its current irq context,
+ *  and consumed a packet. Used in place of consume_skb(skb)
+ */
+#define skb_free_reason LINUX_BACKPORT(skb_free_reason)
+enum skb_free_reason {
+	SKB_REASON_CONSUMED,
+	SKB_REASON_DROPPED,
+};
+
+#define __dev_kfree_skb_irq LINUX_BACKPORT(__dev_kfree_skb_irq)
+static inline void __dev_kfree_skb_irq(struct sk_buff *skb,
+				       enum skb_free_reason reason)
+{
+	dev_kfree_skb_irq(skb);
+}
+
+#define __dev_kfree_skb_any LINUX_BACKPORT(__dev_kfree_skb_any)
+static inline void __dev_kfree_skb_any(struct sk_buff *skb,
+				       enum skb_free_reason reason)
+{
+	dev_kfree_skb_any(skb);
+}
+
+#define dev_consume_skb_irq LINUX_BACKPORT(dev_consume_skb_irq)
+static inline void dev_consume_skb_irq(struct sk_buff *skb)
+{
+	dev_kfree_skb_irq(skb);
+}
+
+#define dev_consume_skb_any LINUX_BACKPORT(dev_consume_skb_any)
+static inline void dev_consume_skb_any(struct sk_buff *skb)
+{
+	dev_kfree_skb_any(skb);
+}
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0) */
+
 /* d1c76af9e */
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)
 enum { /* backport: provide the enum name already */

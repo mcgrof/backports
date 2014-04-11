@@ -1,2 +1,0 @@
-__sock_create() is not available on kernel version < 2.6.37.
-

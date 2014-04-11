@@ -1,0 +1,10 @@
+This series needs work, each atomic patch backport requirements needs to be
+split out atomically into either an existing matching series under
+
+patches/collateral-evolutions/network/
+patches/collateral-evolutions/generic/
+
+Or a new series for either of them needs to be created, each change must
+document the original patch that introduced the change that incurred the
+backport being peformed, and the respective kernel in which it was introduced
+which can be obtained by 'git describe --contains sha1sum'.

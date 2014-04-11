@@ -1,57 +1,13 @@
 # List the minimum kernel version required for each
 # of the listed Kconfig symbols
 
-# platform_get_device_id()
-ATH9K_AHB 2.6.30
-BT 2.6.27
-BT_RFCOMM_TTY 2.6.33
-BT_HIDP 2.6.28
-BT_WILINK 2.6.39
-
-MAC80211_HWSIM 2.6.31
-
-ATH6KL 2.6.27
-
-WIL6210 2.6.31
-ATH10K 2.6.30
-
 ATL1C 3.5
-ATL1E 2.6.26
-ALX 2.6.31
-
-LIBERTAS 2.6.27
-LIBERTAS_THINFIRM 2.6.27
-LIBERTAS_SDIO 2.6.32
-
-ZD1211RW 2.6.29
-
-USB_NET_RNDIS_WLAN 2.6.29
-
-CARL9170 2.6.29
-
 
 # depends on -EPROBE_DEFER and others now
 WL1251_SPI 3.5
 
 WL1251_SDIO 3.15
 WLCORE_SDIO 3.15
-
-CW1200_WLAN_SDIO 2.6.32
-CW1200_WLAN_SPI 2.6.35
-
-BRCMFMAC 2.6.29
-
-# b44 depends on mdio_bus
-B44 2.6.28
-
-IGB 3.0
-
-WL_TI 2.6.30
-WLCORE 2.6.30
-# requires irq_modify_status() which was only exported in 3.0
-WL1251 3.0
-
-MWIFIEX 2.6.27
 
 # Regulator
 # Because of -EPROBE_DEFER see commit d1c3414c and note that
@@ -193,20 +149,6 @@ VIDEO_RENESAS_VSP1 3.6
 DVB_RTL2832 DISABLE
 DVB_USB_RTL28XXU DISABLE
 
-# struct gpio_chip only got the required members in 2.6.28
-BCMA_DRIVER_GPIO 2.6.28
-SSB_DRIVER_GPIO 2.6.28
-
-# shash was only added in 2.6.29
-BT 2.6.29
-
-# GPIOF_OUT_INIT_HIGH definitions were only moved
-# out of #ifdef in kernel 3.0. These are required
-# by some users of BCMA_DRIVER_GPIO. We'd better
-# just backport the definitions, but right now
-# this is easier.
-BCMA_DRIVER_GPIO 3.0
-
 BCMA_DRIVER_MIPS 3.3
 SSB_DRIVER_MIPS 3.3
 
@@ -216,26 +158,11 @@ SSB_DRIVER_MIPS 3.3
 # BCMA_HOST_SOC are set.
 BCMA_HOST_SOC 3.7
 
-# rfkill-regulator uses a kernel header file
-# (rfkill-regulator.h) that we don't backport
-# right now, so make it depend on 3.0
-RFKILL_REGULATOR 3.0
 # drivers/regulator/ab3100.c and drivers/mfd/ab3100-core.c
 # both depend on include/linux/mfd/ab3100.h and we should
 # only backport REGULATOR_AB3100 if the mfd driver is
 # backported as well.
 REGULATOR_AB3100 3.9
-
-# This is a fun one ... the implementation of this
-# uses subdir-ccflags-$(CONFIG_BRCMDBG) which was
-# only introduced in kernel 2.6.30.
-BRCMDBG 2.6.30
-
-# HID_QUIRK_NO_INIT_REPORTS was only introduced in
-# kernel 2.6.33, so depend on that. We could instead
-# backport it, but I can't test that and this is a
-# lot easier right now.
-BT_HIDP 2.6.33
 
 # NFC core needs PF_NFC defined in socket.h which was
 # only introduced in kernel 3.1

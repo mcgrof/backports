@@ -5,7 +5,7 @@
 
 /* This backports:
  *
- * commit 2033e9bf06f07e049bbc77e9452856df846714cc
+ * commit 2033e9bf06f07e049bbc77e9452856df846714cc -- from v3.5
  * Author: Neil Horman <nhorman@tuxdriver.com>
  * Date:   Tue May 29 09:30:40 2012 +0000
  *

@@ -1,4 +1,0 @@
-Use skb_get_queue_mapping() for getting the queue_mapping member of 
-skb. Some old kernels do not have the member queue_mapping, but this 
-function always returns something.
-

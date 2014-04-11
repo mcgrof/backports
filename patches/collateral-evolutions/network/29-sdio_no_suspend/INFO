@@ -1,5 +1,0 @@
-Starting with commit 66fceb69b72ff7e9cd8da2ca70033982d5376e0e
-"libertas: Added callback functions to support SDIO suspend/resume."
-libertas uses new functions from the in kernel sdio framework for
-suspend and resume that are not backported.
-

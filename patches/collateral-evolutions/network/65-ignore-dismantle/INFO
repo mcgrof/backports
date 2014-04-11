@@ -1,9 +1,0 @@
-The following patch makes use of the dismantle member in struct 
-net_device, this patch removes that access on older kernels.
-
-commit 9d5d496c3464b7ad0ba942b4ada5f27c07e07079
-Author: Daniel Drake <dsd@laptop.org>
-Date:   Mon Jul 30 22:58:04 2012 +0100
-
-    libertas: don't reset card on error when it is being removed
-

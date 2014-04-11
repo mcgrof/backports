@@ -2,7 +2,6 @@
 #include <linux/init.h>
 #include <linux/pm_qos.h>
 #include <linux/workqueue.h>
-#include "compat-2.6.34.h"
 #include "backports.h"
 
 MODULE_AUTHOR("Luis R. Rodriguez");
@@ -58,8 +57,6 @@ static int __init backport_init(void)
 	if (ret)
 		return ret;
 
-	backport_system_workqueue_create();
-	backport_init_mmc_pm_flags();
 	dma_buf_init();
 
 	printk(KERN_INFO "Loading modules backported from " BACKPORTED_KERNEL_NAME
@@ -79,7 +76,6 @@ subsys_initcall(backport_init);
 
 static void __exit backport_exit(void)
 {
-	backport_system_workqueue_destroy();
 	crypto_ccm_module_exit();
 }
 module_exit(backport_exit);

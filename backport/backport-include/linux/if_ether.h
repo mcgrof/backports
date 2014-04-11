@@ -27,11 +27,6 @@
 #define ETH_P_LINK_CTL	0x886c
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,0,0)
-#define mac_pton LINUX_BACKPORT(mac_pton)
-int mac_pton(const char *s, u8 *mac);
-#endif
-
 #ifndef ETH_P_PAE
 #define ETH_P_PAE 0x888E      /* Port Access Entity (IEEE 802.1X) */
 #endif

@@ -1,3 +1,0 @@
-Rename read_pda to something else because this symbol is used in a
-define for something else in arch/um/include/asm/pda.h on older kernels.
-

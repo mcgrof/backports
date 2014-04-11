@@ -23,7 +23,7 @@ struct frag_queue {
 };
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0) */
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(3,6,0)) && (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,25))
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,6,0)
 #define ipv6_addr_hash LINUX_BACKPORT(ipv6_addr_hash)
 static inline u32 ipv6_addr_hash(const struct in6_addr *a)
 {

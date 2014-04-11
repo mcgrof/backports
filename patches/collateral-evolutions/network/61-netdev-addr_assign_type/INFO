@@ -1,7 +1,0 @@
-You cannot backport assignment of netdev->addr_assign_type
-given that its part of the netdev data structure only in future
-kernels.
-
-mcgrof@tux ~/linux-next (git::master)$ git describe --contains c1f79426
-v2.6.36-rc1~571^2~104
-

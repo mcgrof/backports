@@ -709,45 +709,33 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
         git_debug_snapshot(args, "apply backport patch %s" % print_name)
 
     sempatches.sort()
-    with tempdir() as t:
-        if not args.gitdebug:
-            # combine all spatches
-            fn = os.path.join(t, 'combined.cocci')
-            f = open(fn, 'w')
-            for cocci_file in sempatches:
-                for l in open(cocci_file, 'r'):
-                    f.write(l)
-                f.write('\n')
-            f.close()
-            sempatches = [fn]
-            prefix_len = 0
-        else:
-            prefix_len = len(os.path.join(source_dir, 'patches')) + 1
-        for cocci_file in sempatches:
-            extra_spatch_args = []
-            if args.profile_cocci:
-                extra_spatch_args.append('--profile')
-            print_name = cocci_file[prefix_len:]
-            if args.verbose:
-                logwrite("Applying SmPL patch %s" % print_name)
+    prefix_len = len(os.path.join(source_dir, 'patches')) + 1
 
-            output = coccinelle.threaded_spatch(cocci_file, args.outdir,
-                                                logwrite, print_name,
-                                                test_cocci,
-                                                extra_args=extra_spatch_args)
-            output = output.split('\n')
-            if output[-1] == '':
-                output = output[:-1]
-            if args.verbose:
-                for line in output:
-                    logwrite('> %s' % line)
+    for cocci_file in sempatches:
+        extra_spatch_args = []
+        if args.profile_cocci:
+            extra_spatch_args.append('--profile')
+        print_name = cocci_file[prefix_len:]
+        if args.verbose:
+            logwrite("Applying SmPL patch %s" % print_name)
 
-            # remove cocci_backup files
-            for root, dirs, files in os.walk(args.outdir):
-                for f in files:
-                    if f.endswith('.cocci_backup'):
-                        os.unlink(os.path.join(root, f))
-            git_debug_snapshot(args, "apply backport SmPL patch %s" % print_name)
+        output = coccinelle.threaded_spatch(cocci_file, args.outdir,
+                                            logwrite, print_name,
+                                            test_cocci,
+                                            extra_args=extra_spatch_args)
+        output = output.split('\n')
+        if output[-1] == '':
+            output = output[:-1]
+        if args.verbose:
+            for line in output:
+                logwrite('> %s' % line)
+
+        # remove cocci_backup files
+        for root, dirs, files in os.walk(args.outdir):
+            for f in files:
+                if f.endswith('.cocci_backup'):
+                    os.unlink(os.path.join(root, f))
+        git_debug_snapshot(args, "apply backport SmPL patch %s" % print_name)
 
     if test_cocci:
         logwrite('Done!')

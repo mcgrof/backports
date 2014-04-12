@@ -5,20 +5,24 @@ v3.11-rc2~18^2~9
 mcgrof@ergon ~/linux (git::master)$ git describe --contains 3493f69f4
 v3.11-rc2~18^2~2
 
-We backport them with our own respective set of helpers but right now
-this is using old legacy patches, it should be possible to convert all
-this juju legacy backport to SmPL form.
+We backport them with our own respective set of helpers. Each new data
+structure that gets an attribute group needs a respective SmPL set of
+rules for the transformation. We might be able to share the rules for
+lookup / indexing between rules some how. These lookup reveal would
+be used for inherent structural searches, pivots, if you will.
+
+The changes that added the new APIs:
 
 commit f2f37f58b1b933b06d6d84e80a31a1b500fb0db2
 Author: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Date:   Sun Jul 14 16:05:52 2013 -0700
 
     sysfs.h: add ATTRIBUTE_GROUPS() macro
-    
+
     To make it easier for driver subsystems to work with attribute groups,
     create the ATTRIBUTE_GROUPS macro to remove some of the repetitive
     typing for the most common use for attribute groups.
-    
+
     Reviewed-by: Guenter Roeck <linux@roeck-us.net>
     Tested-by: Guenter Roeck <linux@roeck-us.net>
     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -28,9 +32,9 @@ Author: Oliver Schinagl <oliver@schinagl.nl>
 Date:   Sun Jul 14 16:05:59 2013 -0700
 
     sysfs: add more helper macro's for (bin_)attribute(_groups)
-    
+
     With the recent changes to sysfs there's various helper macro's.
     However there's no RW, RO BIN_ helper macro's. This patch adds them.
-    
+
     Signed-off-by: Oliver Schinagl <oliver@schinagl.nl>
     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

@@ -26,7 +26,7 @@ index 9767f11..3cf9600 100644
  static int igb_get_module_info(struct net_device *netdev,
  			       struct ethtool_modinfo *modinfo)
  {
-@@ -2811,6 +2814,7 @@ static int igb_get_module_eeprom(struct
+@@ -2813,6 +2816,7 @@ static int igb_get_module_eeprom(struct
  
  	return 0;
  }
@@ -34,7 +34,7 @@ index 9767f11..3cf9600 100644
  
  static int igb_ethtool_begin(struct net_device *netdev)
  {
-@@ -3017,15 +3021,19 @@ static const struct ethtool_ops igb_etht
+@@ -3019,15 +3023,19 @@ static const struct ethtool_ops igb_etht
  	.get_ethtool_stats	= igb_get_ethtool_stats,
  	.get_coalesce		= igb_get_coalesce,
  	.set_coalesce		= igb_set_coalesce,

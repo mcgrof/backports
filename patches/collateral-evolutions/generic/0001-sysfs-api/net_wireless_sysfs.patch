@@ -13,7 +13,7 @@
  
  static void wiphy_dev_release(struct device *dev)
  {
-@@ -151,7 +156,11 @@ struct class ieee80211_class = {
+@@ -149,7 +154,11 @@ struct class ieee80211_class = {
  	.name = "ieee80211",
  	.owner = THIS_MODULE,
  	.dev_release = wiphy_dev_release,
@@ -25,7 +25,7 @@
  	.dev_uevent = wiphy_uevent,
  #ifdef CONFIG_PM
  	.suspend = wiphy_suspend,
-@@ -165,6 +174,7 @@ struct class ieee80211_class = {
+@@ -161,6 +170,7 @@ struct class ieee80211_class = {
  
  int wiphy_sysfs_init(void)
  {

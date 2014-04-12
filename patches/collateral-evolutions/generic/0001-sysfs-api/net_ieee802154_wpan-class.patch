@@ -25,7 +25,7 @@
  };
  
  static DEFINE_MUTEX(wpan_phy_mutex);
-@@ -203,6 +212,7 @@ EXPORT_SYMBOL(wpan_phy_free);
+@@ -197,6 +206,7 @@ EXPORT_SYMBOL(wpan_phy_free);
  static int __init wpan_phy_class_init(void)
  {
  	int rc;

@@ -721,7 +721,6 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
 
         output = coccinelle.threaded_spatch(cocci_file, args.outdir,
                                             logwrite, print_name,
-                                            test_cocci,
                                             extra_args=extra_spatch_args)
         output = output.split('\n')
         if output[-1] == '':

@@ -33,6 +33,7 @@ def spatch(cocci_file, outdir,
            max_threads, thread_id, temp_dir, ret_q, extra_args=[]):
     cmd = ['spatch', '--sp-file', cocci_file, '--in-place',
             '--recursive-includes',
+            '--use-coccigrep',
             '--backup-suffix', '.cocci_backup', '--dir', '.']
 
     if (max_threads > 1):
@@ -53,12 +54,8 @@ def spatch(cocci_file, outdir,
     outfile.close()
     ret_q.put((sprocess.returncode, fn))
 
-def threaded_spatch(cocci_file, outdir, logwrite, print_name,
-                    test_cocci, extra_args=[]):
-    num_cpus = cpu_count()
-    threads = num_cpus * 3
-    if test_cocci:
-        threads = num_cpus * 10
+def threaded_spatch(cocci_file, outdir, logwrite, print_name, extra_args=[]):
+    threads = cpu_count()
     jobs = list()
     output = ''
     ret_q = Queue()

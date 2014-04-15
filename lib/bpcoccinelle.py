@@ -35,6 +35,7 @@ def spatch(cocci_file, outdir,
             '--recursive-includes',
             '--relax-include-path',
             '--use-coccigrep',
+            '--timeout', '120',
             '--backup-suffix', '.cocci_backup', '--dir', '.']
 
     if (max_threads > 1):

@@ -14,7 +14,6 @@ from lib import kconfig, patch, make
 from lib import bpgit as git
 from lib import bpgpg as gpg
 from lib import bpkup as kup
-from lib import bpcoccinelle as coccinelle
 from lib.tempdir import tempdir
 
 def read_copy_list(copyfile):
@@ -712,16 +711,25 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     prefix_len = len(os.path.join(source_dir, 'patches')) + 1
 
     for cocci_file in sempatches:
+        # Until Coccinelle picks this up
+        pycocci = os.path.join(source_dir, 'devel/pycocci')
+        cmd = [pycocci, cocci_file]
         extra_spatch_args = []
         if args.profile_cocci:
-            extra_spatch_args.append('--profile')
+            cmd.append('--profile-cocci')
+        cmd.append(args.outdir)
         print_name = cocci_file[prefix_len:]
         if args.verbose:
             logwrite("Applying SmPL patch %s" % print_name)
-
-        output = coccinelle.threaded_spatch(cocci_file, args.outdir,
-                                            logwrite, print_name,
-                                            extra_args=extra_spatch_args)
+        sprocess = subprocess.Popen(cmd,
+                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                    close_fds=True, universal_newlines=True,
+                                    cwd=args.outdir)
+        output = sprocess.communicate()[0]
+        sprocess.wait()
+        if sprocess.returncode != 0:
+            logwrite("Failed to process SmPL patch %s" % print_name)
+            return 3
         output = output.split('\n')
         if output[-1] == '':
             output = output[:-1]

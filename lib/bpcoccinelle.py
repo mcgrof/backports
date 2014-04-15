@@ -33,6 +33,7 @@ def spatch(cocci_file, outdir,
            max_threads, thread_id, temp_dir, ret_q, extra_args=[]):
     cmd = ['spatch', '--sp-file', cocci_file, '--in-place',
             '--recursive-includes',
+            '--relax-include-path',
             '--use-coccigrep',
             '--backup-suffix', '.cocci_backup', '--dir', '.']
 

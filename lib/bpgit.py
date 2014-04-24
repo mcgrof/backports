@@ -46,57 +46,41 @@ def fetch(tree=None):
 
 def status(tree=None):
     '''
-    For interpretation of the porcelain output refer to
-    the git status(1) man page. In summary the first column is the
-    index state, the second represents the working tree state and
-    the third column are files in cases of renames. This gives back
-    None in case no changes are present, otherwise it returns a list
-    of dict entries with key values: index, work_tree, and files. The
-    files are a list of all files found on that entry, in case of a rename
-    this would consist of a list of 2 files.
-
-    As an example if you had this on your git status:
-
-    R  udev/foo.sh -> poo/foo.sh
-    D  scripts/bar.sh
-    ?? .poo.py.swp
-
-    This would be transposed into the following dict:
-
-        results = status(tree=your_git_tree_path)
-        if not results:
-            return 0
-        for entry in results:
-            print entry
-
-    {'files': [' udev/foo.sh', 'poo/foo.sh'], 'index': 'R', 'work_tree': ' '}
-    {'files': [' scripts/bar.sh'], 'index': 'D', 'work_tree': ' '}
-    {'files': [' .poo.py.swp'], 'index': '?', 'work_tree': '?'}
+    Return a list (that may be empty) of current changes. Each entry is a
+    tuple, just like returned from git status, with the difference that
+    the filename(s) are no longer space-separated but rather the tuple is
+    of the form
+    ('XY', 'filename')
+    or
+    ('XY', 'filename_to', 'filename_from')   [if X is 'R' for rename]
     '''
-    def split_status(entry):
-        if len(entry) == 0:
-            return None
-        if len(entry) == 1:
-            return dict(index=entry[0], work_tree=None, files=None)
-        if len(entry) == 2:
-            return dict(index=entry[0], work_tree=entry[1], files=None)
-        else:
-            return dict(index=entry[0], work_tree=entry[1],
-                        files=entry[2:].split(' -> '))
+    cmd = ['git', 'status', '--porcelain', '-z']
 
-    cmd = ['git', 'status', '--porcelain']
-
-    process = subprocess.Popen(cmd,
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True,
-            universal_newlines=True, cwd=tree)
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT, close_fds=True,
+                               universal_newlines=True, cwd=tree)
     stdout = process.communicate()[0]
     process.wait()
     _check(process)
 
-    list_status = stdout.split('\n')
-    if (len(list_status) == 1 and list_status[0] == ''):
-        return None
-    return [split_status(entry) for entry in list_status]
+    l = stdout.split('\0')
+    result = []
+    cur = []
+    for i in l:
+        if not i:
+            continue
+        if not cur:
+            cur.append(i[:2])
+            assert i[2] == ' '
+            cur.append(i[3:])
+            if i[0] == 'R':
+                continue
+        else:
+            cur.append(i)
+        result.append(tuple(cur))
+        cur = []
+
+    return result
 
 def describe(rev='HEAD', tree=None, extra_args=[]):
     cmd = ['git', 'describe', '--always']
@@ -209,8 +193,12 @@ def remote_update(gitdir):
     process.wait()
     _check(process)
 
-def shortlog(from_commit, to_commit, tree=None):
-    process = subprocess.Popen(['git', 'shortlog', from_commit + '..' + to_commit],
+def shortlog(from_commit, to_commit, tree=None, files=None):
+    if files:
+        fargs = ['--'] + files
+    else:
+        fargs = []
+    process = subprocess.Popen(['git', 'shortlog', from_commit + '..' + to_commit] + fargs,
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                close_fds=True, universal_newlines=True,
                                cwd=tree)

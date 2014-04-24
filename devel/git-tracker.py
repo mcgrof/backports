@@ -46,7 +46,8 @@ def update_cache_objects(gittree, objdir):
         git.remote_update(objdir)
 
 def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, backport_rev, kernel_rev,
-                  prev_kernel_rev=None, defconfig=None, env={}, commit_failure=True):
+                  prev_kernel_rev=None, defconfig=None, env={}, commit_failure=True,
+                  append_shortlog=None):
     log = []
     def logwrite(l):
         log.append(l)
@@ -73,6 +74,7 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
             for l in log:
                 print(l)
             newline=''
+            append_shortlog=None
             if prev_kernel_rev:
                 msg += '\n%s%s-last-success: %s' % (PREFIX, tree, prev_kernel_rev)
 
@@ -86,18 +88,25 @@ def handle_commit(args, msg, branch, treename, kernelobjdir, tmpdir, wgitdir, ba
         else:
             git.reset(opts=['-q'], tree=wdir)
 
-        msg += '''%(newline)s
+        if not failure or commit_failure:
+            if append_shortlog:
+                files = []
+                for d in git.status(tree=wdir):
+                    files.extend(d[1:])
+                msg += git.shortlog(append_shortlog[0], append_shortlog[1],
+                                    tree=kernelobjdir, files=files)
+
+            msg += '''%(newline)s
 %(PREFIX)sbackport: %(bprev)s
 %(PREFIX)s%(tree)s: %(krev)s
 ''' % {
-        'newline': newline,
-        'PREFIX': PREFIX,
-        'bprev': backport_rev,
-        'tree': treename,
-        'krev': kernel_rev,
-      }
+            'newline': newline,
+            'PREFIX': PREFIX,
+            'bprev': backport_rev,
+            'tree': treename,
+            'krev': kernel_rev,
+          }
 
-        if not failure or commit_failure:
             git.commit(msg, tree=wdir, env=env, opts=['-q', '--allow-empty'])
             git.push(opts=['-f', '-q', 'origin', branch], tree=wdir)
         os.rename(os.path.join(wdir, '.git'), wgitdir)
@@ -226,14 +235,15 @@ if __name__ == '__main__':
                     for commit in commits:
                         print('updating to commit %s' % commit)
                         env = git.commit_env_vars(commit, tree=kernelobjdir)
+                        append_shortlog = None
                         if prev_commits[commit] == prev:
                             # committing multiple commits
                             msg = git.commit_message(commit, kernelobjdir)
                             try:
                                 # add information about commits that went into this
-                                shortlog = git.shortlog(prev, '%s^2' % commit,
-                                                        tree=kernelobjdir)
-                                msg += "\nCommits in this merge:\n\n" + shortlog
+                                git.rev_parse('%s^2' % commit, tree=kernelobjdir)
+                                msg += "\nCommits in this merge:\n\n"
+                                append_shortlog = (prev, '%s^2' % commit)
                             except git.ExecutionError as e:
                                 # will fail if it wasn't a merge commit
                                 pass
@@ -241,11 +251,12 @@ if __name__ == '__main__':
                             # multiple commits
                             env = backport_author_env
                             msg = "update multiple kernel commits\n\nCommits taken:\n\n"
-                            msg += git.shortlog(prev, commit, tree=kernelobjdir)
+                            append_shortlog = (prev, commit)
                         failure = handle_commit(args, msg, branch, tree, kernelobjdir, branch_tmpdir,
                                                 wgitdir, backport_rev, commit, env=env,
                                                 prev_kernel_rev=prev, defconfig=defconfig,
-                                                commit_failure=not catch_up_from_failure)
+                                                commit_failure=not catch_up_from_failure,
+                                                append_shortlog=append_shortlog)
                         if not failure:
                             prev = commit
                             catch_up_from_failure = False

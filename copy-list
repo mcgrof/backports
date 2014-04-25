@@ -178,6 +178,7 @@ include/trace/events/v4l2.h
 drivers/media/
 include/linux/platform_data/vsp1.h
 include/linux/platform_data/camera-rcar.h
+include/linux/of_graph.h
 
 include/net/6lowpan.h
 include/net/netns/ieee802154_6lowpan.h

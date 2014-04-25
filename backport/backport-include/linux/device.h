@@ -102,7 +102,7 @@ backport_device_release_driver(struct device *dev)
 #define device_release_driver LINUX_BACKPORT(device_release_driver)
 #endif /* LINUX_VERSION_CODE <= KERNEL_VERSION(3,6,0) */
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,11,0) && RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(7,0)
 #ifndef DEVICE_ATTR_RO
 #define DEVICE_ATTR_RO(_name) \
 struct device_attribute dev_attr_ ## _name = __ATTR_RO(_name);

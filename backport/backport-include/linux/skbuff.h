@@ -327,7 +327,7 @@ static inline void skb_frag_set_page(struct sk_buff *skb, int f,
 }
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0) */
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0) && RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(7,0)
 /*
  * Packet hash types specify the type of hash in skb_set_hash.
  *

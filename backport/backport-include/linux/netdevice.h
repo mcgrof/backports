@@ -82,17 +82,6 @@ static inline void dev_consume_skb_any(struct sk_buff *skb)
 }
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0) */
 
-/* d1c76af9e */
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)
-enum { /* backport: provide the enum name already */
-	GRO_MERGED,
-	GRO_MERGED_FREE,
-	GRO_HELD,
-	GRO_NORMAL,
-	GRO_DROP,
-};
-#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30) */
-
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,8)
 #define netdev_set_default_ethtool_ops LINUX_BACKPORT(netdev_set_default_ethtool_ops)
 extern void netdev_set_default_ethtool_ops(struct net_device *dev,

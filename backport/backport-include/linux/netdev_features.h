@@ -8,15 +8,11 @@
 #include <linux/types.h>
 
 /* added via 9356b8fc */
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,14)
 #define NETIF_F_HW_VLAN_CTAG_RX			NETIF_F_HW_VLAN_RX
 #define NETIF_F_HW_VLAN_CTAG_TX			NETIF_F_HW_VLAN_TX
-#endif
 
 /* added via d314774c */
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29)
 #define NETIF_F_HW_VLAN_CTAG_FILTER		NETIF_F_HW_VLAN_FILTER
-#endif
 
 /* c8f44aff made this u32 but later a861a8b2 changed it to u64 both on v3.3 */
 typedef u32 netdev_features_t;

@@ -581,7 +581,7 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     # do the copy
     backport_files = [(x, x) for x in [
         'Kconfig', 'Makefile', 'Makefile.build', 'Makefile.kernel', '.gitignore',
-        'Makefile.real', 'compat/', 'backport-include/', 'kconf/', 'defconfigs/',
+        'Makefile.real', 'compat/', 'backport-include/', 'kconf/',
         'scripts/', '.blacklist.map',
     ]]
     if not args.git_revision:
@@ -784,6 +784,29 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     f.close()
 
     git_debug_snapshot(args, "add versions/symbols files")
+
+    # add defconfigs that we want
+    defconfigs_dir = os.path.join(source_dir, 'backport', 'defconfigs')
+    os.mkdir(os.path.join(args.outdir, 'defconfigs'))
+    for dfbase in os.listdir(defconfigs_dir):
+        copy_defconfig = True
+        dfsrc = os.path.join(defconfigs_dir, dfbase)
+        for line in open(dfsrc, 'r'):
+            if not '=' in line:
+                continue
+            line_ok = False
+            for sym in symbols:
+                if sym + '=' in line:
+                    line_ok = True
+                    break
+            if not line_ok:
+                print dfbase, line
+                copy_defconfig = False
+                break
+        if copy_defconfig:
+            shutil.copy(dfsrc, os.path.join(args.outdir, 'defconfigs', dfbase))
+
+    git_debug_snapshot(args, "add (useful) defconfig files")
 
     logwrite('Rewrite Makefiles and Kconfig files ...')
 

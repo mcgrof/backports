@@ -8,6 +8,7 @@ source_dir = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(source_dir + '/../')
 from lib import bpar as ar
 from lib import bpgit as git
+from lib import bpreqs as reqs
 
 KPATH="http://kernel.ubuntu.com/~kernel-ppa/mainline/"
 BACKPORTS_KSRC_DIR="ksrc-backports"
@@ -562,6 +563,14 @@ def bk_tar_members(members):
             yield tarinfo
 
 def _main():
+    req = reqs.Req()
+    req.require_hint('ar', 'binutils')
+    req.require('make')
+    req.require('gcc')
+    req.require('git')
+    if not req.reqs_match():
+        sys.exit(1)
+
     parser = argparse.ArgumentParser(description='Linux kernel backports update manager')
     parser.add_argument('--force', const=True, default=False, action="store_const",
                         help='Force run without sanity or careful user checks')

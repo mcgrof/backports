@@ -15,6 +15,7 @@ from lib import bpgit as git
 from lib import bpgpg as gpg
 from lib import bpkup as kup
 from lib.tempdir import tempdir
+from lib import bpreqs as reqs
 
 def read_copy_list(copyfile):
     """
@@ -438,6 +439,13 @@ def upload_release(args, rel_prep, logwrite=lambda x:None):
         logwrite("kup-test: skipping cmd: %s" % kup_cmd)
 
 def _main():
+    # Our binary requirements go here
+    req = reqs.Req()
+    req.require('git')
+    req.coccinelle('1.0.0-rc21')
+    if not req.reqs_match():
+        sys.exit(1)
+
     # set up and parse arguments
     parser = argparse.ArgumentParser(description='generate backport tree')
     parser.add_argument('kerneldir', metavar='<kernel tree>', type=str,
@@ -880,6 +888,10 @@ def process(kerneldir, outdir, copy_list_file, git_revision=None,
     git_debug_snapshot(args, "disable unsatisfied Makefile parts")
 
     if (args.kup or args.kup_test):
+        req = reqs.Req()
+        req.kup()
+        if not req.reqs_match():
+            sys.exit(1)
         upload_release(args, rel_prep, logwrite=logwrite)
 
     logwrite('Done!')

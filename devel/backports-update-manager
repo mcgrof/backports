@@ -429,7 +429,7 @@ class backport_kernel_updater:
             self.increase_kver_count(url)
             self.all_new_kernels.append(url)
         sys.stdout.write("\n")
-    def fix_and_install_header_lib_modules(self, dir_path):
+    def fix_header_lib_modules(self, dir_path):
         """
         Relink lib/modules/*/build/ directories relatively to make it work
         for regular user based workflows
@@ -438,16 +438,22 @@ class backport_kernel_updater:
             if "generic" not in kernel:
                 continue
             kver = self.get_kver(kernel)
-            sys.stdout.write("%s - adjusting build symlink for non-root installation ...\n" % (kver.get('ver')))
-            build_target = os.path.join(dir_path, kernel + '/build')
+            sys.stdout.write("%s - creating lib/modules/$kernel/build symlink for non-root installation ...\n" % (kver.get('ver')))
+            src = os.path.join(dir_path, kernel)
+            dst = os.path.join(self.ksrc_prefix, 'lib/modules/' + kernel)
+            build_target = os.path.join(src, 'build')
             usr_src_sym = "../../../usr/src/linux-headers-" + kernel
             os.unlink(build_target)
             os.symlink(usr_src_sym, build_target)
+            shutil.move(src, dst)
+    def install_headers(self, dir_path):
         for kernel in os.listdir(dir_path):
             src = os.path.join(dir_path, kernel)
-            dst = os.path.join(self.ksrc_prefix, 'lib/modules/' + kernel)
+            dst = os.path.join(self.ksrc_prefix, 'usr/src/' + kernel)
             kver = self.get_kver(kernel)
-            sys.stdout.write("%s - installing lib/modules/ ...\n" % (kver.get('ver')))
+            sys.stdout.write("%s - installing usr/src/ ...\n" % (kver.get('ver')))
+            sys.stdout.write("src: %s\n" % src)
+            sys.stdout.write("dst: %s\n" % dst)
             self.rm_clean_dir(dst)
             shutil.move(src, dst)
     def fix_makefile_old_kernels(self, makefile):
@@ -463,8 +469,10 @@ class backport_kernel_updater:
     def sanitize_and_install_kernel_dirs(self, dir_path):
         d_lib_modules = os.path.join(dir_path, "lib/modules")
         d_usr_src     = os.path.join(dir_path, "usr/src")
+        if os.path.isdir(d_usr_src):
+            self.install_headers(d_usr_src)
         if os.path.isdir(d_lib_modules):
-            self.fix_and_install_header_lib_modules(d_lib_modules)
+            self.fix_header_lib_modules(d_lib_modules)
     def extract_backport_pkgs(self):
         tmp_prefix = BACKPORTS_KSRC_DIR + '_'
         tmpdir_path = tempfile.mkdtemp(prefix=tmp_prefix)

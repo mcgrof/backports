@@ -25,6 +25,14 @@ from threading import Thread, Lock
 from shutil import copytree, ignore_patterns, rmtree, copyfileobj
 from time import sleep
 
+# find self
+source_dir = os.path.abspath(os.path.dirname(__file__))
+source_dir = os.path.dirname(source_dir)
+# add parent directory to path to get to lib/
+sys.path.append(source_dir)
+# import libraries we need
+from lib import bpreqs as reqs
+
 releases_processed = []
 releases_baking = []
 processed_lock = Lock()
@@ -580,6 +588,11 @@ def build_krange(krange_list):
     return {}
 
 if __name__ == "__main__":
+    req = reqs.Req()
+    req.require('make')
+    req.require('gcc')
+    if not req.reqs_match():
+        sys.exit(1)
     parser = argparse.ArgumentParser(
         description='compile against all kernels you have')
     parser.add_argument(

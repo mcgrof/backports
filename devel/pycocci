@@ -41,11 +41,6 @@ class tempdir(object):
 
 class CoccinelleError(Exception):
     pass
-class ExecutionError(CoccinelleError):
-    def __init__(self, cmd, errcode):
-        self.error_code = errcode
-        print('Failed command:')
-        print(' '.join(cmd))
 
 class ExecutionErrorThread(CoccinelleError):
     def __init__(self, errcode, fn, cocci_file, threads, t, logwrite, print_name):
@@ -92,8 +87,6 @@ def spatch(cocci_file, outdir,
                                stdout=outfile, stderr=subprocess.STDOUT,
                                close_fds=True, universal_newlines=True)
     sprocess.wait()
-    if sprocess.returncode != 0:
-        raise ExecutionError(cmd, sprocess.returncode)
     outfile.close()
     ret_q.put((sprocess.returncode, fn))
 
